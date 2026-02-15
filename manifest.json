@@ -1,0 +1,9 @@
+{
+  "name": "cosmic_globe",
+  "short_name": "cosmic",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#050505",
+  "theme_color": "#00ff41",
+  "description": "Orbital Focus HUD for Sigma Pilots"
+}
