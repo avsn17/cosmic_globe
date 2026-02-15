@@ -1,0 +1,63 @@
+:root {
+    --primary: #00ff41;
+    --bg: #050505;
+    --accent: #008f11;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--primary);
+    font-family: 'Courier New', Courier, monospace;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.scanlines {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+    background-size: 100% 3px, 3px 100%;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.cockpit {
+    width: 90%;
+    max-width: 800px;
+    border: 2px solid var(--accent);
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+}
+
+#timer-display {
+    font-size: 6rem;
+    text-align: center;
+    margin: 20px 0;
+    text-shadow: 0 0 15px var(--primary);
+}
+
+#log {
+    height: 80px;
+    overflow-y: auto;
+    font-size: 0.8rem;
+    border-top: 1px solid var(--accent);
+    padding: 10px 0;
+}
+
+input {
+    background: transparent;
+    border: none;
+    color: var(--primary);
+    font-family: inherit;
+    font-size: 1.1rem;
+    outline: none;
+    width: 100%;
+}
+
+.progress-bar { width: 100%; border: 1px solid var(--accent); height: 10px; margin-top: 10px; }
+#fuel-fill { width: 0%; height: 100%; background: var(--primary); transition: width 1s; }
