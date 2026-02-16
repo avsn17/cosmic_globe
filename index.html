@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COSMIC_GLOBE: ZENITH_v15</title>
+    <title>COSMIC_GLOBE: v16_ULTIMATE</title>
     <style>
-        :root { --glow: #00ff41; --bg: #000500; --accent: #ff4141; }
+        :root { --glow: #00ff41; --bg: #000500; }
         body.theme-vapor { --glow: #ff71ce; --bg: #01012b; }
         body.theme-disco { --glow: #f4d03f; --bg: #1a0633; }
         body.theme-techno { --glow: #00f2ff; --bg: #000000; }
@@ -21,135 +21,136 @@
             z-index: 1; pointer-events: none;
         }
 
-        /* 🎯 ABSOLUTE CENTER HUD */
+        /* 🎯 THE ABSOLUTE CENTER HUD */
         #ui-container {
             position: fixed; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 420px; z-index: 9999;
+            width: 400px; z-index: 9999;
             display: flex; flex-direction: column; gap: 15px;
-            pointer-events: auto;
+            pointer-events: auto; text-align: center;
         }
 
         .hud-card {
-            background: rgba(0, 10, 0, 0.92);
+            background: rgba(0, 10, 0, 0.95);
             border: 2px solid var(--glow); border-radius: 12px;
-            padding: 20px; backdrop-filter: blur(10px);
-            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            padding: 20px; box-shadow: 0 0 30px rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
         }
 
-        #timer { 
-            font-size: 5.5rem; font-weight: 900; text-align: center;
-            text-shadow: 0 0 20px var(--glow); margin: 0;
-        }
+        #timer { font-size: 5.5rem; font-weight: 900; text-shadow: 0 0 20px var(--glow); margin: 0; }
 
-        /* INPUTS & BUTTONS */
         input, select, button {
             width: 100%; padding: 12px; margin: 5px 0;
-            background: rgba(0,0,0,0.8); border: 1px solid var(--glow);
+            background: #000; border: 1px solid var(--glow);
             color: var(--glow); border-radius: 6px; font-weight: bold;
+            box-sizing: border-box;
         }
         button { background: var(--glow); color: #000; border: none; cursor: pointer; text-transform: uppercase; }
         button:hover { filter: brightness(1.2); }
-        button.secondary { background: transparent; border: 1px solid var(--glow); color: var(--glow); }
 
-        /* TASK LIST */
-        #task-list { max-height: 120px; overflow-y: auto; text-align: left; margin: 10px 0; font-size: 0.9rem; }
+        #task-list { max-height: 100px; overflow-y: auto; margin: 10px 0; text-align: left; font-size: 0.8rem; }
         .task-item { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(0,255,65,0.2); padding: 5px 0; }
-        
-        /* ANIMATIONS */
-        .meteor { position: absolute; width: 3px; height: 100px; background: linear-gradient(to top, var(--glow), transparent); opacity: 0.8; }
-        @keyframes warp { from { transform: translate(-50%, -50%) scale(0); } to { transform: translate(var(--tx), var(--ty)) scale(2); opacity: 0; } }
+
+        .meteor { position: absolute; width: 2px; height: 80px; background: linear-gradient(to top, var(--glow), transparent); }
+        @keyframes zoom { from { transform: translate(-50%, -50%) scale(0); opacity: 1; } to { transform: translate(var(--tx), var(--ty)) scale(2); opacity: 0; } }
     </style>
 </head>
 <body class="theme-techno">
     <div id="star-container"></div>
     <div id="meteor-field"></div>
+    <audio id="bg-audio" loop src="https://stream.zeno.fm/0r0xa792kwzuv"></audio>
 
     <div id="ui-container">
         <div id="login-sector" class="hud-card">
-            <h2 style="text-align:center; margin-top:0;">NEURAL_LINK</h2>
+            <h2 style="margin:0 0 10px 0;">[ NEURAL_LINK ]</h2>
             <select id="freq-selector">
-                <option value="techno" data-theme="techno">DEEP TECHNO</option>
-                <option value="vapor" data-theme="vapor">VAPORWAVE</option>
-                <option value="disco" data-theme="disco">70s GOLD</option>
+                <option value="techno" data-theme="techno">DEEP TECHNO (Pulse)</option>
+                <option value="vapor" data-theme="vapor">DREAMY (Vaporwave)</option>
+                <option value="disco" data-theme="disco">70s GOLD (Disco)</option>
             </select>
-            <input type="text" id="pilot-name" placeholder="PILOT CALLSIGN...">
-            <button onclick="startMission()">INITIALIZE COCKPIT</button>
+            <input type="text" id="pilot-id" placeholder="ENTER CALLSIGN...">
+            <button onclick="engageSystems()">ENGAGE HYPERDRIVE</button>
         </div>
 
         <div id="mission-sector" style="display:none;">
             <div id="timer">25:00</div>
-            
             <div class="hud-card">
-                <div style="display:flex; justify-content: space-around; margin-bottom: 10px;">
-                    <button class="secondary" onclick="setTimer(25)" style="width:45%;">FOCUS</button>
-                    <button class="secondary" onclick="setTimer(5)" style="width:45%;">BREAK</button>
-                </div>
+                <div id="iroh-quote" style="font-style:italic; font-size:0.9rem; margin-bottom:10px;">"Hope is something you give yourself."</div>
+                
+                <button id="audio-btn" class="secondary" onclick="toggleAudio()" style="background:transparent; border:1px solid var(--glow); color:var(--glow); margin-bottom:10px;">🔊 PLAY AUDIO</button>
 
-                <div id="task-container">
-                    <input type="text" id="task-input" placeholder="ADD TASK..." style="width:70%;">
-                    <button onclick="addTask()" style="width:25%; float:right;">+</button>
+                <div style="border-top: 1px solid var(--glow); padding-top:10px;">
+                    <input type="text" id="task-input" placeholder="NEW TASK..." style="width:75%;">
+                    <button onclick="addTask()" style="width:20%; float:right;">+</button>
                     <div id="task-list"></div>
                 </div>
 
-                <div style="margin-top: 15px; font-size: 0.7rem; border-top: 1px solid var(--glow); padding-top: 10px;">
-                    <span id="stat-sessions">SESSIONS: 0</span> | 
-                    <span id="stat-time">TOTAL: 0m</span>
+                <div style="font-size:0.7rem; margin-top:10px; opacity:0.7;">
+                    SESSIONS: <span id="stat-sessions">0</span> | TIME: <span id="stat-time">0</span>m
                 </div>
-                <button onclick="location.reload()" style="margin-top:10px; background: #ff4141;">ABORT</button>
+                <button onclick="location.reload()" style="background:#ff4141; color:#fff; margin-top:10px;">ABORT</button>
             </div>
         </div>
     </div>
 
     <script>
         let timeLeft = 25 * 60;
-        let isRunning = false;
-        let timerInterval;
-        let sessions = 0;
-        let totalMinutes = 0;
+        let stats = JSON.parse(localStorage.getItem('pilot_stats')) || { sessions: 0, time: 0 };
+        let tasks = JSON.parse(localStorage.getItem('pilot_tasks')) || [];
 
-        function startMission() {
+        function engageSystems() {
             document.getElementById('login-sector').style.display = 'none';
             document.getElementById('mission-sector').style.display = 'block';
-            isRunning = true;
-            timerInterval = setInterval(updateClock, 1000);
-            setInterval(spawnMeteor, 200);
+            updateStats();
+            renderTasks();
+            setInterval(tick, 1000);
+            setInterval(spawnMeteor, 250);
         }
 
-        function setTimer(mins) {
-            timeLeft = mins * 60;
-            updateDisplay();
-        }
-
-        function updateClock() {
+        function tick() {
             if (timeLeft > 0) {
                 timeLeft--;
-                updateDisplay();
+                const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+                const s = (timeLeft % 60).toString().padStart(2, '0');
+                document.getElementById('timer').innerText = `${m}:${s}`;
             } else {
-                sessions++;
-                totalMinutes += 25;
-                document.getElementById('stat-sessions').innerText = `SESSIONS: ${sessions}`;
-                document.getElementById('stat-time').innerText = `TOTAL: ${totalMinutes}m`;
-                alert("Session Complete, Pilot.");
-                setTimer(5); // Auto-switch to break
+                stats.sessions++; stats.time += 25;
+                localStorage.setItem('pilot_stats', JSON.stringify(stats));
+                alert("Mission Objective Reached.");
+                location.reload();
             }
         }
 
-        function updateDisplay() {
-            const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
-            const s = (timeLeft % 60).toString().padStart(2, '0');
-            document.getElementById('timer').innerText = `${m}:${s}`;
+        function toggleAudio() {
+            const a = document.getElementById('bg-audio');
+            const btn = document.getElementById('audio-btn');
+            if (a.paused) { a.play(); btn.innerText = "🔇 MUTE AUDIO"; }
+            else { a.pause(); btn.innerText = "🔊 PLAY AUDIO"; }
         }
 
         function addTask() {
-            const input = document.getElementById('task-input');
-            if (input.value === "") return;
+            const val = document.getElementById('task-input').value;
+            if (!val) return;
+            tasks.push(val);
+            localStorage.setItem('pilot_tasks', JSON.stringify(tasks));
+            renderTasks();
+            document.getElementById('task-input').value = "";
+        }
+
+        function renderTasks() {
             const list = document.getElementById('task-list');
-            const div = document.createElement('div');
-            div.className = 'task-item';
-            div.innerHTML = `<span>${input.value}</span><span onclick="this.parentElement.remove()" style="cursor:pointer; color:red;">[X]</span>`;
-            list.appendChild(div);
-            input.value = "";
+            list.innerHTML = tasks.map((t, i) => `<div class="task-item"><span>${t}</span><span onclick="removeTask(${i})" style="color:red; cursor:pointer;">[X]</span></div>`).join('');
+        }
+
+        function removeTask(i) {
+            tasks.splice(i, 1);
+            localStorage.setItem('pilot_tasks', JSON.stringify(tasks));
+            renderTasks();
+        }
+
+        function updateStats() {
+            document.getElementById('stat-sessions').innerText = stats.sessions;
+            document.getElementById('stat-time').innerText = stats.time;
         }
 
         document.getElementById('freq-selector').addEventListener('change', function() {
@@ -161,12 +162,13 @@
             const m = document.createElement('div');
             m.className = 'meteor';
             const angle = Math.random() * Math.PI * 2;
-            const dist = 1200;
-            m.style.setProperty('--tx', `${Math.cos(angle)*dist}px`);
-            m.style.setProperty('--ty', `${Math.sin(angle)*dist}px`);
+            const tx = Math.cos(angle) * 1200;
+            const ty = Math.sin(angle) * 1200;
+            m.style.setProperty('--tx', `${tx}px`);
+            m.style.setProperty('--ty', `${ty}px`);
             m.style.left = '50%'; m.style.top = '50%';
             m.style.transform = `translate(-50%, -50%) rotate(${angle + Math.PI/2}rad)`;
-            m.style.animation = `warp 1s linear forwards`;
+            m.style.animation = `zoom 1s linear forwards`;
             field.appendChild(m);
             setTimeout(() => m.remove(), 1000);
         }
