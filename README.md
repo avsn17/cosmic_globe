@@ -1,46 +1,44 @@
-# cosmic_globe
-cat << 'EOF' > README.md
-# 🌌 COSMIC_GLOBE
-**MU/TH/UR 6000 CERTIFIED FOCUS COCKPIT**
+# 🌌 COSMIC_GLOBE: NEURAL_HUD v5.0
 
-`cosmic_globe` is a dual-interface productivity engine designed for deep-work immersion. It combines a **CRT-aesthetic Web HUD** for visual focus and a **Mac/Linux Terminal CLI** for mission logging and orbital tracking.
+> **"Hope is something you give yourself. That is the meaning of inner strength."** — *Uncle Iroh*
+
+An autonomous, music-reactive focus environment built to bridge the gap between high-performance work and deep-space aesthetics. Fully automated, backed by Gemini-class logic.
+
+## 🛰️ SYSTEM MODULES
+
+### 1. Neural Load Engine (Audio-Reactive)
+* **Frequency Analysis:** Real-time Web Audio API monitoring.
+* **Color-Shift Calibration:** The Load Bar transitions from **Matrix Green** to **Solar Gold** to **Critical Red** based on sonic intensity.
+* **Light-Streak Propulsion:** 3D-perspective meteors explode from the center of the screen, synced to bass frequency peaks (>195Hz).
+
+### 2. Multi-Frequency Neural Link
+Selectable audio streams curated for different cognitive states:
+* **DREAMY (Vapor):** Hazy, ambient vibes (Cigarettes After Sex / Lana Del Rey).
+* **70s GOLD (Disco):** High-rhythm momentum (Bee Gees).
+* **DEEP TECHNO (Pulse):** Pure, aggressive focus for complex engineering tasks.
+
+### 3. Tactical Command Panel
+Real-time toggles allow the Pilot to modify the HUD without breaking the warp:
+* **METEORS:** Enable/Disable high-speed visual streaks.
+* **RED_ALERT_PULSE:** Toggle full-screen chromatic flashes for high-load music.
+* **SCANLINES:** Toggle the CRT hardware filter.
+
+### 4. Autonomous Mission Cycle
+* **The Warp:** 25-minute automated focus sprints.
+* **Refueling:** 5-minute cooldown period with a screen inversion milestone effect.
+* **Persistence:** LocalStorage integration ensures your total Light Year (LY) distance is saved across sessions.
+
+## 🕹️ DEPLOYMENT INSTRUCTIONS
+
+1.  **Initialize:** Enter Pilot Callsign and select Frequency.
+2.  **Engage:** Click the `ENGAGE` button to authorize the browser's AudioContext.
+3.  **Command:** Use the top-right panel to adjust visual noise in real-time.
+
+## 🛠️ TECH STACK
+* **Engine:** Vanilla JavaScript (ES6+).
+* **Visuals:** CSS3 Custom Properties & Keyframe Animation (hardware accelerated).
+* **Audio:** Web Audio API (AnalyserNode / MediaElementSource).
+* **Deployment:** GitHub Pages.
 
 ---
-
-## 📟 TERMINAL ENGINE (The CLI)
-The heart of the system is the `warp` command, a Python-driven mission timer that logs focus sessions as "distance traveled" in the cosmos.
-
-### Quick Start
-- **`warp`**: Start a standard 25-minute mission.
-- **`warp [mins]`**: Initiate a custom duration warp (e.g., `warp 45`).
-- **`warp --stats`**: Access the flight log to see lifetime distance and mission history.
-
----
-
-## 🌐 WEB HUD (The Interface)
-A web-based terminal with a retro-future aesthetic, featuring:
-- **CRT Scanline Effects**: Old-school monitor vibes.
-- **Zone Glitch Overlay**: Visual feedback for deep work states.
-- **Mobile Responsive**: Accessible via GitHub Pages on any device.
-
-**Live Link:** [https://avsn17.github.io/cosmic_globe/](https://avsn17.github.io/cosmic_globe/)
-
----
-
-## 🛠️ INSTALLATION (BASH)
-To install the `warp` command in your local environment:
-
-1. Move the engine to your home directory:
-   ```bash
-   mkdir -p ~/.cosmic_globe
-   cp cosmic_globe.py ~/.cosmic_globe/cosmic_globe.py
-
-   ---
-
-### 📡 Sync to the Cloud
-Now, push the README to your repository so it shows up on your GitHub profile:
-
-```bash
-git add README.md
-git commit -m "📝 DOCS: Initialized professional README.md"
-git push origin main
+**[SYSTEM STATUS: OPERATIONAL]** *Safe travels, Pilot Avi.*
