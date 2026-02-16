@@ -1,43 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌐</text></svg>">
-<link rel="manifest" href="manifest.json">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>cosmic_globe // MU/TH/UR 6000</title>
+    <title>COSMIC_GLOBE HUD</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="scanlines"></div>
-    <div class="cockpit">
-        <header>
-            <div class="glitch" data-text="COSMIC_GLOBE">COSMIC_GLOBE</div>
-            <div id="system-status">STATUS: ORBITAL_LOCK</div>
-        </header>
+    <div id="star-container"></div>
 
-        <section id="visual-core">
-            <div id="affirmation-bot">BOLD: INITIALIZING MAIN CHARACTER ENERGY...</div>
-            <div id="timer-display">25:00</div>
-            <div id="quote-display">"Excellence is not an act, but a habit. Consistent gains only." — Aristotle</div>
-        </section>
-
-        <section id="data-center">
-            <div class="stat">DISTANCE: <span id="meters">0.00</span>m</div>
-            <div class="stat">XP: <span id="xp">0</span></div>
-            <div class="progress-bar"><div id="fuel-fill"></div></div>
-        </section>
-
-        <footer id="terminal-interface">
-            <div id="log">> Welcome to cosmic_globe. Waiting for warp...</div>
-            <div class="input-wrapper">
-                <span>></span>
-                <input type="text" id="cmd-line" placeholder="warp [mins] | stats | clear" autofocus autocomplete="off">
-            </div>
-        </footer>
+    <div id="ui-container">
+        <h1 id="status">STATUS: STANDBY</h1>
+        <p>COSMIC_GLOBE OS v2.0</p>
+        <hr style="border: 0.5px solid #00ff41; opacity: 0.3; margin: 20px 0;">
+        <button onclick="startWarp()">ENGAGE WARP</button>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
