@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COSMIC_GLOBE: v19_OMNI</title>
+    <title>COSMIC_GLOBE: v20_GALACTIC</title>
     <style>
         :root { --glow: #00ff41; --bg: #000500; }
         body.theme-vapor { --glow: #ff71ce; --bg: #01012b; }
@@ -19,6 +19,16 @@
         #star-container, #meteor-field {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 1; pointer-events: none;
+        }
+
+        /* ✨ BIGGER STARS */
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.6;
+            filter: blur(1px);
+            box-shadow: 0 0 10px white;
         }
 
         #ui-container {
@@ -52,8 +62,8 @@
         #task-list { max-height: 80px; overflow-y: auto; text-align: left; font-size: 0.75rem; margin-top: 5px; }
         .task-item { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(0,255,65,0.1); padding: 3px 0; }
         
-        .meteor { position: absolute; width: 2px; height: 100px; background: linear-gradient(to top, var(--glow), transparent); }
-        @keyframes warp { from { transform: translate(-50%, -50%) scale(0); opacity: 1; } to { transform: translate(var(--tx), var(--ty)) scale(2); opacity: 0; } }
+        .meteor { position: absolute; width: 2px; height: 120px; background: linear-gradient(to top, var(--glow), transparent); }
+        @keyframes warp { from { transform: translate(-50%, -50%) scale(0); opacity: 1; } to { transform: translate(var(--tx), var(--ty)) scale(2.5); opacity: 0; } }
     </style>
 </head>
 <body class="theme-techno">
@@ -98,6 +108,22 @@
         let stats = JSON.parse(localStorage.getItem('pilot_stats')) || { sessions: 0, time: 0 };
         let tasks = JSON.parse(localStorage.getItem('pilot_tasks')) || [];
         const irohQuotes = ["Hope is something you give yourself.", "Wisdom comes from many places.", "Tea is better with friends.", "Believe in yourself."];
+
+        function createStars() {
+            const container = document.getElementById('star-container');
+            for (let i = 0; i < 80; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 4 + 1; // 1px to 5px
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.left = `${Math.random() * 100}vw`;
+                star.style.top = `${Math.random() * 100}vh`;
+                star.style.opacity = Math.random();
+                container.appendChild(star);
+            }
+        }
+        createStars();
 
         function checkCustom(val) {
             document.getElementById('custom-url').style.display = (val === 'CUSTOM') ? 'block' : 'none';
