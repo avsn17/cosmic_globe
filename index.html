@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COSMIC_GLOBE: THE CHASE</title>
+    <title>COSMIC_GLOBE: DEEP SPACE</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,35 +13,41 @@
 
     <div id="ui-container">
         <div id="login-sector">
-            <h2 style="color: var(--nebula-blue);">[ INITIALIZE PILOT ]</h2>
-            <input type="text" id="username" placeholder="CALLSIGN..." autocomplete="off">
+            <h2 style="color: var(--nebula-blue); text-shadow: 0 0 10px var(--nebula-blue);">[ INITIALIZE NEURAL LINK ]</h2>
+            <input type="text" id="username" placeholder="PILOT ID..." autocomplete="off">
             <br><br>
-            <button onclick="initPilot()">JOIN THE CHASE</button>
+            <button onclick="initPilot()">CONNECT</button>
         </div>
 
         <div id="mission-sector" style="display: none;">
             <div id="pursuit-display">
-                <div class="pursuit-lane" id="lane-1"><span class="ship-label">1st</span><div class="ship" id="ship-1">🚀</div></div>
-                <div class="pursuit-lane" id="lane-2"><span class="ship-label">2nd</span><div class="ship" id="ship-2">🚀</div></div>
-                <div class="pursuit-lane" id="lane-3"><span class="ship-label">3rd</span><div class="ship" id="ship-3">🚀</div></div>
+                <div class="pursuit-lane" id="lane-1"><span class="ship-label">RANK 1</span><div class="ship" id="ship-1">🚀</div></div>
                 <div class="pursuit-lane user-lane"><span class="ship-label">YOU</span><div class="ship" id="user-ship">🛸</div></div>
-                <div class="finish-line"></div>
             </div>
 
             <div class="hud-grid">
-                <div class="hud-left">
-                    <h1 id="status">STATUS: STANDBY</h1>
+                <div class="hud-column">
+                    <div class="stat-box">
+                        <small>FUEL/O2 LEVEL</small>
+                        <div class="life-support-container"><div id="life-support-bar"></div></div>
+                    </div>
                     <div id="timer">25:00</div>
                     <div id="progress-container"><div id="progress-bar"></div></div>
+                    <h2 id="status">WARP STANDBY</h2>
                 </div>
-                <div class="hud-right">
+
+                <div class="hud-column">
                     <div id="iroh-comms">
-                        <p id="iroh-quote">"Hope is something you give yourself."</p>
+                        <p id="iroh-quote">"Sometimes life is like this dark tunnel..."</p>
                     </div>
-                    <ul id="leaderboard-list"></ul>
+                    <div id="mission-log">
+                        <div class="log-entry">> SYSTEM BOOT COMPLETE</div>
+                        <div class="log-entry">> WAITING FOR PILOT...</div>
+                    </div>
                 </div>
             </div>
-            <input type="text" id="pilot-input" placeholder="TALK TO IROH..." onkeypress="handleIroh(event)">
+            
+            <input type="text" id="pilot-input" placeholder="MESSAGE UNCLE IROH..." onkeypress="handleIroh(event)">
         </div>
     </div>
     <script src="script.js"></script>

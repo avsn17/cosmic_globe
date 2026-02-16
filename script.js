@@ -164,3 +164,42 @@ async function fetchLeaderboard() {
         // ... rest of your leaderboard list rendering ...
     } catch(e) {}
 }
+// Add these variables to your script.js
+let oxygen = 100;
+
+function addLog(message) {
+    const log = document.getElementById('mission-log');
+    const entry = document.createElement('div');
+    entry.className = 'log-entry';
+    entry.innerText = `> ${new Date().toLocaleTimeString()}: ${message}`;
+    log.prepend(entry);
+}
+
+// Update this in your startAutomatedCycle
+const oxygenTimer = setInterval(() => {
+    if (isWarping) {
+        oxygen -= 0.1;
+        document.getElementById('life-support-bar').style.width = oxygen + "%";
+        if (oxygen < 20) document.getElementById('life-support-bar').style.background = "orange";
+    }
+}, 2000);
+
+// Sonic Boom Effect for Pass/Milestone
+function triggerSonicBoom() {
+    const ui = document.getElementById('ui-container');
+    ui.style.borderColor = "white";
+    ui.style.boxShadow = "0 0 100px white";
+    addLog("CRITICAL: SONIC BOOM DETECTED - MILESTONE PASSED");
+    setTimeout(() => {
+        ui.style.borderColor = "var(--nebula-blue)";
+        ui.style.boxShadow = "0 0 30px rgba(0, 212, 255, 0.3)";
+    }, 500);
+}
+
+// Update completeMission to refill Oxygen
+async function completeMission() {
+    oxygen = 100; // Refill on success
+    document.getElementById('life-support-bar').style.width = "100%";
+    addLog(`SUCCESS: 100 LY ADDED. TOTAL DISTANCE: ${totalLY + 100} LY`);
+    // ... existing logic ...
+}
