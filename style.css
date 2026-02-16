@@ -1,37 +1,26 @@
-:root { --glow: #00ff41; --bg: #050505; --accent: #00d4ff; }
-.theme-vapor { --glow: #ff00c1; --accent: #00fff9; --bg: #1a0033; }
-.theme-disco { --glow: #ffcc33; --accent: #ffffff; }
-
-body { 
-    background: var(--bg); color: var(--glow); font-family: 'Courier New', monospace; 
-    margin: 0; overflow: hidden; height: 100vh; display: flex; justify-content: center; align-items: center;
-    transition: background 2s ease;
+#mission-log div {
+    border-left: 2px solid var(--glow);
+    padding-left: 10px;
+    margin-bottom: 5px;
+    animation: fadeIn 0.5s ease;
 }
 
-#ui-container {
-    border: 1px solid var(--glow); padding: 40px; background: rgba(0,0,0,0.9);
-    box-shadow: 0 0 40px rgba(0,0,0,1); z-index: 10; position: relative;
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
 }
 
-#timer { font-size: 5rem; font-weight: bold; text-shadow: 0 0 20px var(--glow); }
-
-/* Tactical Map */
-#pursuit-display { border-bottom: 1px solid var(--glow); margin-bottom: 20px; padding: 10px; }
-.pursuit-lane { height: 25px; position: relative; border-bottom: 1px solid rgba(255,255,255,0.05); }
-.ship { position: absolute; left: 0; transition: left 1s linear; }
-
-/* Mission Log */
-#mission-log { height: 100px; overflow-y: hidden; font-size: 0.7rem; color: var(--accent); text-align: left; }
-
-/* Meteors */
-.meteor {
-    position: absolute; background: linear-gradient(to top, transparent, var(--accent));
-    width: 2px; height: 80px; pointer-events: none;
-}
-@keyframes zoom {
-    from { transform: scale(0) translate(0,0); opacity: 0; }
-    to { transform: scale(5) translate(var(--x), var(--y)); opacity: 0; }
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.5;
+    animation: twinkle 3s infinite;
 }
 
-.shaking { animation: shake 0.2s infinite; }
-@keyframes shake { 0% { transform: translate(1px, 1px); } 50% { transform: translate(-2px, -1px); } 100% { transform: translate(1px, 1px); } }
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
