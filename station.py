@@ -5,7 +5,7 @@ import random
 import sys
 from datetime import datetime
 
-# --- KONFIGURATION ---
+# --- CONFIGURATION ---
 DATA_FILE = "pilot_data.json"
 IROH_QUOTES = [
     "Hope is something you give yourself. That is the meaning of inner strength.",
@@ -16,7 +16,6 @@ IROH_QUOTES = [
 ]
 
 def play_alarm():
-    # Erzeugt einen System-Beep (funktioniert auf den meisten Terminals)
     for _ in range(3):
         sys.stdout.write('\a')
         sys.stdout.flush()
@@ -41,7 +40,7 @@ def clear():
 def draw_header(data):
     clear()
     print("\033[1;32m" + "="*65)
-    print(f" CHRONOS_TERMINAL v31.1 | PILOT: AVI | SESSIONS: {data.get('sessions', 0)}")
+    print(f" CHRONOS_TERMINAL v32.1 | PILOT: AVI | SESSIONS: {data.get('sessions', 0)}")
     print("="*65 + "\033[0m")
 
 def start_timer(data):
@@ -64,10 +63,10 @@ def start_timer(data):
         data['sessions'] = data.get('sessions', 0) + 1
         data['minutes'] = data.get('minutes', 0) + 25
         save_data(data)
-        print("\n\n\033[1;32m 🔔 MISSION_COMPLETE! Audio Signal Sent. \033[0m")
-        input("Press Enter to return to Command...")
+        print("\n\n\033[1;32m 🔔 MISSION_COMPLETE! Signal Sent. \033[0m")
+        input("Press Enter to return to HQ...")
     except KeyboardInterrupt:
-        print("\n\n\033[1;31m MISSION_PAUSED. Returning to HQ... \033[0m")
+        print("\n\n\033[1;31m MISSION_PAUSED. Returning... \033[0m")
         time.sleep(1)
 
 def main():
@@ -75,10 +74,10 @@ def main():
     while True:
         draw_header(data)
         print("\n 1. [ ENGAGE ]   - Start Focus Mission (25m)")
-        print(" 2. [ LOGBOOK ]  - Access Manual Pilot Logs")
-        print(" 3. [ OBJECTS ]  - Manage Mission Objectives")
-        print(" 4. [ NEURAL ]   - Consult Iroh Neural Link")
-        print(" 5. [ SHUTDOWN ] - Terminate Terminal Session")
+        print(" 2. [ LOGBOOK ]  - Manual Mission Logs")
+        print(" 3. [ OBJECTS ]  - Manage Objectives")
+        print(" 4. [ NEURAL ]   - Iroh Neural Link")
+        print(" 5. [ SHUTDOWN ] - Exit Station")
         
         choice = input("\nSELECT_PROTOCOL > ")
 
@@ -87,17 +86,16 @@ def main():
         elif choice == "2":
             clear()
             print("\033[1;32m--- MISSION_LOGBOOK ---\033[0m")
-            print(data.get('log', 'No entries yet.'))
+            print(data.get('log', 'Log is empty.'))
             print("\n" + "="*40)
-            print("Commands: (a) Add Entry, (c) Clear Logs, (b) Back")
-            cmd = input("> ")
+            cmd = input("(a) Add Entry, (c) Clear, (b) Back: ")
             if cmd == "a":
-                new_log = input("Log Entry: ")
+                new_log = input("Log Content: ")
                 timestamp = datetime.now().strftime('%Y-%m-%d %H:%M')
                 data['log'] = data.get('log', '') + f"\n[{timestamp}] {new_log}"
                 save_data(data)
             elif cmd == "c":
-                if input("Are you sure? (y/n): ") == "y":
+                if input("Confirm Wipe? (y/n): ") == "y":
                     data['log'] = ""
                     save_data(data)
         elif choice == "3":
@@ -107,28 +105,24 @@ def main():
                 tasks = data.get('tasks', [])
                 for i, t in enumerate(tasks):
                     print(f" {i+1}. [ ] {t}")
-                if not tasks: print(" No active objectives.")
                 cmd = input("\n(+) Add, (r) Remove, (b) Back: ")
                 if cmd == "+":
-                    t = input("Objective Name: ")
+                    t = input("Objective: ")
                     if 'tasks' not in data: data['tasks'] = []
                     data['tasks'].append(t)
                     save_data(data)
-                elif cmd == "r" and tasks:
-                    try:
-                        idx = int(input("Remove Index: ")) - 1
-                        data['tasks'].pop(idx)
-                        save_data(data)
-                    except: pass
+                elif cmd == "r":
+                    idx = int(input("Index: ")) - 1
+                    data['tasks'].pop(idx)
+                    save_data(data)
                 elif cmd == "b":
                     break
         elif choice == "4":
             clear()
-            print(f"\n\033[1;36m[ NEURAL_LINK_ESTABLISHED ]\033[0m\n")
-            print(f"Uncle Iroh: \"{random.choice(IROH_QUOTES)}\"")
-            input("\n\nPress Enter to disconnect...")
+            print(f"\n\033[1;36m[ NEURAL_LINK_ACTIVE ]\033[0m\n")
+            print(f"Iroh: \"{random.choice(IROH_QUOTES)}\"")
+            input("\nPress Enter to return...")
         elif choice == "5":
-            print("\033[1;31mTerminating Link... Goodbye, Pilot.\033[0m")
             break
 
 if __name__ == "__main__":
