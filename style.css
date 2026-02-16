@@ -90,3 +90,45 @@ input[type="number"], select {
     font-weight: bold;
 }
 .util-btn:hover { background: var(--glow); color: #000; }
+/* Constrain the HUD to a central "Safe Zone" */
+.hud-grid {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90vw; /* Brings elements in from the extreme edges */
+    max-width: 1200px; /* Prevents stretching on ultra-wide screens */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    pointer-events: none; /* Allows clicking through to the stars if needed */
+    z-index: 1000;
+}
+
+/* Specifically pull the Quote (Iroh Comms) inward */
+.hud-right {
+    text-align: right;
+    max-width: 300px;
+    padding-right: 20px;
+}
+
+/* Specifically pull the Timer/Load Bar inward */
+.hud-left {
+    text-align: left;
+    max-width: 300px;
+    padding-left: 20px;
+}
+
+#iroh-quote {
+    font-style: italic;
+    font-size: 1.1rem;
+    line-height: 1.4;
+    text-shadow: 0 0 10px var(--glow);
+}
+
+/* Ensure the Timer stays prominent but centered relative to its side */
+#timer {
+    font-size: 4rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
