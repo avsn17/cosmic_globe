@@ -3,62 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COSMIC_GLOBE: ABSOLUTE_CENTER</title>
+    <title>COSMIC_GLOBE: HYPERDRIVE</title>
     <style>
-        :root { --glow: #00ff41; --bg: #000500; }
+        :root { --glow: #00ff41; --bg: #000500; --speed: 0.8s; }
         body.theme-vapor { --glow: #ff71ce; --bg: #01012b; }
         body.theme-disco { --glow: #f4d03f; --bg: #1a0633; }
         body.theme-techno { --glow: #00f2ff; --bg: #000000; }
         
         body, html {
-            margin: 0; padding: 0;
-            background: var(--bg);
-            color: var(--glow);
-            font-family: 'Segoe UI', sans-serif;
-            width: 100vw; height: 100vh;
-            overflow: hidden;
+            margin: 0; padding: 0; background: var(--bg); color: var(--glow);
+            font-family: 'Segoe UI', sans-serif; width: 100vw; height: 100vh;
+            overflow: hidden; transition: 0.5s;
         }
 
-        /* 🌌 BACKGROUND (CLICK-THROUGH) */
+        /* 🌌 HYPER-VISIBLE ANIMATIONS */
         #star-container, #meteor-field {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 1; pointer-events: none;
         }
 
-        /* 🎯 THE NUCLEAR CENTER (FIXED POSITION) */
+        /* 🎯 ABSOLUTE CENTER HUD */
         #ui-container {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%); /* This forces it to the literal center */
-            width: 380px; /* Locked width to prevent drifting */
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            pointer-events: auto;
+            position: fixed; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px; z-index: 9999;
+            display: flex; flex-direction: column; align-items: center;
+            text-align: center; pointer-events: auto;
         }
 
-        /* UI ELEMENTS */
-        #command-menu {
-            width: 100%; background: rgba(0, 15, 0, 0.95);
-            border: 2px solid var(--glow); border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+        #timer { 
+            font-size: 6rem; font-weight: 900; margin: 0;
+            text-shadow: 0 0 30px var(--glow), 0 0 60px var(--glow);
+            letter-spacing: -2px;
         }
 
-        #timer { font-size: 5rem; font-weight: bold; margin: 10px 0; }
+        .hud-card {
+            width: 100%; background: rgba(0, 10, 0, 0.9);
+            border: 3px solid var(--glow); border-radius: 15px;
+            padding: 20px; box-shadow: 0 0 40px rgba(0, 255, 65, 0.3);
+            backdrop-filter: blur(15px); box-sizing: border-box;
+        }
 
         input, select, button {
-            width: 90%; padding: 12px; margin: 10px 0;
-            background: #000; border: 1px solid var(--glow);
-            color: var(--glow); border-radius: 5px;
-            pointer-events: auto !important;
+            width: 100%; padding: 15px; margin: 10px 0;
+            background: rgba(0,0,0,0.9); border: 2px solid var(--glow);
+            color: var(--glow); border-radius: 8px; font-weight: bold;
+            font-size: 1rem; pointer-events: auto !important;
         }
 
-        button { background: var(--glow); color: #000; font-weight: bold; cursor: pointer; }
-        
-        .meteor { position: absolute; pointer-events: none; width: 2px; height: 40px; background: linear-gradient(to top, var(--glow), transparent); }
+        button { background: var(--glow); color: #000; text-transform: uppercase; cursor: pointer; border: none; }
+        button:hover { filter: brightness(1.3); transform: scale(1.03); }
+
+        /* ☄️ METEOR STYLING */
+        .meteor { 
+            position: absolute; pointer-events: none; 
+            width: 4px; height: 150px; /* Longer trails */
+            background: linear-gradient(to top, var(--glow), transparent);
+            filter: drop-shadow(0 0 10px var(--glow));
+        }
+
+        @keyframes hyperjump {
+            from { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            10% { opacity: 1; }
+            to { transform: translate(var(--tx), var(--ty)) scale(2); opacity: 0; }
+        }
     </style>
 </head>
 <body class="theme-techno">
@@ -66,33 +74,61 @@
     <div id="meteor-field"></div>
 
     <div id="ui-container">
-        <div id="login-sector">
-            <h1>[ NEURAL_LINK ]</h1>
+        <div id="login-sector" class="hud-card">
+            <h2 style="margin-top:0;">[ NEURAL_LINK ]</h2>
             <select id="freq-selector">
                 <option value="vapor" data-theme="vapor">DREAMY (Vaporwave)</option>
                 <option value="disco" data-theme="disco">70s GOLD (Disco)</option>
                 <option value="techno" data-theme="techno" selected>DEEP TECHNO (Pulse)</option>
             </select>
             <input type="text" id="username" placeholder="PILOT_ID..." autocomplete="off">
-            <button onclick="initPilot()">ENGAGE</button>
+            <button onclick="initPilot()">ENGAGE HYPERDRIVE</button>
         </div>
 
-        <div id="mission-sector" style="display: none;">
+        <div id="mission-sector" style="display: none; width: 100%;">
             <div id="timer">25:00</div>
-            <div id="command-menu">
-                <div style="padding: 15px;">
-                    <p id="iroh-quote">"Hope is something you give yourself."</p>
-                    <button onclick="location.reload()">ABORT</button>
+            
+            <div class="hud-card">
+                <div style="font-size: 0.8rem; text-transform: uppercase; margin-bottom: 10px;">Tactical Menu</div>
+                <div id="track-info">STATION: CONNECTED</div>
+                <p id="iroh-quote" style="font-style: italic; margin: 15px 0;">"Hope is something you give yourself."</p>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <button onclick="location.reload()" style="background:transparent; border:1px solid #ff4141; color:#ff4141;">ABORT</button>
+                    <button onclick="nextQuote()" style="background:transparent; border:1px solid var(--glow); color:var(--glow);">NEW QUOTE</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        let timeLeft = 25 * 60;
+        const quotes = [
+            "Hope is something you give yourself.",
+            "Protection and power are overrated.",
+            "Failure is only the opportunity to begin again.",
+            "Sharing tea with a fascinating stranger is one of life's true delights."
+        ];
+
         function initPilot() {
             document.getElementById('login-sector').style.display = 'none';
             document.getElementById('mission-sector').style.display = 'block';
-            setInterval(spawnMeteor, 300);
+            setInterval(updateClock, 1000);
+            setInterval(spawnMeteor, 150); // Faster spawning
+        }
+
+        function updateClock() {
+            if (timeLeft > 0) {
+                timeLeft--;
+                const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+                const s = (timeLeft % 60).toString().padStart(2, '0');
+                document.getElementById('timer').innerText = `${m}:${s}`;
+            }
+        }
+
+        function nextQuote() {
+            const q = quotes[Math.floor(Math.random() * quotes.length)];
+            document.getElementById('iroh-quote').innerText = `"${q}"`;
         }
 
         document.getElementById('freq-selector').addEventListener('change', function() {
@@ -104,10 +140,18 @@
             const m = document.createElement('div');
             m.className = 'meteor';
             const angle = Math.random() * Math.PI * 2;
+            const dist = 1500;
+            const tx = Math.cos(angle) * dist;
+            const ty = Math.sin(angle) * dist;
+            
+            m.style.setProperty('--tx', `${tx}px`);
+            m.style.setProperty('--ty', `${ty}px`);
             m.style.left = '50%'; m.style.top = '50%';
             m.style.transform = `translate(-50%, -50%) rotate(${angle + Math.PI/2}rad)`;
+            m.style.animation = `hyperjump 0.8s ease-in forwards`;
+            
             field.appendChild(m);
-            setTimeout(() => m.remove(), 1000);
+            setTimeout(() => m.remove(), 800);
         }
     </script>
 </body>
