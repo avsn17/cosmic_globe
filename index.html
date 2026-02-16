@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COSMIC_GLOBE HUD v3.0</title>
+    <title>COSMIC_GLOBE: THE CHASE</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -14,39 +14,33 @@
     <div id="ui-container">
         <div id="login-sector">
             <h2 style="color: var(--nebula-blue);">[ INITIALIZE PILOT ]</h2>
-            <input type="text" id="username" placeholder="ENTER CALLSIGN..." autocomplete="off">
+            <input type="text" id="username" placeholder="CALLSIGN..." autocomplete="off">
             <br><br>
-            <button onclick="initPilot()">LOGIN</button>
+            <button onclick="initPilot()">JOIN THE CHASE</button>
         </div>
 
         <div id="mission-sector" style="display: none;">
-            <div id="iroh-comms">
-                <small>[ COMMS: UNCLE IROH ]</small>
-                <p id="iroh-quote">"Hope is something you give yourself."</p>
+            <div id="pursuit-display">
+                <div class="pursuit-lane" id="lane-1"><span class="ship-label">1st</span><div class="ship" id="ship-1">🚀</div></div>
+                <div class="pursuit-lane" id="lane-2"><span class="ship-label">2nd</span><div class="ship" id="ship-2">🚀</div></div>
+                <div class="pursuit-lane" id="lane-3"><span class="ship-label">3rd</span><div class="ship" id="ship-3">🚀</div></div>
+                <div class="pursuit-lane user-lane"><span class="ship-label">YOU</span><div class="ship" id="user-ship">🛸</div></div>
+                <div class="finish-line"></div>
             </div>
 
             <div class="hud-grid">
                 <div class="hud-left">
                     <h1 id="status">STATUS: STANDBY</h1>
-                    <p>PILOT: <span id="display-name" style="color: var(--solar-gold);">---</span></p>
                     <div id="timer">25:00</div>
                     <div id="progress-container"><div id="progress-bar"></div></div>
-                    <button id="warp-btn" onclick="startWarp()">ENGAGE WARP</button>
                 </div>
-
                 <div class="hud-right">
-                    <h3 style="color: var(--nebula-blue); margin-top:0;">LEADERBOARD</h3>
-                    <ul id="leaderboard-list">
-                        <li><span class="rank">1.</span> ACE_PILOT <span class="dist">4500 LY</span></li>
-                        <li><span class="rank">2.</span> ZEN_MASTER <span class="dist">3200 LY</span></li>
-                        <li><span class="rank">3.</span> VOID_RUNNER <span class="dist">2800 LY</span></li>
-                        <li id="current-user-stats" style="border-top: 1px dashed var(--matrix-green); margin-top:10px; padding-top:5px;">
-                            <span class="rank">YOU:</span> <span id="user-dist">0</span> LY
-                        </li>
-                    </ul>
+                    <div id="iroh-comms">
+                        <p id="iroh-quote">"Hope is something you give yourself."</p>
+                    </div>
+                    <ul id="leaderboard-list"></ul>
                 </div>
             </div>
-            
             <input type="text" id="pilot-input" placeholder="TALK TO IROH..." onkeypress="handleIroh(event)">
         </div>
     </div>

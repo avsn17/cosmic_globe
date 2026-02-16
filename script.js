@@ -139,3 +139,28 @@ function createStars() {
     }
 }
 window.onload = createStars;
+// Add this inside your existing script.js fetchLeaderboard function:
+
+async function fetchLeaderboard() {
+    try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/leaderboard?select=*&order=distance.desc&limit=5`, {
+            headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` }
+        });
+        const data = await response.json();
+        
+        // Update the Chase Visuals
+        const topDistance = data[0]?.distance || 1000; // Use the leader as the scale
+        
+        data.slice(0, 3).forEach((entry, index) => {
+            const ship = document.getElementById(`ship-${index + 1}`);
+            const progress = (entry.distance / (topDistance * 1.2)) * 100;
+            ship.style.left = `${Math.min(progress, 90)}%`;
+        });
+
+        // Update User Ship
+        const userProgress = (totalLY / (topDistance * 1.2)) * 100;
+        document.getElementById('user-ship').style.left = `${Math.min(userProgress, 90)}%`;
+        
+        // ... rest of your leaderboard list rendering ...
+    } catch(e) {}
+}

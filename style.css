@@ -163,3 +163,51 @@ button:hover {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
+#pursuit-display {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--nebula-blue);
+    padding: 10px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.pursuit-lane {
+    height: 30px;
+    border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.user-lane {
+    background: rgba(0, 255, 65, 0.05);
+    border-bottom: 1px solid var(--matrix-green);
+}
+
+.ship-label {
+    font-size: 0.6rem;
+    width: 30px;
+    color: var(--nebula-blue);
+}
+
+.ship {
+    position: absolute;
+    left: 0%;
+    transition: left 2s cubic-bezier(0.4, 0, 0.2, 1);
+    filter: drop-shadow(0 0 5px var(--nebula-blue));
+}
+
+#user-ship {
+    filter: drop-shadow(0 0 8px var(--matrix-green));
+}
+
+.finish-line {
+    position: absolute;
+    right: 10px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: repeating-linear-gradient(0deg, #fff, #fff 5px, transparent 5px, transparent 10px);
+    opacity: 0.3;
+}
