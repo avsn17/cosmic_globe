@@ -1,128 +1,61 @@
-const SUPABASE_URL = 'YOUR_SUPABASE_URL';
-const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY';
-
 const irohQuotes = [
-    "While it is always best to believe in oneself, a little help from others can be a great blessing.",
-    "Failure is only the opportunity to begin again, only this time, more wisely.",
-    "Hope is something you give yourself.",
-    "A moment of patience in a moment of anger saves you a hundred moments of regret."
+    "Hope is something you give yourself. That is the meaning of inner strength.",
+    "Destiny is a funny thing. You never know how things are going to work out.",
+    "While it is best to believe in oneself, a little help from others is a blessing.",
+    "Sometimes the best way to solve your own problems is to help someone else."
 ];
 
-let pilotName = "";
 let totalLY = 0;
-let isWarping = false;
 
-// --- AUTOMATED MISSION ENGINE ---
-function startAutomatedCycle() {
-    if (isWarping) return;
-    isWarping = true;
+function initPilot() {
+    const user = document.getElementById('username').value;
+    if (user.trim() !== "") {
+        document.getElementById('login-sector').style.display = "none";
+        document.getElementById('mission-sector').style.display = "block";
+        startAutomatedMission();
+    }
+}
+
+function startAutomatedMission() {
+    let seconds = 25 * 60;
+    const ui = document.getElementById('ui-container');
+    const timerDisplay = document.getElementById('timer');
     
-    let seconds = 25 * 60; 
-    const status = document.getElementById('status');
-    const bar = document.getElementById('progress-bar');
-    const timer = document.getElementById('timer');
-
-    status.innerText = "WARP ACTIVE";
-    status.className = "locked-in";
-    document.getElementById('ui-container').classList.add('shaking');
-    setTimeout(() => document.getElementById('ui-container').classList.remove('shaking'), 2000);
-
-    const mission = setInterval(() => {
+    ui.classList.add('warp-active');
+    
+    const cycle = setInterval(() => {
         seconds--;
         let mins = Math.floor(seconds / 60);
         let secs = seconds % 60;
-        timer.innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-        bar.style.width = (( (25*60) - seconds) / (25*60) * 100) + "%";
+        timerDisplay.innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+
+        // RANDOM HAZARD: 1% chance every second of an "Asteroid Field"
+        if (Math.random() < 0.01) triggerHazard();
 
         if (seconds <= 0) {
-            clearInterval(mission);
-            completeMission();
+            clearInterval(cycle);
+            totalLY += 100;
+            triggerMilestone();
+            setTimeout(startAutomatedMission, 5000); // 5 sec reset
         }
     }, 1000);
 }
 
-async function completeMission() {
-    totalLY += 100;
-    status.innerText = "REFUELING / MEDITATION";
-    status.className = "";
-    document.getElementById('user-dist').innerText = totalLY;
+function triggerHazard() {
+    const ui = document.getElementById('ui-container');
+    ui.classList.add('hazard-alert', 'shaking');
+    const originalQuote = document.getElementById('iroh-quote').innerText;
+    document.getElementById('iroh-quote').innerText = "Stay calm, pilot. This storm will pass.";
     
-    // Auto-save to Live Leaderboard
-    await saveDistance(totalLY);
-    updateEnvironment(totalLY);
-
-    // 5 Minute Break then Auto-Restart
-    let breakTime = 5 * 60;
-    const breakClock = setInterval(() => {
-        breakTime--;
-        document.getElementById('timer').innerText = `REST: ${Math.floor(breakTime/60)}:${breakTime%60}`;
-        if (breakTime <= 0) {
-            clearInterval(breakClock);
-            isWarping = false;
-            startAutomatedCycle();
-        }
-    }, 1000);
+    setTimeout(() => {
+        ui.classList.remove('hazard-alert', 'shaking');
+        document.getElementById('iroh-quote').innerText = originalQuote;
+    }, 3000);
 }
 
-// --- PLANETARY LANDMARKS ---
-function updateEnvironment(dist) {
-    const nebula = document.getElementById('nebula');
-    if (dist >= 500) nebula.style.background = "radial-gradient(circle, rgba(255,100,0,0.1) 0%, transparent 70%)"; // Mars Orbit
-    if (dist >= 1000) nebula.style.background = "radial-gradient(circle, rgba(0,255,200,0.1) 0%, transparent 70%)"; // Uranus Orbit
-    if (dist >= 2000) nebula.style.background = "radial-gradient(circle, rgba(200,0,255,0.1) 0%, transparent 70%)"; // Deep Nebula
-}
-
-async function saveDistance(newDist) {
-    try {
-        await fetch(`${SUPABASE_URL}/rest/v1/leaderboard`, {
-            method: 'POST',
-            headers: { 
-                "apikey": SUPABASE_KEY, 
-                "Authorization": `Bearer ${SUPABASE_KEY}`,
-                "Content-Type": "application/json",
-                "Prefer": "resolution=merge-duplicates" 
-            },
-            body: JSON.stringify({ username: pilotName, distance: newDist })
-        });
-        fetchLeaderboard();
-    } catch(e) { console.log("Offline mode active."); }
-}
-
-async function fetchLeaderboard() {
-    try {
-        const response = await fetch(`${SUPABASE_URL}/rest/v1/leaderboard?select=*&order=distance.desc&limit=5`, {
-            headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` }
-        });
-        const data = await response.json();
-        const list = document.getElementById('leaderboard-list');
-        list.innerHTML = ''; 
-        data.forEach((entry, index) => {
-            const li = document.createElement('li');
-            li.innerHTML = `<span class="rank">${index + 1}.</span> ${entry.username} <span class="dist">${entry.distance} LY</span>`;
-            list.appendChild(li);
-        });
-    } catch(e) {}
-}
-
-function initPilot() {
-    const input = document.getElementById('username');
-    if (input.value.trim() !== "") {
-        pilotName = input.value.toUpperCase();
-        document.getElementById('display-name').innerText = pilotName;
-        document.getElementById('login-sector').style.display = "none";
-        document.getElementById('mission-sector').style.display = "block";
-        fetchLeaderboard();
-        startAutomatedCycle(); // THE AUTOMATION TRIGGER
-    }
-}
-
-function handleIroh(event) {
-    if (event.key === "Enter") {
-        const quoteDisplay = document.getElementById('iroh-quote');
-        const randomQuote = irohQuotes[Math.floor(Math.random() * irohQuotes.length)];
-        quoteDisplay.innerText = `"${randomQuote}"`;
-        document.getElementById('pilot-input').value = "";
-    }
+function triggerMilestone() {
+    document.body.style.backgroundColor = "white";
+    setTimeout(() => { document.body.style.backgroundColor = "#050505"; }, 200);
 }
 
 function createStars() {
@@ -130,76 +63,12 @@ function createStars() {
     for (let i = 0; i < 150; i++) {
         const star = document.createElement('div');
         star.className = 'star';
-        star.style.width = '2px'; star.style.height = '2px';
-        star.style.background = Math.random() > 0.8 ? '#ffcc33' : '#ffffff';
+        star.style.width = Math.random() * 3 + 'px';
+        star.style.height = star.style.width;
         star.style.left = Math.random() * 100 + 'vw';
-        star.style.top = Math.random() * 100 + 'vh';
-        star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+        star.style.animationDuration = (Math.random() * 2 + 1) + 's';
+        star.style.animationDelay = Math.random() * 5 + 's';
         container.appendChild(star);
     }
 }
 window.onload = createStars;
-// Add this inside your existing script.js fetchLeaderboard function:
-
-async function fetchLeaderboard() {
-    try {
-        const response = await fetch(`${SUPABASE_URL}/rest/v1/leaderboard?select=*&order=distance.desc&limit=5`, {
-            headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` }
-        });
-        const data = await response.json();
-        
-        // Update the Chase Visuals
-        const topDistance = data[0]?.distance || 1000; // Use the leader as the scale
-        
-        data.slice(0, 3).forEach((entry, index) => {
-            const ship = document.getElementById(`ship-${index + 1}`);
-            const progress = (entry.distance / (topDistance * 1.2)) * 100;
-            ship.style.left = `${Math.min(progress, 90)}%`;
-        });
-
-        // Update User Ship
-        const userProgress = (totalLY / (topDistance * 1.2)) * 100;
-        document.getElementById('user-ship').style.left = `${Math.min(userProgress, 90)}%`;
-        
-        // ... rest of your leaderboard list rendering ...
-    } catch(e) {}
-}
-// Add these variables to your script.js
-let oxygen = 100;
-
-function addLog(message) {
-    const log = document.getElementById('mission-log');
-    const entry = document.createElement('div');
-    entry.className = 'log-entry';
-    entry.innerText = `> ${new Date().toLocaleTimeString()}: ${message}`;
-    log.prepend(entry);
-}
-
-// Update this in your startAutomatedCycle
-const oxygenTimer = setInterval(() => {
-    if (isWarping) {
-        oxygen -= 0.1;
-        document.getElementById('life-support-bar').style.width = oxygen + "%";
-        if (oxygen < 20) document.getElementById('life-support-bar').style.background = "orange";
-    }
-}, 2000);
-
-// Sonic Boom Effect for Pass/Milestone
-function triggerSonicBoom() {
-    const ui = document.getElementById('ui-container');
-    ui.style.borderColor = "white";
-    ui.style.boxShadow = "0 0 100px white";
-    addLog("CRITICAL: SONIC BOOM DETECTED - MILESTONE PASSED");
-    setTimeout(() => {
-        ui.style.borderColor = "var(--nebula-blue)";
-        ui.style.boxShadow = "0 0 30px rgba(0, 212, 255, 0.3)";
-    }, 500);
-}
-
-// Update completeMission to refill Oxygen
-async function completeMission() {
-    oxygen = 100; // Refill on success
-    document.getElementById('life-support-bar').style.width = "100%";
-    addLog(`SUCCESS: 100 LY ADDED. TOTAL DISTANCE: ${totalLY + 100} LY`);
-    // ... existing logic ...
-}
