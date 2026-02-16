@@ -1,63 +1,48 @@
-:root {
-    --primary: #00ff41;
-    --bg: #050505;
-    --accent: #008f11;
-}
-
+cat << 'EOF' > style.css
 body {
-    background-color: var(--bg);
-    color: var(--primary);
+    background-color: #050505;
+    color: #00ff41;
     font-family: 'Courier New', Courier, monospace;
-    height: 100vh;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     overflow: hidden;
+    margin: 0;
 }
 
+/* Starfield Animation */
+.stars {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: transparent;
+    z-index: -1;
+}
+
+@keyframes warpSpeed {
+    from { transform: translateZ(0); }
+    to { transform: translateZ(1000px); }
+}
+
+/* CRT Scanline Overlay */
 .scanlines {
     position: fixed;
-    top: 0; left: 0; width: 100vw; height: 100vh;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
-                linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-    background-size: 100% 3px, 3px 100%;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 4px, 3px 100%;
     pointer-events: none;
     z-index: 10;
 }
 
-.cockpit {
-    width: 90%;
-    max-width: 800px;
-    border: 2px solid var(--accent);
-    padding: 20px;
-    box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+/* Locked-In Glitch Effect */
+.locked-in {
+    animation: glitch 0.3s infinite;
+    text-shadow: 2px 0 #ff00c1, -2px 0 #00fff9;
 }
 
-#timer-display {
-    font-size: 6rem;
-    text-align: center;
-    margin: 20px 0;
-    text-shadow: 0 0 15px var(--primary);
+@keyframes glitch {
+    0% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(-2px, -2px); }
+    60% { transform: translate(2px, 2px); }
+    80% { transform: translate(2px, -2px); }
+    100% { transform: translate(0); }
 }
-
-#log {
-    height: 80px;
-    overflow-y: auto;
-    font-size: 0.8rem;
-    border-top: 1px solid var(--accent);
-    padding: 10px 0;
-}
-
-input {
-    background: transparent;
-    border: none;
-    color: var(--primary);
-    font-family: inherit;
-    font-size: 1.1rem;
-    outline: none;
-    width: 100%;
-}
-
-.progress-bar { width: 100%; border: 1px solid var(--accent); height: 10px; margin-top: 10px; }
-#fuel-fill { width: 0%; height: 100%; background: var(--primary); transition: width 1s; }
+EOF
