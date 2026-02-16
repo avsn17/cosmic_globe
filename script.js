@@ -58,3 +58,18 @@ function createStars() {
     }
 }
 window.onload = createStars;
+let totalDistance = localStorage.getItem('pilotDistance') || 0;
+
+function updateStats() {
+    document.getElementById('user-dist').innerText = totalDistance;
+}
+
+// Modify the end of the startWarp function
+// Add this logic inside your existing startWarp setInterval:
+if (seconds <= 0) {
+    clearInterval(timerInterval);
+    totalDistance = parseInt(totalDistance) + 100; // Earn 100 LY per session
+    localStorage.setItem('pilotDistance', totalDistance);
+    updateStats();
+    status.innerText = "MISSION SUCCESS";
+}
