@@ -4,19 +4,21 @@
     --bg: #000500;
 }
 
+/* Force the body to be a centering flexbox */
 body, html {
     margin: 0; padding: 0;
     background: var(--bg);
     color: var(--glow);
     font-family: 'Segoe UI', sans-serif;
-    overflow: hidden;
     height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 100vw;
+    display: flex; /* Centering trigger */
+    justify-content: center; /* Horizontal Center */
+    align-items: center; /* Vertical Center */
+    overflow: hidden;
 }
 
-/* 🌌 BACKGROUND */
+/* 🌌 BACKGROUND LAYERS */
 #star-container, #meteor-field {
     position: fixed;
     top: 0; left: 0;
@@ -24,59 +26,59 @@ body, html {
     z-index: 1;
 }
 
-/* 🎯 THE CENTRAL PILLAR */
+/* 🎯 THE CENTRAL COMMAND PILLAR */
 #ui-container {
     position: relative;
-    z-index: 100;
+    z-index: 5000;
     width: 90%;
-    max-width: 450px; /* This prevents anything from drifting right */
-    text-align: center;
+    max-width: 400px; /* Constrains the width so it CANNOT drift right */
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 20px;
+    text-align: center;
 }
 
 #timer {
-    font-size: 5rem;
+    font-size: 4.5rem;
     font-weight: 800;
     text-shadow: 0 0 20px var(--glow);
     margin: 0;
 }
 
 #command-menu {
-    background: rgba(0, 10, 0, 0.9);
+    width: 100%;
+    background: rgba(0, 20, 0, 0.95);
     border: 2px solid var(--glow);
-    border-radius: 12px;
+    border-radius: 15px;
     backdrop-filter: blur(10px);
-    overflow: hidden;
 }
 
 #menu-header {
     background: var(--glow);
     color: #000;
-    padding: 10px;
+    padding: 12px;
     cursor: pointer;
     font-weight: bold;
-    text-transform: uppercase;
+    border-radius: 12px 12px 0 0;
 }
-
-#menu-content { padding: 20px; }
 
 #iroh-quote {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-style: italic;
-    line-height: 1.5;
+    line-height: 1.4;
+    color: var(--glow);
     text-shadow: 0 0 10px var(--glow);
-    margin-top: 10px;
+    margin: 0;
 }
 
-/* 🚀 GOLD OVERDRIVE */
+/* 🚀 GOLD MODE STYLING */
 .gold-achieved { --glow: #FFD700; --accent: #B8860B; }
 
-/* 🛠️ BUTTONS */
+/* 🛠️ USER CONTROLS */
 .util-btn {
     background: transparent; border: 1px solid var(--glow);
-    color: var(--glow); padding: 10px; margin-top: 10px;
-    cursor: pointer; width: 100%; border-radius: 5px;
+    color: var(--glow); padding: 10px; cursor: pointer;
+    width: 100%; border-radius: 5px; font-weight: bold;
 }
 .util-btn:hover { background: var(--glow); color: #000; }
