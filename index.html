@@ -3,185 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COSMIC_GLOBE_V27_FINAL</title>
+    <title>COSMIC_GLOBE_V27_FIXED</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
+        /* 🚨 TOTAL STYLE RESET - FORCING NEW LAYOUT */
         :root { --glow: #00ff41; --bg: #000000; }
-        body.theme-vapor { --glow: #ff71ce; --bg: #01012b; }
-        body.theme-disco { --glow: #f4d03f; --bg: #1a0633; }
+        body, html { margin: 0; padding: 0; background: #000 !important; color: var(--glow); font-family: 'Rajdhani', sans-serif; width: 100vw; height: 100vh; overflow: hidden; }
         
-        body, html {
-            margin: 0; padding: 0; background: var(--bg); color: var(--glow);
-            font-family: 'Rajdhani', sans-serif; width: 100vw; height: 100vh;
-            overflow: hidden;
-        }
+        #star-field { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+        .mega-star { position: absolute; background: white; border-radius: 50%; opacity: 0.6; box-shadow: 0 0 15px white; }
 
-        #star-field { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
-        .mega-star { position: absolute; background: white; border-radius: 50%; opacity: 0.6; filter: blur(2px); box-shadow: 0 0 15px white; }
+        #main-container { display: flex; width: 100vw; height: 100vh; position: relative; z-index: 10; background: transparent; }
 
-        #main-layout { display: flex; width: 100vw; height: 100vh; position: relative; z-index: 10; }
-
-        /* 🗄️ SIDE MENU - UNIFIED */
+        /* 🗄️ THE COMPLETE SIDE MENU */
         #side-panel {
-            width: 340px; background: rgba(0, 10, 0, 0.95); 
-            border-right: 2px solid var(--glow); padding: 25px;
-            display: flex; flex-direction: column; gap: 20px;
-            box-shadow: 10px 0 50px rgba(0,0,0,1); backdrop-filter: blur(20px);
+            width: 320px; background: rgba(0, 5, 0, 0.95); 
+            border-right: 2px solid var(--glow); padding: 20px;
+            display: flex; flex-direction: column; gap: 15px;
+            box-shadow: 10px 0 50px rgba(0,0,0,1);
         }
 
-        #center-hud { flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        #timer-zone { flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 
-        .card { background: rgba(0, 20, 0, 0.4); border: 1px solid var(--glow); padding: 15px; border-radius: 4px; }
-        h3 { font-family: 'Orbitron'; font-size: 0.75rem; letter-spacing: 3px; margin: 0 0 10px 0; color: #fff; }
+        .card { background: rgba(0, 40, 0, 0.2); border: 1px solid var(--glow); padding: 12px; border-radius: 4px; }
+        h3 { font-family: 'Orbitron'; font-size: 0.7rem; letter-spacing: 2px; margin: 0 0 8px 0; color: #fff; text-transform: uppercase; }
         
-        #timer-display { font-family: 'Orbitron', sans-serif; font-size: 9rem; font-weight: 900; text-shadow: 0 0 40px var(--glow); margin: 0; }
+        #timer-display { font-family: 'Orbitron', sans-serif; font-size: 8rem; font-weight: 900; text-shadow: 0 0 30px var(--glow); margin: 0; }
 
-        input, select, button {
-            font-family: 'Rajdhani', sans-serif; width: 100%; padding: 12px; margin: 5px 0;
-            background: #000; border: 1px solid var(--glow); color: var(--glow); font-weight: bold;
+        input, button {
+            font-family: 'Rajdhani', sans-serif; width: 100%; padding: 10px; margin: 4px 0;
+            background: #000; border: 1px solid var(--glow); color: var(--glow); font-weight: bold; box-sizing: border-box;
         }
 
-        button { background: var(--glow); color: #000; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; }
-        button:hover { background: #fff; box-shadow: 0 0 20px #fff; }
+        button { background: var(--glow); color: #000; border: none; cursor: pointer; text-transform: uppercase; font-weight: 900; }
+        button:hover { background: #fff; box-shadow: 0 0 15px #fff; }
 
-        #task-box { max-height: 140px; overflow-y: auto; margin-bottom: 10px; font-size: 0.9rem; }
-        .task { display: flex; justify-content: space-between; padding: 6px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        #task-box { max-height: 120px; overflow-y: auto; font-size: 0.85rem; margin-bottom: 5px; }
+        .task-item { display: flex; justify-content: space-between; padding: 4px; border-bottom: 1px solid rgba(0,255,65,0.1); }
 
-        #iroh-wisdom-box { font-style: italic; font-size: 1rem; text-align: center; color: #fff; min-height: 60px; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid var(--glow); margin-bottom: 10px; }
+        #iroh-box { font-style: italic; font-size: 0.95rem; text-align: center; color: #fff; min-height: 50px; border-bottom: 1px solid var(--glow); margin-bottom: 10px; }
         
-        #leaderboard { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .stat-val { font-family: 'Orbitron'; font-size: 1.2rem; display: block; }
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; text-align: center; font-family: 'Orbitron'; font-size: 0.65rem; }
+        .stat-num { font-size: 1.2rem; display: block; color: var(--glow); }
 
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column; }
         .hidden { display: none !important; }
     </style>
 </head>
-<body class="theme-techno">
+<body>
     <div id="star-field"></div>
     <audio id="bg-audio" loop></audio>
 
-    <div id="startup-overlay" class="overlay">
-        <h1 style="font-family:'Orbitron'; font-size: 3rem; letter-spacing: 15px; margin-bottom: 40px;">COSMIC_GLOBE</h1>
-        <div style="width: 350px; text-align: center;">
-            <select id="station-picker">
-                <option value="https://stream.nightride.fm/nightride.mp3" data-theme="techno">SYNTHWAVE_PRIMARY</option>
-                <option value="https://icecast.ndr.de/ndr/n-joy/disco/mp3/128/stream.mp3" data-theme="disco">DISCO_RETRO</option>
-            </select>
-            <button onclick="engageSystem()" style="padding: 25px; font-size: 1.2rem; margin-top: 20px;">INITIATE_DEPLOYMENT</button>
-        </div>
+    <div id="boot-screen" class="overlay">
+        <h1 style="font-family:'Orbitron'; font-size: 2.5rem; letter-spacing: 10px; margin-bottom: 30px;">COSMIC_GLOBE</h1>
+        <button onclick="startSystem()" style="width: 250px; padding: 20px;">INITIATE_SYSTEM</button>
     </div>
 
-    <div id="main-layout">
+    <div id="main-container" class="hidden">
         <div id="side-panel">
             <div class="card">
-                <h3>🍵 NEURAL_IROH</h3>
-                <div id="iroh-wisdom-box">"Standing at the edge of the universe."</div>
-                <input type="text" id="iroh-input" placeholder="Query wisdom..." onkeydown="if(event.key==='Enter') askIroh()">
-                <button onclick="askIroh()" style="font-size: 0.7rem; padding: 5px;">CONSULT</button>
+                <h3>🍵 Iroh_Neural_Link</h3>
+                <div id="iroh-box">"Seek the light within."</div>
+                <input type="text" id="iroh-in" placeholder="Ask Uncle Iroh..." onkeydown="if(event.key==='Enter') irohTalk()">
+                <button onclick="irohTalk()" style="font-size: 0.6rem; padding: 4px;">QUERY</button>
             </div>
 
             <div class="card">
-                <h3>📋 OBJECTIVES</h3>
+                <h3>📋 Mission_Objectives</h3>
                 <div id="task-box"></div>
-                <button onclick="addNewTask()" style="font-size: 0.7rem; padding: 5px;">+ NEW_TASK</button>
+                <button onclick="addT()" style="font-size: 0.6rem; padding: 4px;">+ ADD_TASK</button>
             </div>
 
             <div class="card">
-                <h3>🏆 PILOT_STATS</h3>
-                <div id="leaderboard">
-                    <div style="text-align:center;">SESSIONS<br><span id="count-sessions" class="stat-val">0</span></div>
-                    <div style="text-align:center;">FOCUS_MIN<br><span id="count-minutes" class="stat-val">0</span></div>
+                <h3>🏆 Pilot_Logs</h3>
+                <div class="stat-grid">
+                    <div>SESSIONS<br><span id="s-count" class="stat-num">0</span></div>
+                    <div>TOTAL_MIN<br><span id="m-count" class="stat-num">0</span></div>
                 </div>
             </div>
 
             <div style="margin-top: auto;">
-                <button id="audio-btn" onclick="togglePlay()" style="background:transparent; border: 1px solid var(--glow); color: var(--glow);">🔇 AUDIO_OFF</button>
-                <button onclick="location.reload()" style="background:#ff3333; color:white; margin-top:10px; font-size: 0.7rem;">RESET_STATION</button>
+                <button id="aud-btn" onclick="toggleAud()" style="background:transparent; border: 1px solid var(--glow); color: var(--glow); margin-bottom:5px;">🔇 AUDIO_OFF</button>
+                <button onclick="location.reload()" style="background:#cc0000; color:white;">EXIT_STATION</button>
             </div>
         </div>
 
-        <div id="center-hud">
+        <div id="timer-zone">
             <div id="timer-display">25:00</div>
-            <div style="font-family:'Orbitron'; letter-spacing: 8px; opacity: 0.6; margin-bottom: 30px;">ACTIVE_MISSION</div>
-            <button id="control-btn" onclick="startMission()" style="width: 280px; height: 70px; font-size: 1.5rem;">START_TIMER</button>
+            <button id="timer-btn" onclick="timerControl()" style="width: 250px; height: 60px; font-size: 1.3rem;">START_MISSION</button>
         </div>
     </div>
 
     <script>
-        let timeRemaining = 25 * 60;
-        let isRunning = false;
-        let pilotStats = JSON.parse(localStorage.getItem('pilot_stats_v27')) || { sessions: 0, minutes: 0 };
-        let currentTasks = JSON.parse(localStorage.getItem('pilot_tasks_v27')) || [];
-        const quotes = ["Hope is something you give yourself.", "Wisdom comes from many places.", "Tea is better with friends.", "Believe in yourself.", "Destiny is a funny thing."];
+        let rTime = 25 * 60;
+        let running = false;
+        let pStats = JSON.parse(localStorage.getItem('p_stats_v27_1')) || { s: 0, m: 0 };
+        let pTasks = JSON.parse(localStorage.getItem('p_tasks_v27_1')) || [];
+        const iQuotes = ["Hope is something you give yourself.", "Wisdom comes from many places.", "Tea is better with friends.", "Believe in yourself."];
 
-        function makeStars() {
+        function stars() {
             const f = document.getElementById('star-field');
-            for(let i=0; i<50; i++) {
+            for(let i=0; i<40; i++){
                 const s = document.createElement('div'); s.className = 'mega-star';
-                const size = Math.random() * 35 + 5;
-                s.style.width = s.style.height = size + 'px';
+                const sz = Math.random() * 30 + 5;
+                s.style.width = s.style.height = sz + 'px';
                 s.style.left = Math.random() * 100 + 'vw'; s.style.top = Math.random() * 100 + 'vh';
                 f.appendChild(s);
             }
         }
-        makeStars();
+        stars();
 
-        function engageSystem() {
-            const audio = document.getElementById('bg-audio');
-            const picker = document.getElementById('station-picker');
-            audio.src = picker.value;
-            document.body.className = 'theme-' + picker.selectedOptions[0].getAttribute('data-theme');
-            document.getElementById('startup-overlay').classList.add('hidden');
-            refreshTasks(); refreshStats();
+        function startSystem() {
+            document.getElementById('boot-screen').classList.add('hidden');
+            document.getElementById('main-container').classList.remove('hidden');
+            document.getElementById('bg-audio').src = "https://stream.nightride.fm/nightride.mp3";
+            updateT(); updateS();
         }
 
-        function startMission() {
-            isRunning = !isRunning;
-            document.getElementById('control-btn').innerText = isRunning ? "PAUSE_MISSION" : "RESUME_MISSION";
-            if(isRunning) countdown();
+        function timerControl() {
+            running = !running;
+            document.getElementById('timer-btn').innerText = running ? "PAUSE" : "RESUME";
+            if(running) tick();
         }
 
-        function countdown() {
-            if(!isRunning) return;
-            if(timeRemaining > 0) {
-                timeRemaining--;
-                const m = Math.floor(timeRemaining / 60).toString().padStart(2, '0');
-                const s = (timeRemaining % 60).toString().padStart(2, '0');
+        function tick() {
+            if(!running) return;
+            if(rTime > 0) {
+                rTime--;
+                const m = Math.floor(rTime / 60).toString().padStart(2, '0');
+                const s = (rTime % 60).toString().padStart(2, '0');
                 document.getElementById('timer-display').innerText = `${m}:${s}`;
-                setTimeout(countdown, 1000);
+                setTimeout(tick, 1000);
             } else {
-                pilotStats.sessions++; pilotStats.minutes += 25;
-                localStorage.setItem('pilot_stats_v27', JSON.stringify(pilotStats));
-                alert("Session Complete!"); location.reload();
+                pStats.s++; pStats.m += 25;
+                localStorage.setItem('p_stats_v27_1', JSON.stringify(pStats));
+                alert("Mission Done!"); location.reload();
             }
         }
 
-        function askIroh() {
-            document.getElementById('iroh-wisdom-box').innerText = `"${quotes[Math.floor(Math.random()*quotes.length)]}"`;
-            document.getElementById('iroh-input').value = "";
+        function irohTalk() {
+            document.getElementById('iroh-box').innerText = `"${iQuotes[Math.floor(Math.random()*iQuotes.length)]}"`;
+            document.getElementById('iroh-in').value = "";
         }
 
-        function togglePlay() {
+        function toggleAud() {
             const a = document.getElementById('bg-audio');
-            const b = document.getElementById('audio-btn');
+            const b = document.getElementById('aud-btn');
             if(a.paused) { a.play(); b.innerText = "🔊 AUDIO_ON"; }
             else { a.pause(); b.innerText = "🔇 AUDIO_OFF"; }
         }
 
-        function addNewTask() {
+        function addT() {
             const t = prompt("Task:");
-            if(t) { currentTasks.push(t); localStorage.setItem('pilot_tasks_v27', JSON.stringify(currentTasks)); refreshTasks(); }
+            if(t) { pTasks.push(t); localStorage.setItem('p_tasks_v27_1', JSON.stringify(pTasks)); updateT(); }
         }
 
-        function refreshTasks() {
-            document.getElementById('task-box').innerHTML = currentTasks.map((t, i) => `<div class="task"><span>> ${t}</span><span onclick="delTask(${i})" style="color:red; cursor:pointer;">[X]</span></div>`).join('');
+        function updateT() {
+            document.getElementById('task-box').innerHTML = pTasks.map((t, i) => `<div class="task-item"><span>> ${t}</span><span onclick="delT(${i})" style="color:red; cursor:pointer;">[X]</span></div>`).join('');
         }
 
-        function delTask(i) { currentTasks.splice(i, 1); localStorage.setItem('pilot_tasks_v27', JSON.stringify(currentTasks)); refreshTasks(); }
+        function delT(i) { pTasks.splice(i, 1); localStorage.setItem('p_tasks_v27_1', JSON.stringify(pTasks)); updateT(); }
 
-        function refreshStats() {
-            document.getElementById('count-sessions').innerText = pilotStats.sessions;
-            document.getElementById('count-minutes').innerText = pilotStats.minutes;
+        function updateS() {
+            document.getElementById('s-count').innerText = pStats.s;
+            document.getElementById('m-count').innerText = pStats.m;
         }
     </script>
 </body>
