@@ -3,54 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COSMIC_GLOBE_V29_SELECTABLE</title>
+    <title>COSMIC_GLOBE_V30_TOGGLE</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS für den Knopf-Effekt */
+        #menu-trigger {
+            position: fixed; top: 25px; left: 25px; z-index: 10001;
+            background: #000; border: 2px solid #00ff41; color: #00ff41;
+            padding: 12px 25px; font-family: 'Orbitron'; font-weight: 900;
+            cursor: pointer; letter-spacing: 2px;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
+            transition: 0.3s all; display: none;
+        }
+        #menu-trigger:hover {
+            background: #00ff41; color: #000;
+            box-shadow: 0 0 25px #00ff41;
+        }
+        #menu-trigger:active { transform: scale(0.95); }
+    </style>
 </head>
 <body style="margin:0; padding:0; background:#000; color:#00ff41; font-family:'Rajdhani',sans-serif; width:100vw; height:100vh; overflow:hidden;">
 
     <div id="star-field" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:1;"></div>
     <audio id="bg-audio" loop></audio>
 
-    <button id="menu-trigger" onclick="toggleMenu()" style="display:none; position:fixed; top:20px; left:20px; z-index:10001; background:transparent; border:1px solid #00ff41; color:#00ff41; padding:10px 20px; font-family:'Orbitron'; cursor:pointer; backdrop-filter:blur(5px);">[ MENU_TOGGLE ]</button>
+    <button id="menu-trigger" onclick="toggleMenu()">☰ SYSTEM_MENU</button>
 
-    <div id="boot-screen" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:9999; display:flex; align-items:center; justify-content:center; flex-direction:column; border: 10px solid #00ff41; box-sizing: border-box;">
-        <h1 style="font-family:'Orbitron'; font-size:3rem; letter-spacing:10px; text-shadow: 0 0 20px #00ff41;">COSMIC_GLOBE</h1>
-        <button onclick="startSystem()" style="margin-top:30px; width:300px; padding:20px; background:#00ff41; color:#000; border:none; font-family:'Orbitron'; font-weight:900; cursor:pointer; font-size:1.2rem;">INITIALIZE_HUD</button>
+    <div id="boot-screen" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:9999; display:flex; align-items:center; justify-content:center; flex-direction:column; border: 15px solid #00ff41; box-sizing: border-box;">
+        <h1 style="font-family:'Orbitron'; font-size:4rem; letter-spacing:15px; text-shadow: 0 0 30px #00ff41; margin:0;">COSMIC</h1>
+        <p style="font-family:'Orbitron'; letter-spacing:5px; margin-bottom:40px; opacity:0.7;">STATION_V30.0</p>
+        <button onclick="startSystem()" style="width:350px; padding:25px; background:#00ff41; color:#000; border:none; font-family:'Orbitron'; font-weight:900; cursor:pointer; font-size:1.5rem; transition:0.3s;">ENGAGE_SYSTEMS</button>
     </div>
 
     <div id="main-container" style="display:none; width:100vw; height:100vh; position:relative; z-index:10; display:flex;">
         
-        <div id="side-panel" style="width:350px; position:fixed; left:-350px; top:0; bottom:0; background:rgba(0,10,0,0.95); border-right:2px solid #00ff41; display:flex; flex-direction:column; padding:80px 25px 25px 25px; box-sizing:border-box; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); z-index:10000; box-shadow: 20px 0 50px rgba(0,0,0,0.8);">
+        <div id="side-panel" style="width:380px; position:fixed; left:-380px; top:0; bottom:0; background:rgba(0,12,0,0.98); border-right:3px solid #00ff41; display:flex; flex-direction:column; padding:100px 30px 30px 30px; box-sizing:border-box; transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1); z-index:10000; box-shadow: 30px 0 60px rgba(0,0,0,0.9);">
             
-            <div style="border:1px solid #00ff41; padding:15px; margin-bottom:20px;">
-                <h3 style="font-family:'Orbitron'; font-size:0.8rem; margin:0 0 10px 0;">📡 IROH_NEURAL_LINK</h3>
-                <div id="iroh-box" style="font-style:italic; font-size:1rem; text-align:center; min-height:60px; color:#fff; display:flex; align-items:center; justify-content:center;">"Click Consult for wisdom."</div>
-                <button onclick="irohTalk()" style="width:100%; background:#00ff41; color:#000; border:none; padding:8px; font-weight:bold; cursor:pointer; font-family:'Orbitron';">CONSULT_IROH</button>
+            <div style="background:rgba(0,255,65,0.05); border:1px solid #00ff41; padding:20px; margin-bottom:25px;">
+                <h3 style="font-family:'Orbitron'; font-size:0.8rem; margin:0 0 15px 0;">NEURAL_IROH</h3>
+                <div id="iroh-box" style="font-style:italic; font-size:1.1rem; text-align:center; min-height:70px; color:#fff; display:flex; align-items:center; justify-content:center;">"Ready for wisdom?"</div>
+                <button onclick="irohTalk()" style="width:100%; background:#00ff41; color:#000; border:none; padding:10px; font-weight:bold; cursor:pointer; font-family:'Orbitron'; font-size:0.7rem;">CONSULT_LINK</button>
             </div>
 
-            <div style="border:1px solid #00ff41; padding:15px; margin-bottom:20px;">
-                <h3 style="font-family:'Orbitron'; font-size:0.8rem; margin:0 0 10px 0;">📋 OBJECTIVES</h3>
-                <div id="task-box" style="max-height:150px; overflow-y:auto; margin-bottom:10px;"></div>
-                <button onclick="addT()" style="width:100%; background:transparent; border:1px dashed #00ff41; color:#00ff41; padding:5px; cursor:pointer;">+ NEW_TASK</button>
+            <div style="background:rgba(0,255,65,0.05); border:1px solid #00ff41; padding:20px; margin-bottom:25px;">
+                <h3 style="font-family:'Orbitron'; font-size:0.8rem; margin:0 0 15px 0;">MISSION_OBJECTIVES</h3>
+                <div id="task-box" style="max-height:180px; overflow-y:auto; margin-bottom:15px; border-bottom:1px solid rgba(0,255,65,0.2);"></div>
+                <button onclick="addT()" style="width:100%; background:transparent; border:1px dashed #00ff41; color:#00ff41; padding:8px; cursor:pointer; font-weight:bold;">+ NEW_LOG_ENTRY</button>
             </div>
 
-            <div style="border:1px solid #00ff41; padding:15px;">
-                <h3 style="font-family:'Orbitron'; font-size:0.8rem; margin:0 0 10px 0;">🏆 PILOT_LOGS</h3>
+            <div style="background:rgba(0,255,65,0.05); border:1px solid #00ff41; padding:20px;">
+                <h3 style="font-family:'Orbitron'; font-size:0.8rem; margin:0 0 15px 0;">FLIGHT_DATA</h3>
                 <div style="display:flex; justify-content:space-around; text-align:center;">
-                    <div>SESSIONS<br><span id="s-count" style="font-family:'Orbitron'; font-size:1.5rem;">0</span></div>
-                    <div>MINUTES<br><span id="m-count" style="font-family:'Orbitron'; font-size:1.5rem;">0</span></div>
+                    <div>SESSIONS<br><span id="s-count" style="font-family:'Orbitron'; font-size:1.8rem;">0</span></div>
+                    <div>MINUTES<br><span id="m-count" style="font-family:'Orbitron'; font-size:1.8rem;">0</span></div>
                 </div>
             </div>
 
             <div style="margin-top:auto; display:flex; flex-direction:column; gap:10px;">
-                <button id="aud-btn" onclick="toggleAud()" style="background:transparent; border:1px solid #00ff41; color:#00ff41; padding:10px; cursor:pointer;">🔇 AUDIO: OFF</button>
-                <button onclick="location.reload()" style="background:#ff0000; color:#fff; border:none; padding:10px; cursor:pointer;">EXIT_STATION</button>
+                <button id="aud-btn" onclick="toggleAud()" style="background:transparent; border:1px solid #00ff41; color:#00ff41; padding:15px; cursor:pointer; font-weight:bold;">🔇 AUDIO_OFF</button>
+                <button onclick="location.reload()" style="background:#440000; color:#ff4444; border:1px solid #ff4444; padding:10px; cursor:pointer; font-size:0.7rem;">ABORT_STATION</button>
             </div>
         </div>
 
         <div id="timer-zone" style="flex-grow:1; display:flex; flex-direction:column; align-items:center; justify-content:center; width:100%;">
-            <div id="timer-display" style="font-family:'Orbitron'; font-size:12rem; font-weight:900; text-shadow: 0 0 40px #00ff41; margin:0;">25:00</div>
-            <button id="timer-btn" onclick="timerControl()" style="width:350px; height:80px; background:#00ff41; color:#000; border:none; font-family:'Orbitron'; font-weight:900; font-size:1.5rem; cursor:pointer; box-shadow: 0 0 20px rgba(0,255,65,0.4);">START_MISSION</button>
+            <div id="timer-display" style="font-family:'Orbitron'; font-size:13rem; font-weight:900; text-shadow: 0 0 50px #00ff41; margin:0;">25:00</div>
+            <p style="font-family:'Orbitron'; letter-spacing:15px; opacity:0.5; margin-bottom:50px;">STATUS: OPERATIONAL</p>
+            <button id="timer-btn" onclick="timerControl()" style="width:400px; height:90px; background:#00ff41; color:#000; border:none; font-family:'Orbitron'; font-weight:900; font-size:1.8rem; cursor:pointer; box-shadow: 0 0 30px rgba(0,255,65,0.5);">START_MISSION</button>
         </div>
     </div>
 
@@ -58,19 +76,20 @@
         let rTime = 25 * 60;
         let running = false;
         let menuOpen = false;
-        let pStats = JSON.parse(localStorage.getItem('p_stats_v29')) || { s: 0, m: 0 };
-        let pTasks = JSON.parse(localStorage.getItem('p_tasks_v29')) || [];
-        const iQuotes = ["Hope is something you give yourself.", "Tea is better with friends.", "Believe in yourself.", "Wisdom comes from many places."];
+        let pStats = JSON.parse(localStorage.getItem('p_stats_v30')) || { s: 0, m: 0 };
+        let pTasks = JSON.parse(localStorage.getItem('p_tasks_v30')) || [];
+        const iQuotes = ["Hope is something you give yourself.", "Wisdom comes from many places.", "Tea is better with friends.", "Believe in yourself.", "Destiny is a funny thing."];
 
         function stars() {
             const f = document.getElementById('star-field');
-            for(let i=0; i<40; i++){
+            for(let i=0; i<45; i++){
                 const s = document.createElement('div');
-                const sz = Math.random() * 20 + 2;
-                s.style.position = 'absolute'; s.style.background = 'white'; s.style.borderRadius = '50%';
+                const sz = Math.random() * 25 + 2;
+                s.style.position = 'absolute'; s.style.background = '#fff'; s.style.borderRadius = '50%';
                 s.style.width = s.style.height = sz + 'px';
                 s.style.left = Math.random() * 100 + 'vw'; s.style.top = Math.random() * 100 + 'vh';
-                s.style.opacity = '0.3'; f.appendChild(s);
+                s.style.opacity = '0.3'; s.style.boxShadow = '0 0 10px #fff';
+                f.appendChild(s);
             }
         }
         stars();
@@ -78,8 +97,9 @@
         function toggleMenu() {
             const panel = document.getElementById('side-panel');
             menuOpen = !menuOpen;
-            panel.style.left = menuOpen ? "0px" : "-350px";
-            document.getElementById('menu-trigger').innerText = menuOpen ? "[ CLOSE_MENU ]" : "[ MENU_TOGGLE ]";
+            panel.style.left = menuOpen ? "0px" : "-380px";
+            document.getElementById('menu-trigger').style.background = menuOpen ? "#00ff41" : "#000";
+            document.getElementById('menu-trigger').style.color = menuOpen ? "#000" : "#00ff41";
         }
 
         function startSystem() {
@@ -106,8 +126,8 @@
                 setTimeout(tick, 1000);
             } else {
                 pStats.s++; pStats.m += 25;
-                localStorage.setItem('p_stats_v29', JSON.stringify(pStats));
-                alert("Mission Complete!"); location.reload();
+                localStorage.setItem('p_stats_v30', JSON.stringify(pStats));
+                alert("Mission Accomplished!"); location.reload();
             }
         }
 
@@ -118,24 +138,24 @@
         function toggleAud() {
             const a = document.getElementById('bg-audio');
             const b = document.getElementById('aud-btn');
-            if(a.paused) { a.play(); b.innerText = "🔊 AUDIO: ON"; }
-            else { a.pause(); b.innerText = "🔇 AUDIO: OFF"; }
+            if(a.paused) { a.play(); b.innerText = "🔊 AUDIO_ON"; }
+            else { a.pause(); b.innerText = "🔇 AUDIO_OFF"; }
         }
 
         function addT() {
-            const t = prompt("Task:");
-            if(t) { pTasks.push(t); localStorage.setItem('p_tasks_v29', JSON.stringify(pTasks)); updateT(); }
+            const t = prompt("Log Entry:");
+            if(t) { pTasks.push(t); localStorage.setItem('p_tasks_v30', JSON.stringify(pTasks)); updateT(); }
         }
 
         function updateT() {
             document.getElementById('task-box').innerHTML = pTasks.map((t, i) => `
-                <div style="display:flex; justify-content:space-between; padding:5px; border-bottom:1px solid rgba(0,255,65,0.1);">
-                    <span>> ${t}</span><span onclick="delT(${i})" style="color:red; cursor:pointer;">[X]</span>
+                <div style="display:flex; justify-content:space-between; padding:8px; border-bottom:1px solid rgba(0,255,65,0.1);">
+                    <span>> ${t}</span><span onclick="delT(${i})" style="color:#ff4444; cursor:pointer; font-weight:bold;">[X]</span>
                 </div>
             `).join('');
         }
 
-        function delT(i) { pTasks.splice(i, 1); localStorage.setItem('p_tasks_v29', JSON.stringify(pTasks)); updateT(); }
+        function delT(i) { pTasks.splice(i, 1); localStorage.setItem('p_tasks_v30', JSON.stringify(pTasks)); updateT(); }
 
         function updateS() {
             document.getElementById('s-count').innerText = pStats.s;
