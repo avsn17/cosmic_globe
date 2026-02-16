@@ -1,18 +1,16 @@
-# 🌌 COSMIC_GLOBE: NEURAL_HUD v8.5
+# 🌌 COSMIC_GLOBE: ELITE_HUD v9.0
 
-> **"Hope is something you give yourself. That is the meaning of inner strength."** — *Uncle Iroh*
+> **"Hope is something you give yourself."** — *Uncle Iroh*
 
 ### 👉 [LAUNCH MISSION CONTROL](https://avsn17.github.io/cosmic_globe/)
 
-## 🛰️ RECENT HARDWARE UPDATES
-* **Utility Grid:** Added **Fullscreen**, **Quote Cycle**, and **Log Reset** buttons.
-* **Metadata Sync:** Real-time Frequency/Genre display in the menu header.
-* **Pilot Log:** Persistent lifetime focus tracking (saved via LocalStorage).
-* **Z-Index Correction:** Resolved login-screen layering for 100% button visibility.
+## 🛰️ v9.0 ELITE SPECIFICATIONS
+* **Ergonomic Dashboard:** All HUD elements (Timer, Quote, and Menu) have been pulled from the edges into a centered "Cockpit Safe Zone."
+* **Golden Overdrive:** Upon reaching your Daily Goal, the entire universe—including shooting stars—turns to shimmering gold.
+* **Music-Reactive Fireworks:** Goal achievements trigger explosive particles synced to the bass of your frequency.
+* **Dockable Command Menu:** The central menu can be docked to the top-center to clear your visual field while maintaining control.
+* **Smart Auto-Save:** Persistent focus tracking that survives browser crashes and tab closures.
 
-## 🕹️ KEYBOARD COMMANDS
-* **[ H ] Key:** Toggle Cinematic Mode (Hides HUD, keeps stars and music).
-* **[ F ] Key:** (Optional Browser Standard) Fullscreen Toggle.
-
----
-**[SYSTEM STATUS: OPERATIONAL]** *Mission Clock is ticking, Pilot Avi. Safe travels.*
+## 🕹️ PILOT CONTROLS
+* **[ H ] Key:** Cinematic Mode (Hide HUD)
+* **[ Click Menu Header ]:** Toggle Dashboard/Docked state.
