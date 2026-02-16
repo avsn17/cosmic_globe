@@ -3,60 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COSMIC_GLOBE: CENTER_POINT</title>
-    <link rel="stylesheet" href="style.css">
+    <title>COSMIC_GLOBE: UNIFIED_ELITE</title>
+    <style>
+        :root { --glow: #00ff41; --bg: #000500; }
+        body.theme-vapor { --glow: #ff71ce; --bg: #01012b; }
+        body.theme-disco { --glow: #f4d03f; --bg: #1a0633; }
+        body.theme-techno { --glow: #00f2ff; --bg: #000000; }
+        body.gold-achieved { --glow: #FFD700 !important; }
+
+        body, html {
+            margin: 0; padding: 0; background: var(--bg); color: var(--glow);
+            font-family: 'Segoe UI', sans-serif; height: 100vh; width: 100vw;
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden; transition: 0.5s;
+        }
+
+        /* 🌌 BACKGROUNDS (NON-INTERACTIVE) */
+        #star-container, #meteor-field {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1; pointer-events: none;
+        }
+
+        /* 🎯 CENTERED INTERACTIVE UI */
+        #ui-container {
+            position: relative; z-index: 9999; width: 90%; max-width: 400px;
+            display: flex; flex-direction: column; align-items: center; gap: 20px;
+            pointer-events: auto;
+        }
+
+        #timer { font-size: 5rem; font-weight: 800; text-shadow: 0 0 20px var(--glow); margin: 0; }
+
+        #command-menu {
+            width: 100%; background: rgba(0, 10, 0, 0.95);
+            border: 2px solid var(--glow); border-radius: 12px;
+            backdrop-filter: blur(10px); pointer-events: auto;
+        }
+
+        #menu-header { background: var(--glow); color: #000; padding: 12px; cursor: pointer; font-weight: bold; text-align: center; border-radius: 10px 10px 0 0; }
+        #menu-content { padding: 20px; }
+
+        input, select, button {
+            width: 100%; padding: 12px; margin: 8px 0;
+            background: rgba(0,0,0,0.8); border: 1px solid var(--glow);
+            color: var(--glow); border-radius: 6px; font-size: 1rem;
+            pointer-events: auto !important; cursor: pointer;
+        }
+        input[type="text"] { cursor: text; }
+        
+        button { background: var(--glow); color: #000; font-weight: bold; border: none; }
+        button:hover { filter: brightness(1.2); }
+
+        .meteor { position: absolute; pointer-events: none; width: 2px; height: 40px; background: linear-gradient(to top, var(--glow), transparent); }
+        .star { position: absolute; background: white; border-radius: 50%; width: 2px; height: 2px; opacity: 0.5; }
+
+        @keyframes zoom { from { transform: translate(-50%, -50%) scale(0); opacity: 1; } to { transform: var(--x) var(--y) scale(1.5); opacity: 0; } }
+    </style>
 </head>
-<body>
-    <div id="scanline-layer" class="scanlines"></div>
+<body class="theme-techno">
     <div id="star-container"></div>
     <div id="meteor-field"></div>
 
     <div id="ui-container">
         <div id="login-sector">
-            <h1 class="glitch-text">[ NEURAL_LINK ]</h1>
-            <select id="freq-selector" style="width:100%; margin-bottom:10px;">
+            <h1 style="text-align:center;">[ NEURAL_LINK ]</h1>
+            <select id="freq-selector">
                 <option value="https://stream.zeno.fm/0r0xa792kwzuv" data-theme="vapor">DREAMY (Vaporwave)</option>
                 <option value="https://icecast.ndr.de/ndr/n-joy/disco/mp3/128/stream.mp3" data-theme="disco">70s GOLD (Disco)</option>
-                <option value="https://driver.pinguin.stream/pinguin-techno" data-theme="techno">DEEP TECHNO (Pulse)</option>
+                <option value="https://driver.pinguin.stream/pinguin-techno" data-theme="techno" selected>DEEP TECHNO (Pulse)</option>
             </select>
-            <button id="engage-btn" onclick="initPilot()" style="width:100%;">ENGAGE SYSTEMS</button>
+            <input type="text" id="username" placeholder="PILOT_ID..." autocomplete="off">
+            <button onclick="initPilot()">ENGAGE SYSTEMS</button>
         </div>
 
         <div id="mission-sector" style="display: none; width: 100%;">
-            
             <div id="timer">25:00</div>
-            
-            <div id="load-container" style="width:100%; height:4px; background:rgba(255,255,255,0.1); margin-bottom:10px;">
-                <div id="load-bar" style="height:100%; width:0%; background:var(--glow); transition:width 0.1s;"></div>
-            </div>
-
             <div id="command-menu">
-                <div id="menu-header" onclick="toggleMenu()">🛰️ TACTICAL_MENU ▼</div>
+                <div id="menu-header" onclick="toggleMenu()">🛰️ TACTICAL_MENU</div>
                 <div id="menu-content">
-                    <div class="menu-group">
-                        <div id="track-info" style="font-size:0.8rem; margin-bottom:10px;">SYNCHRONIZING...</div>
-                        <input type="range" id="warp-speed" min="0.1" max="3" step="0.1" value="1">
-                        <small>WARP_VELOCITY</small>
-                    </div>
-                    <div class="menu-group btn-grid">
-                        <button class="util-btn" onclick="toggleFullscreen()">FULLSCREEN</button>
-                        <button class="util-btn" onclick="nextQuote()">NEW_QUOTE</button>
-                    </div>
-                    <div class="menu-group">
-                        <small>GOAL (HRS)</small>
-                        <input type="number" id="goal-input" value="2" style="width:40px;">
-                        <span id="total-time">00:00:00</span>
-                    </div>
+                    <div id="track-info">STATION: ONLINE</div>
+                    <input type="range" id="warp-speed" min="0.5" max="3" step="0.1" value="1">
+                    <button onclick="location.reload()" style="background:transparent; border:1px solid red; color:red;">ABORT MISSION</button>
                 </div>
             </div>
-
-            <div id="iroh-comms">
-                <p id="iroh-quote">"Hope is something you give yourself."</p>
-            </div>
-
-            <audio id="space-radio" crossorigin="anonymous" loop></audio>
+            <p id="iroh-quote">"Hope is something you give yourself."</p>
         </div>
     </div>
-    <script src="script.js"></script>
+
+    <script>
+        let totalFocusSeconds = 0;
+        let timeLeft = 25 * 60;
+
+        function initPilot() {
+            document.getElementById('login-sector').style.display = 'none';
+            document.getElementById('mission-sector').style.display = 'block';
+            startStars();
+            setInterval(updateClock, 1000);
+        }
+
+        function toggleMenu() {
+            const content = document.getElementById('menu-content');
+            content.style.display = content.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function updateClock() {
+            if (timeLeft > 0) {
+                timeLeft--;
+                const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+                const s = (timeLeft % 60).toString().padStart(2, '0');
+                document.getElementById('timer').innerText = `${m}:${s}`;
+            }
+        }
+
+        document.getElementById('freq-selector').addEventListener('change', function() {
+            document.body.className = 'theme-' + this.options[this.selectedIndex].getAttribute('data-theme');
+        });
+
+        function startStars() {
+            const container = document.getElementById('star-container');
+            for(let i=0; i<100; i++) {
+                const s = document.createElement('div');
+                s.className = 'star';
+                s.style.left = Math.random()*100+'vw';
+                s.style.top = Math.random()*100+'vh';
+                container.appendChild(s);
+            }
+            setInterval(spawnMeteor, 500);
+        }
+
+        function spawnMeteor() {
+            const field = document.getElementById('meteor-field');
+            const m = document.createElement('div');
+            m.className = 'meteor';
+            const angle = Math.random() * Math.PI * 2;
+            const dist = 1000;
+            m.style.setProperty('--x', `${Math.cos(angle)*dist}px`);
+            m.style.setProperty('--y', `${Math.sin(angle)*dist}px`);
+            m.style.left = '50%'; m.style.top = '50%';
+            m.style.transform = `translate(-50%, -50%) rotate(${angle + Math.PI/2}rad)`;
+            m.style.animation = `zoom 1s linear forwards`;
+            field.appendChild(m);
+            setTimeout(() => m.remove(), 1000);
+        }
+    </script>
 </body>
 </html>
