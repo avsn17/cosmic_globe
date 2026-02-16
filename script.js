@@ -1,106 +1,27 @@
 let audioCtx, analyser, dataArray;
 const irohQuotes = [
+    "While it is always best to believe in oneself, a little help is a blessing.",
     "Hope is something you give yourself.",
-    "Destiny is a funny thing.",
-    "While it is always best to believe in oneself, a little help is a blessing."
+    "Destiny is a funny thing."
 ];
 
-function initPilot() {
-    const user = document.getElementById('username').value;
-    const streamUrl = document.getElementById('freq-selector').value;
-    
-    if (user.trim() !== "") {
-        document.getElementById('login-sector').style.display = "none";
-        document.getElementById('mission-sector').style.display = "block";
-        setupAudio(streamUrl);
-        startWarp();
-    }
-}
-
-function setupAudio(url) {
-    const audio = document.getElementById('space-radio');
-    audio.src = url;
-    
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    analyser = audioCtx.createAnalyser();
-    const source = audioCtx.createMediaElementSource(audio);
-    source.connect(analyser);
-    analyser.connect(audioCtx.destination);
-    
-    analyser.fftSize = 256;
-    dataArray = new Uint8Array(analyser.frequencyBinCount);
-    
-    audio.play();
-    detectBeat();
-}
-
-function detectBeat() {
-    analyser.getByteFrequencyData(dataArray);
-    
-    // Calculate volume/intensity
-    let volume = 0;
-    for (let i = 0; i < dataArray.length; i++) volume += dataArray[i];
-    let average = volume / dataArray.length;
-
-    // Trigger meteors based on audio intensity
-    // Lower threshold for CAS/Lana, higher for Techno
-    if (average > 60) { 
-        spawnMeteor(average);
-    }
-    requestAnimationFrame(detectBeat);
-}
-
-function spawnMeteor(intensity) {
-    const field = document.getElementById('meteor-field');
-    const m = document.createElement('div');
-    m.className = 'meteor';
-    
-    // Faster music = Faster meteors
-    const speed = (255 / intensity) * 0.5;
-    const x = (Math.random() - 0.5) * 1200;
-    const y = (Math.random() - 0.5) * 1200;
-
-    m.style.setProperty('--x', `${x}px`);
-    m.style.setProperty('--y', `${y}px`);
-    m.style.left = '50%';
-    m.style.top = '50%';
-    m.style.animation = `meteor-zoom ${speed}s ease-out forwards`;
-    
-    field.appendChild(m);
-    setTimeout(() => m.remove(), 1000);
-}
-
-function startWarp() {
-    let seconds = 25 * 60;
-    setInterval(() => {
-        seconds--;
-        let mins = Math.floor(seconds / 60);
-        let secs = seconds % 60;
-        document.getElementById('timer').innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-        
-        // Change Iroh quote every 5 minutes
-        if (seconds % 300 === 0) {
-            document.getElementById('iroh-quote').innerText = irohQuotes[Math.floor(Math.random()*irohQuotes.length)];
-        }
-    }, 1000);
-}
-cat << 'EOF' > script.js
-let audioCtx, analyser, dataArray;
-const irohQuotes = [
-    "While it is best to believe in oneself, a little help is a blessing.",
-    "Destiny is a funny thing. You never know how things are going to work out.",
-    "Hope is something you give yourself.",
-    "Good times become good memories, but bad times become good lessons."
-];
-
-function initPilot() {
+async function initPilot() {
     const selector = document.getElementById('freq-selector');
-    const theme = selector.options[selector.selectedIndex].getAttribute('data-theme');
     const stream = selector.value;
+    const theme = selector.options[selector.selectedIndex].getAttribute('data-theme');
 
     document.body.className = 'theme-' + theme;
     document.getElementById('login-sector').style.display = 'none';
     document.getElementById('mission-sector').style.display = 'block';
+
+    // FIX: Initialize and Resume Audio Context on User Click
+    if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    
+    if (audioCtx.state === 'suspended') {
+        await audioCtx.resume();
+    }
 
     setupAudio(stream);
     startWarp();
@@ -109,34 +30,44 @@ function initPilot() {
 function setupAudio(url) {
     const audio = document.getElementById('space-radio');
     audio.src = url;
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    audio.setAttribute('crossorigin', 'anonymous'); // Essential for analyzing external streams
+    
     analyser = audioCtx.createAnalyser();
     const source = audioCtx.createMediaElementSource(audio);
     source.connect(analyser);
     analyser.connect(audioCtx.destination);
-    analyser.fftSize = 128;
+    
+    analyser.fftSize = 256;
     dataArray = new Uint8Array(analyser.frequencyBinCount);
-    audio.play();
+    
+    audio.play().catch(e => console.error("Playback failed:", e));
     renderLoop();
 }
 
 function renderLoop() {
     analyser.getByteFrequencyData(dataArray);
-    let avg = dataArray.reduce((a,b) => a+b) / dataArray.length;
-    if (avg > 70) spawnMeteor(avg);
+    // Focus on Bass/Mids for meteor triggers
+    let volume = 0;
+    for (let i = 0; i < 20; i++) volume += dataArray[i]; 
+    let avg = volume / 20;
+
+    if (avg > 80) { // Threshold for meteor advance
+        spawnMeteor(avg);
+    }
     requestAnimationFrame(renderLoop);
 }
 
 function spawnMeteor(intensity) {
+    const field = document.getElementById('meteor-field');
     const m = document.createElement('div');
     m.className = 'meteor';
-    const x = (Math.random() - 0.5) * 1500;
-    const y = (Math.random() - 0.5) * 1500;
+    const x = (Math.random() - 0.5) * 2000;
+    const y = (Math.random() - 0.5) * 2000;
     m.style.setProperty('--x', `${x}px`);
     m.style.setProperty('--y', `${y}px`);
     m.style.left = '50%'; m.style.top = '50%';
-    m.style.animation = `zoom ${200/intensity}s ease-out forwards`;
-    document.getElementById('meteor-field').appendChild(m);
+    m.style.animation = `zoom ${255/intensity * 0.5}s ease-out forwards`;
+    field.appendChild(m);
     setTimeout(() => m.remove(), 1000);
 }
 
@@ -145,9 +76,5 @@ function startWarp() {
     setInterval(() => {
         sec--;
         document.getElementById('timer').innerText = `${Math.floor(sec/60)}:${(sec%60).toString().padStart(2,'0')}`;
-        if (sec % 300 === 0) {
-            document.getElementById('iroh-quote').innerText = irohQuotes[Math.floor(Math.random()*irohQuotes.length)];
-        }
     }, 1000);
 }
-EOF
