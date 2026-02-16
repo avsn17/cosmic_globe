@@ -1,4 +1,4 @@
-# 🌌 COSMIC_GLOBE: NEURAL_HUD v5.0
+# 🌌 COSMIC_GLOBE: NEURAL_HUD v5.2
 
 > **"Hope is something you give yourself. That is the meaning of inner strength."** — *Uncle Iroh*
 
@@ -10,11 +10,21 @@ An autonomous, music-reactive focus environment designed for high-performance wo
 
 ---
 
+## 🕹️ TACTICAL COMMANDS
+
+### 📡 Panel Access
+* **Manual Control:** Once the mission starts, the **Tactical Command Panel** is fixed to the **Top-Right** of the screen.
+* **Toggles:** Real-time activation/deactivation of **Meteors**, **Red Alert Pulse**, and **Scanlines**.
+
+### ⌨️ Keyboard Shortcuts
+* **[ H ] Key:** Toggle HUD Visibility. Pressing 'H' hides the UI and Command Panel for a pure **Cinematic View**. Press again to restore instruments.
+
+---
+
 ## 🛰️ SYSTEM MODULES
 * **Neural Load Engine:** Real-time color-shifting intensity bar (Green -> Gold -> Red).
 * **Light-Streak Propulsion:** 3D meteors synced to bass frequency peaks.
-* **Tactical Command Panel:** Real-time toggles for Meteors, Red Alert Pulse, and Scanlines.
-* **Multi-Frequency Link:** Integrated streams for Dreamy, Disco, and Techno states.
+* **Autonomous Warp:** 25-minute focus sprints with 5-minute automated refueling breaks.
 
 ---
 
@@ -26,10 +36,9 @@ An autonomous, music-reactive focus environment designed for high-performance wo
 
 ### 2. Local Development
 * **Terminal:** Run `python3 -m http.server 8000` in the directory and visit `localhost:8000`.
-* **Direct:** Drag `index.html` into any modern browser (Chrome/Brave recommended).
 
 ### ⚠️ Critical Note on Audio
-To activate the **Neural Link** and **Meteor Engine**, you **must** interact with the page (click the **ENGAGE** button). Browsers require a manual gesture to authorize the Web Audio API for stream analysis.
+To activate the **Neural Link**, you **must** interact with the page (click **ENGAGE**). Browsers require a manual gesture to authorize the Web Audio API for stream analysis.
 
 ---
 
