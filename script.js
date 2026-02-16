@@ -160,3 +160,30 @@ window.onload = () => {
     }
     updatePilotLog(); // Load initial stats
 };
+
+function checkGoalStatus() {
+    const goalHours = document.getElementById('goal-input').value;
+    const currentHours = totalFocusSeconds / 3600;
+    
+    if (currentHours >= goalHours) {
+        // ACHIEVED GOLD STATUS
+        document.documentElement.style.setProperty('--glow', '#FFD700');
+        document.documentElement.style.setProperty('--accent', '#B8860B');
+        if (!document.body.classList.contains('gold-achieved')) {
+            document.body.classList.add('gold-achieved');
+            console.log("🏆 GOLD STATUS ACHIEVED");
+            document.getElementById('track-info').innerText = "🏆 ELITE_PILOT_STATUS_ACTIVE";
+        }
+    } else {
+        // RESET TO THEME COLOR IF BELOW GOAL (e.g. after reset)
+        document.body.classList.remove('gold-achieved');
+        // Theme defaults would apply from CSS classes
+    }
+}
+
+// Wrap updatePilotLog to include the goal check
+const baseUpdateLog = updatePilotLog;
+updatePilotLog = function() {
+    baseUpdateLog();
+    checkGoalStatus();
+};
