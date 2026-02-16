@@ -1,7 +1,8 @@
 cat << 'EOF' > style.css
 :root {
     --glow-color: #00ff41;
-    --bg-color: #050505;}
+    --bg-color: #050505;
+}
 
 body {
     background-color: var(--bg-color);
@@ -15,6 +16,7 @@ body {
     height: 100vh;
 }
 
+/* Fixed: Added missing closing brace here */
 .scanlines {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
@@ -23,6 +25,7 @@ body {
     background-size: 100% 3px, 3px 100%;
     pointer-events: none;
     z-index: 10;
+}
 
 #ui-container {
     border: 2px solid var(--glow-color);
@@ -64,5 +67,14 @@ button {
     color: var(--glow-color);
     padding: 10px 20px;
     cursor: pointer;
+    font-family: inherit;
+    text-transform: uppercase;
+    transition: all 0.2s;
+}
+
+button:hover {
+    background: var(--glow-color);
+    color: var(--bg-color);
+    box-shadow: 0 0 15px var(--glow-color);
 }
 EOF
