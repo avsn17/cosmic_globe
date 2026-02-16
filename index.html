@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COSMIC_GLOBE: FINAL_LEVEL</title>
+    <title>COSMIC_GLOBE: ULTRA_HUD</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -14,7 +14,7 @@
 
     <div id="ui-container">
         <div id="login-sector">
-            <h2 class="glitch-text">[ NEURAL LINK INITIALIZATION ]</h2>
+            <h1 class="glitch-text">[ NEURAL LINK INITIALIZATION ]</h1>
             <select id="freq-selector">
                 <option value="https://stream.zeno.fm/0r0xa792kwzuv" data-theme="vapor">DREAMY (Lana / CAS)</option>
                 <option value="https://icecast.ndr.de/ndr/n-joy/disco/mp3/128/stream.mp3" data-theme="disco">70s GOLD (Bee Gees)</option>
@@ -34,10 +34,16 @@
 
             <div class="hud-grid">
                 <div class="hud-left">
+                    <div class="stat-box">
+                        <small>NEURAL LOAD</small>
+                        <div id="load-container"><div id="load-bar"></div></div>
+                    </div>
+                    
                     <div id="timer">25:00</div>
                     <div id="progress-container"><div id="progress-bar"></div></div>
-                    <h1 id="status">WARP ACTIVE</h1>
+                    <h1 id="status" class="glitch-text">WARP ACTIVE</h1>
                 </div>
+                
                 <div class="hud-right">
                     <div id="iroh-comms"><p id="iroh-quote">"Hope is something you give yourself."</p></div>
                     <div id="mission-log"></div>
