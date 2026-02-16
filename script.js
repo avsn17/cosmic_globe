@@ -1,6 +1,6 @@
-cat << 'EOF' > script.js
 let audioCtx, analyser, dataArray, source, audio;
-const irohQuotes = ["Hope is something you give yourself.", "Sharing tea is a delight.", "Destiny is funny."];
+let totalLY = parseInt(localStorage.getItem('aviDist')) || 0;
+const irohQuotes = ["Hope is something you give yourself.", "Destiny is a funny thing.", "Sharing tea is a delight."];
 
 async function initPilot() {
     const sel = document.getElementById('freq-selector');
@@ -14,9 +14,20 @@ async function initPilot() {
     audio.src = sel.value;
     audio.play();
     
-    // Toggle Listeners
+    // UI Event Listeners
     document.getElementById('toggle-scanlines').addEventListener('change', (e) => {
         document.getElementById('scanline-layer').style.display = e.target.checked ? 'block' : 'none';
+    });
+
+    // Keyboard Shortcut: H to Hide/Show UI
+    window.addEventListener('keydown', (e) => {
+        if (e.key.toLowerCase() === 'h') {
+            const ui = document.getElementById('ui-container');
+            const panel = document.getElementById('toggle-panel');
+            const display = ui.style.opacity === '0' ? '1' : '0';
+            ui.style.opacity = display;
+            panel.style.opacity = display;
+        }
     });
 
     autoCycle(); 
@@ -37,7 +48,6 @@ function setupAudioSystem() {
 
 function renderEngine() {
     analyser.getByteFrequencyData(dataArray);
-    
     let sum = 0;
     for(let i=0; i<30; i++) sum += dataArray[i];
     let intensity = sum / 30;
@@ -46,19 +56,16 @@ function renderEngine() {
     const loadPercent = Math.min(100, intensity * 0.9);
     loadBar.style.width = `${loadPercent}%`;
 
-    // Visual Color Feedback
     if (loadPercent < 40) loadBar.style.background = "var(--glow)";
     else if (loadPercent < 75) loadBar.style.background = "#ffcc33";
     else {
         loadBar.style.background = "#ff3333";
-        // FEATURE: RED ALERT PULSE
         if (document.getElementById('toggle-pulse').checked) {
             document.body.style.backgroundColor = "rgba(255, 0, 0, 0.1)";
             setTimeout(() => { document.body.style.backgroundColor = ""; }, 50);
         }
     }
 
-    // FEATURE: METEOR TOGGLE
     let bass = dataArray[0];
     if (bass > 195 && document.getElementById('toggle-meteors').checked) { 
         spawnLightStreak(bass);
@@ -72,8 +79,7 @@ function spawnLightStreak(power) {
     m.className = 'meteor';
     const angle = Math.random() * Math.PI * 2;
     const dist = 1200;
-    const x = Math.cos(angle) * dist;
-    const y = Math.sin(angle) * dist;
+    const x = Math.cos(angle) * dist, y = Math.sin(angle) * dist;
     m.style.setProperty('--x', `${x}px`);
     m.style.setProperty('--y', `${y}px`);
     m.style.left = '50%'; m.style.top = '50%';
@@ -91,11 +97,6 @@ function autoCycle() {
     }, 1000);
 }
 
-function addLog(msg) {
-    const log = document.getElementById('mission-log');
-    log.innerHTML = `<div>> ${msg}</div>` + log.innerHTML;
-}
-
 window.onload = () => {
     const stars = document.getElementById('star-container');
     for(let i=0; i<100; i++) {
@@ -106,4 +107,3 @@ window.onload = () => {
         stars.appendChild(s);
     }
 };
-EOF

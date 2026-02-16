@@ -64,4 +64,31 @@ body {
 }
 
 #toggle-panel label { cursor: pointer; display: flex; align-items: center; gap: 5px; }
-#toggle-panel input { accent-color: var(--glow); }
+#toggle-panel input { accent-color: var(--glow); }#toggle-panel {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.85);
+    border: 1px solid var(--glow);
+    padding: 15px;
+    z-index: 1000;
+    transition: opacity 0.3s ease;
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+#toggle-panel label { display: block; margin-bottom: 5px; cursor: pointer; color: var(--glow); }
+#ui-container { transition: opacity 0.5s ease; }
+#toggle-panel {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.85);
+    border: 1px solid var(--glow);
+    padding: 15px;
+    z-index: 1000;
+    transition: opacity 0.3s ease;
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+#toggle-panel label { display: block; margin-bottom: 5px; cursor: pointer; color: var(--glow); }
+#ui-container { transition: opacity 0.5s ease; }
