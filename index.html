@@ -3,35 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COSMIC_HUD: MULTI-FREQ</title>
+    <title>COSMIC_GLOBE: ULTIMATE HUD</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="theme-default">
     <div class="scanlines"></div>
     <div id="star-container"></div>
     <div id="meteor-field"></div>
+    <div id="nebula"></div>
 
     <div id="ui-container">
         <div id="login-sector">
-            <h2>[ INITIALIZE NEURAL LINK ]</h2>
-            <input type="text" id="username" placeholder="PILOT ID...">
-            <br><br>
+            <h1 class="glitch-text">[ NEURAL LINK REQUIRED ]</h1>
             <select id="freq-selector">
-                <option value="https://stream.zeno.fm/0r0xa792kwzuv">LO-FI VIBES (LANA/CAS STYLE)</option>
-                <option value="https://icecast.ndr.de/ndr/n-joy/disco/mp3/128/stream.mp3">70s DISCO (BEE GEES STYLE)</option>
-                <option value="https://driver.pinguin.stream/pinguin-techno">DEEP TECHNO</option>
+                <option value="https://stream.zeno.fm/0r0xa792kwzuv" data-theme="vapor">DREAMY (Lana / CAS)</option>
+                <option value="https://icecast.ndr.de/ndr/n-joy/disco/mp3/128/stream.mp3" data-theme="disco">70s GOLD (Bee Gees)</option>
+                <option value="https://driver.pinguin.stream/pinguin-techno" data-theme="techno">DEEP TECHNO (Pulse)</option>
             </select>
             <br><br>
-            <button onclick="initPilot()">CONNECT LINK</button>
+            <input type="text" id="username" placeholder="ENTER CALLSIGN..." autocomplete="off">
+            <br><br>
+            <button onclick="initPilot()">INITIALIZE COCKPIT</button>
         </div>
 
         <div id="mission-sector" style="display: none;">
             <div id="iroh-comms">
-                <p id="iroh-quote">"Sharing tea with a fascinating stranger is one of life’s true delights."</p>
+                <p id="iroh-quote">"Hope is something you give yourself."</p>
             </div>
             <div id="timer">25:00</div>
-            <div id="status">NEURAL LINK: STABLE</div>
-            
+            <div id="status">SYNCING TO BEAT...</div>
             <audio id="space-radio" crossorigin="anonymous" loop></audio>
         </div>
     </div>

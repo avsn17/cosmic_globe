@@ -84,3 +84,70 @@ function startWarp() {
         }
     }, 1000);
 }
+cat << 'EOF' > script.js
+let audioCtx, analyser, dataArray;
+const irohQuotes = [
+    "While it is best to believe in oneself, a little help is a blessing.",
+    "Destiny is a funny thing. You never know how things are going to work out.",
+    "Hope is something you give yourself.",
+    "Good times become good memories, but bad times become good lessons."
+];
+
+function initPilot() {
+    const selector = document.getElementById('freq-selector');
+    const theme = selector.options[selector.selectedIndex].getAttribute('data-theme');
+    const stream = selector.value;
+
+    document.body.className = 'theme-' + theme;
+    document.getElementById('login-sector').style.display = 'none';
+    document.getElementById('mission-sector').style.display = 'block';
+
+    setupAudio(stream);
+    startWarp();
+}
+
+function setupAudio(url) {
+    const audio = document.getElementById('space-radio');
+    audio.src = url;
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    analyser = audioCtx.createAnalyser();
+    const source = audioCtx.createMediaElementSource(audio);
+    source.connect(analyser);
+    analyser.connect(audioCtx.destination);
+    analyser.fftSize = 128;
+    dataArray = new Uint8Array(analyser.frequencyBinCount);
+    audio.play();
+    renderLoop();
+}
+
+function renderLoop() {
+    analyser.getByteFrequencyData(dataArray);
+    let avg = dataArray.reduce((a,b) => a+b) / dataArray.length;
+    if (avg > 70) spawnMeteor(avg);
+    requestAnimationFrame(renderLoop);
+}
+
+function spawnMeteor(intensity) {
+    const m = document.createElement('div');
+    m.className = 'meteor';
+    const x = (Math.random() - 0.5) * 1500;
+    const y = (Math.random() - 0.5) * 1500;
+    m.style.setProperty('--x', `${x}px`);
+    m.style.setProperty('--y', `${y}px`);
+    m.style.left = '50%'; m.style.top = '50%';
+    m.style.animation = `zoom ${200/intensity}s ease-out forwards`;
+    document.getElementById('meteor-field').appendChild(m);
+    setTimeout(() => m.remove(), 1000);
+}
+
+function startWarp() {
+    let sec = 25 * 60;
+    setInterval(() => {
+        sec--;
+        document.getElementById('timer').innerText = `${Math.floor(sec/60)}:${(sec%60).toString().padStart(2,'0')}`;
+        if (sec % 300 === 0) {
+            document.getElementById('iroh-quote').innerText = irohQuotes[Math.floor(Math.random()*irohQuotes.length)];
+        }
+    }, 1000);
+}
+EOF
