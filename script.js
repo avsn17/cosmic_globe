@@ -15,3 +15,16 @@ function toggleMenu() {
         menu.style.transform = "translate(-50%, 0)";
     }
 }
+
+// This function now handles the theme swap instantly
+document.getElementById('freq-selector').addEventListener('change', function() {
+    const selectedOption = this.options[this.selectedIndex];
+    const theme = selectedOption.getAttribute('data-theme');
+    
+    // Apply theme to body
+    document.body.className = 'theme-' + theme;
+    
+    // Update track info if already in mission
+    const trackInfo = document.getElementById('track-info');
+    if (trackInfo) trackInfo.innerText = selectedOption.text;
+});
