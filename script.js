@@ -1,85 +1,5 @@
-let audioCtx, analyser, dataArray;
-const irohQuotes = [
-    "While it is always best to believe in oneself, a little help is a blessing.",
-    "Hope is something you give yourself.",
-    "Destiny is a funny thing."
-];
-
-async function initPilot() {
-    const selector = document.getElementById('freq-selector');
-    const stream = selector.value;
-    const theme = selector.options[selector.selectedIndex].getAttribute('data-theme');
-
-    document.body.className = 'theme-' + theme;
-    document.getElementById('login-sector').style.display = 'none';
-    document.getElementById('mission-sector').style.display = 'block';
-
-    // FIX: Initialize and Resume Audio Context on User Click
-    if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    }
-    
-    if (audioCtx.state === 'suspended') {
-        await audioCtx.resume();
-    }
-
-    setupAudio(stream);
-    startWarp();
-}
-
-function setupAudio(url) {
-    const audio = document.getElementById('space-radio');
-    audio.src = url;
-    audio.setAttribute('crossorigin', 'anonymous'); // Essential for analyzing external streams
-    
-    analyser = audioCtx.createAnalyser();
-    const source = audioCtx.createMediaElementSource(audio);
-    source.connect(analyser);
-    analyser.connect(audioCtx.destination);
-    
-    analyser.fftSize = 256;
-    dataArray = new Uint8Array(analyser.frequencyBinCount);
-    
-    audio.play().catch(e => console.error("Playback failed:", e));
-    renderLoop();
-}
-
-function renderLoop() {
-    analyser.getByteFrequencyData(dataArray);
-    // Focus on Bass/Mids for meteor triggers
-    let volume = 0;
-    for (let i = 0; i < 20; i++) volume += dataArray[i]; 
-    let avg = volume / 20;
-
-    if (avg > 80) { // Threshold for meteor advance
-        spawnMeteor(avg);
-    }
-    requestAnimationFrame(renderLoop);
-}
-
-function spawnMeteor(intensity) {
-    const field = document.getElementById('meteor-field');
-    const m = document.createElement('div');
-    m.className = 'meteor';
-    const x = (Math.random() - 0.5) * 2000;
-    const y = (Math.random() - 0.5) * 2000;
-    m.style.setProperty('--x', `${x}px`);
-    m.style.setProperty('--y', `${y}px`);
-    m.style.left = '50%'; m.style.top = '50%';
-    m.style.animation = `zoom ${255/intensity * 0.5}s ease-out forwards`;
-    field.appendChild(m);
-    setTimeout(() => m.remove(), 1000);
-}
-
-function startWarp() {
-    let sec = 25 * 60;
-    setInterval(() => {
-        sec--;
-        document.getElementById('timer').innerText = `${Math.floor(sec/60)}:${(sec%60).toString().padStart(2,'0')}`;
-    }, 1000);
-}
 cat << 'EOF' > script.js
-let audioCtx, analyser, dataArray, source;
+let audioCtx, analyser, dataArray, source, audio;
 const irohQuotes = [
     "While it is always best to believe in oneself, a little help from others can be a great blessing.",
     "Hope is something you give yourself.",
@@ -95,52 +15,51 @@ async function initPilot() {
     document.getElementById('login-sector').style.display = 'none';
     document.getElementById('mission-sector').style.display = 'block';
 
-    // 1. Force Resume Audio Context (Browser Handshake)
+    // 1. Initialize Audio Graph only once
     if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        setupAudioSystem();
     }
+    
     if (audioCtx.state === 'suspended') {
         await audioCtx.resume();
     }
 
-    startAudioEngine(streamUrl);
+    // 2. Load the specific stream and play
+    audio.src = streamUrl;
+    audio.play().then(() => {
+        console.log("Neural Link Synced: " + streamUrl);
+    }).catch(err => {
+        console.error("Link Failed: ", err);
+    });
+
     startWarp();
 }
 
-function startAudioEngine(url) {
-    const audio = document.getElementById('space-radio');
-    audio.src = url;
-    audio.crossOrigin = "anonymous"; // CRITICAL: Allows data analysis
+function setupAudioSystem() {
+    audio = document.getElementById('space-radio');
+    audio.crossOrigin = "anonymous"; 
     
-    // 2. Clear old nodes if they exist
-    if (source) source.disconnect();
-    
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     analyser = audioCtx.createAnalyser();
-    source = audioCtx.createMediaElementSource(audio);
     
+    // Connect source only once per lifecycle
+    source = audioCtx.createMediaElementSource(audio);
     source.connect(analyser);
     analyser.connect(audioCtx.destination);
     
-    analyser.fftSize = 128; // Small size for faster reaction
+    analyser.fftSize = 128; 
     dataArray = new Uint8Array(analyser.frequencyBinCount);
     
-    audio.play().then(() => {
-        console.log("Audio Stream Synchronized.");
-        renderMeteors();
-    }).catch(err => {
-        console.error("Audio Blocked: ", err);
-        document.getElementById('status').innerText = "AUDIO BLOCKED: REFRESH PAGE";
-    });
+    renderMeteors();
 }
 
 function renderMeteors() {
     analyser.getByteFrequencyData(dataArray);
     
-    // 3. Focus on the 'Bass' (first 4 bins of the array)
-    let bassIntensity = (dataArray[0] + dataArray[1] + dataArray[2] + dataArray[3]) / 4;
+    // 3. Bass Detection Logic (Adjust 140 for more/less sensitivity)
+    let bassIntensity = (dataArray[0] + dataArray[1] + dataArray[2]) / 3;
 
-    // Trigger meteor if bass hits a peak (threshold adjustable)
-    if (bassIntensity > 150) { 
+    if (bassIntensity > 140) { 
         spawnMeteor(bassIntensity);
     }
     
@@ -149,19 +68,21 @@ function renderMeteors() {
 
 function spawnMeteor(intensity) {
     const field = document.getElementById('meteor-field');
+    if (!field) return;
+
     const m = document.createElement('div');
     m.className = 'meteor';
     
-    const x = (Math.random() - 0.5) * window.innerWidth * 2;
-    const y = (Math.random() - 0.5) * window.innerHeight * 2;
+    const x = (Math.random() - 0.5) * window.innerWidth * 2.5;
+    const y = (Math.random() - 0.5) * window.innerHeight * 2.5;
     
     m.style.setProperty('--x', `${x}px`);
     m.style.setProperty('--y', `${y}px`);
     m.style.left = '50%';
     m.style.top = '50%';
     
-    // Speed based on intensity
-    const duration = 100 / intensity; 
+    // Smooth zoom duration based on music power
+    const duration = Math.max(0.3, 150 / intensity); 
     m.style.animation = `zoom ${duration}s ease-out forwards`;
     
     field.appendChild(m);
@@ -170,11 +91,18 @@ function spawnMeteor(intensity) {
 
 function startWarp() {
     let sec = 25 * 60;
-    setInterval(() => {
+    const timerDisplay = document.getElementById('timer');
+    
+    // Clear any existing intervals if pilot re-logs
+    if (window.warpInterval) clearInterval(window.warpInterval);
+
+    window.warpInterval = setInterval(() => {
         sec--;
         let mins = Math.floor(sec/60);
         let s = (sec%60).toString().padStart(2,'0');
-        document.getElementById('timer').innerText = `${mins}:${s}`;
+        if (timerDisplay) timerDisplay.innerText = `${mins}:${s}`;
+        
+        if (sec <= 0) clearInterval(window.warpInterval);
     }, 1000);
 }
 EOF
