@@ -3,63 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COSMIC_GLOBE: MASTER_V14</title>
+    <title>COSMIC_GLOBE: ABSOLUTE_CENTER</title>
     <style>
         :root { --glow: #00ff41; --bg: #000500; }
         body.theme-vapor { --glow: #ff71ce; --bg: #01012b; }
         body.theme-disco { --glow: #f4d03f; --bg: #1a0633; }
         body.theme-techno { --glow: #00f2ff; --bg: #000000; }
-        body.gold-achieved { --glow: #FFD700 !important; }
-
+        
         body, html {
-            margin: 0; padding: 0; background: var(--bg); color: var(--glow);
-            font-family: 'Segoe UI', Roboto, sans-serif; height: 100vh; width: 100vw;
-            display: flex; justify-content: center; align-items: center;
-            overflow: hidden; transition: 0.5s;
+            margin: 0; padding: 0;
+            background: var(--bg);
+            color: var(--glow);
+            font-family: 'Segoe UI', sans-serif;
+            width: 100vw; height: 100vh;
+            overflow: hidden;
         }
 
-        /* 🌌 BACKGROUNDS (CLICK-THROUGH) */
+        /* 🌌 BACKGROUND (CLICK-THROUGH) */
         #star-container, #meteor-field {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 1; pointer-events: none;
         }
 
-        /* 🎯 CENTERED COMMAND PILLAR */
+        /* 🎯 THE NUCLEAR CENTER (FIXED POSITION) */
         #ui-container {
-            position: relative; z-index: 9999; width: 90%; max-width: 420px;
-            display: flex; flex-direction: column; align-items: center; gap: 20px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* This forces it to the literal center */
+            width: 380px; /* Locked width to prevent drifting */
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
             pointer-events: auto;
         }
 
-        #timer { font-size: 5rem; font-weight: 800; text-shadow: 0 0 20px var(--glow); margin: 0; }
-
+        /* UI ELEMENTS */
         #command-menu {
-            width: 100%; background: rgba(0, 10, 0, 0.95);
+            width: 100%; background: rgba(0, 15, 0, 0.95);
             border: 2px solid var(--glow); border-radius: 12px;
-            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
         }
 
-        #menu-header { background: var(--glow); color: #000; padding: 12px; cursor: pointer; font-weight: bold; text-align: center; border-radius: 10px 10px 0 0; }
-        #menu-content { padding: 20px; }
+        #timer { font-size: 5rem; font-weight: bold; margin: 10px 0; }
 
-        /* 🖱️ INTERACTIVE ELEMENTS */
         input, select, button {
-            width: 100%; padding: 14px; margin: 10px 0;
-            background: rgba(0,0,0,0.85); border: 2px solid var(--glow);
-            color: var(--glow); border-radius: 8px; font-size: 1rem;
-            pointer-events: auto !important; cursor: pointer; box-sizing: border-box;
+            width: 90%; padding: 12px; margin: 10px 0;
+            background: #000; border: 1px solid var(--glow);
+            color: var(--glow); border-radius: 5px;
+            pointer-events: auto !important;
         }
-        input[type="text"] { cursor: text; outline: none; }
-        input[type="text"]:focus { box-shadow: 0 0 10px var(--glow); }
-        
-        button { background: var(--glow); color: #000; font-weight: bold; border: none; text-transform: uppercase; }
-        button:hover { filter: brightness(1.2); transform: scale(1.02); transition: 0.2s; }
 
-        .firework-particle { position: absolute; width: 4px; height: 4px; border-radius: 50%; pointer-events: none; animation: explode 1s ease-out forwards; }
-        .meteor { position: absolute; pointer-events: none; width: 2px; height: 45px; background: linear-gradient(to top, var(--glow), transparent); }
+        button { background: var(--glow); color: #000; font-weight: bold; cursor: pointer; }
         
-        @keyframes zoom { from { transform: translate(-50%, -50%) scale(0); opacity: 1; } to { transform: translate(var(--tx), var(--ty)) scale(1.5); opacity: 0; } }
-        @keyframes explode { 0% { transform: translate(0, 0) scale(1); opacity: 1; } 100% { transform: translate(var(--ex), var(--ey)) scale(0); opacity: 0; } }
+        .meteor { position: absolute; pointer-events: none; width: 2px; height: 40px; background: linear-gradient(to top, var(--glow), transparent); }
     </style>
 </head>
 <body class="theme-techno">
@@ -68,58 +67,32 @@
 
     <div id="ui-container">
         <div id="login-sector">
-            <h1 style="text-align:center; letter-spacing: 5px;">[ NEURAL_LINK ]</h1>
+            <h1>[ NEURAL_LINK ]</h1>
             <select id="freq-selector">
                 <option value="vapor" data-theme="vapor">DREAMY (Vaporwave)</option>
                 <option value="disco" data-theme="disco">70s GOLD (Disco)</option>
                 <option value="techno" data-theme="techno" selected>DEEP TECHNO (Pulse)</option>
             </select>
-            <input type="text" id="username" placeholder="ENTER PILOT ID..." autocomplete="off">
-            <button onclick="initPilot()">ENGAGE SYSTEMS</button>
+            <input type="text" id="username" placeholder="PILOT_ID..." autocomplete="off">
+            <button onclick="initPilot()">ENGAGE</button>
         </div>
 
-        <div id="mission-sector" style="display: none; width: 100%;">
+        <div id="mission-sector" style="display: none;">
             <div id="timer">25:00</div>
             <div id="command-menu">
-                <div id="menu-header" onclick="toggleMenu()">🛰️ TACTICAL_MENU</div>
-                <div id="menu-content">
-                    <div id="track-info" style="margin-bottom:10px;">STATUS: OPERATIONAL</div>
-                    <label style="font-size:0.7rem;">WARP VELOCITY</label>
-                    <input type="range" id="warp-speed" min="0.5" max="4" step="0.1" value="1">
-                    <button onclick="location.reload()" style="background:transparent; border:1px solid #ff4141; color:#ff4141; font-size:0.7rem; padding:5px;">ABORT MISSION</button>
+                <div style="padding: 15px;">
+                    <p id="iroh-quote">"Hope is something you give yourself."</p>
+                    <button onclick="location.reload()">ABORT</button>
                 </div>
             </div>
-            <p id="iroh-quote" style="font-style: italic; opacity: 0.8; text-align: center;">"Hope is something you give yourself."</p>
         </div>
     </div>
 
     <script>
-        let timeLeft = 25 * 60;
-        let goalReached = false;
-
         function initPilot() {
             document.getElementById('login-sector').style.display = 'none';
             document.getElementById('mission-sector').style.display = 'block';
-            setInterval(updateClock, 1000);
             setInterval(spawnMeteor, 300);
-        }
-
-        function toggleMenu() {
-            const content = document.getElementById('menu-content');
-            content.style.display = content.style.display === 'none' ? 'block' : 'none';
-        }
-
-        function updateClock() {
-            if (timeLeft > 0) {
-                timeLeft--;
-                const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
-                const s = (timeLeft % 60).toString().padStart(2, '0');
-                document.getElementById('timer').innerText = `${m}:${s}`;
-            } else if (!goalReached) {
-                goalReached = true;
-                document.body.classList.add('gold-achieved');
-                launchFireworks();
-            }
         }
 
         document.getElementById('freq-selector').addEventListener('change', function() {
@@ -130,30 +103,11 @@
             const field = document.getElementById('meteor-field');
             const m = document.createElement('div');
             m.className = 'meteor';
-            const speed = document.getElementById('warp-speed').value;
             const angle = Math.random() * Math.PI * 2;
-            const tx = Math.cos(angle) * 1200;
-            const ty = Math.sin(angle) * 1200;
-            m.style.setProperty('--tx', `${tx}px`);
-            m.style.setProperty('--ty', `${ty}px`);
             m.style.left = '50%'; m.style.top = '50%';
             m.style.transform = `translate(-50%, -50%) rotate(${angle + Math.PI/2}rad)`;
-            m.style.animation = `zoom ${1.5/speed}s linear forwards`;
             field.appendChild(m);
-            setTimeout(() => m.remove(), 2000);
-        }
-
-        function launchFireworks() {
-            for(let i=0; i<50; i++) {
-                const p = document.createElement('div');
-                p.className = 'firework-particle';
-                p.style.backgroundColor = '#FFD700';
-                p.style.left = '50%'; p.style.top = '50%';
-                p.style.setProperty('--ex', `${(Math.random()-0.5)*600}px`);
-                p.style.setProperty('--ey', `${(Math.random()-0.5)*600}px`);
-                document.body.appendChild(p);
-                setTimeout(() => p.remove(), 1000);
-            }
+            setTimeout(() => m.remove(), 1000);
         }
     </script>
 </body>
