@@ -187,3 +187,50 @@ updatePilotLog = function() {
     baseUpdateLog();
     checkGoalStatus();
 };
+
+function launchFireworks() {
+    const container = document.getElementById('meteor-field');
+    const colors = ['#FFD700', '#FFA500', '#FFFFFF', '#00FF41'];
+    
+    for (let i = 0; i < 5; i++) {
+        setTimeout(() => {
+            const originX = Math.random() * window.innerWidth;
+            const originY = Math.random() * window.innerHeight;
+            
+            for (let j = 0; j < 30; j++) {
+                const p = document.createElement('div');
+                p.className = 'firework-particle';
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = 50 + Math.random() * 100;
+                const tx = Math.cos(angle) * velocity;
+                const ty = Math.sin(angle) * velocity;
+                
+                p.style.left = originX + 'px';
+                p.style.top = originY + 'px';
+                p.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                p.style.setProperty('--tx', `${tx}px`);
+                p.style.setProperty('--ty', `${ty}px`);
+                
+                container.appendChild(p);
+                setTimeout(() => p.remove(), 1000);
+            }
+        }, i * 300);
+    }
+}
+
+// Update checkGoalStatus to trigger the fireworks once
+let goalReachedNotified = false;
+
+const originalGoalCheck = checkGoalStatus;
+checkGoalStatus = function() {
+    const goalHours = document.getElementById('goal-input').value;
+    const currentHours = totalFocusSeconds / 3600;
+    
+    if (currentHours >= goalHours && !goalReachedNotified) {
+        goalReachedNotified = true;
+        launchFireworks();
+        // Optional: Alert or visual cue
+        document.getElementById('track-info').innerText = "🏆 GOAL REACHED: ELITE PILOT";
+    }
+    originalGoalCheck();
+};
