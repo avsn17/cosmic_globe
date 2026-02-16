@@ -147,3 +147,67 @@ window.onload = () => {
         stars.appendChild(s);
     }
 };
+
+let timeLeft = 25 * 60;
+let timerInterval;
+
+function setCustomTimer() {
+    const mins = document.getElementById('custom-timer-input').value;
+    if (mins > 0) {
+        timeLeft = mins * 60;
+        updateTimerDisplay();
+        // Log flash to show update
+        document.getElementById('timer').style.color = "#fff";
+        setTimeout(() => { document.getElementById('timer').style.color = "var(--glow)"; }, 500);
+    }
+}
+
+function updateTimerDisplay() {
+    const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+    const s = (timeLeft % 60).toString().padStart(2, '0');
+    document.getElementById('timer').innerText = `${m}:${s}`;
+}
+
+// Override the autoCycle to use the new timeLeft logic
+autoCycle = function() {
+    if (timerInterval) clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+        if (timeLeft > 0) {
+            timeLeft--;
+            updateTimerDisplay();
+        }
+        updatePilotLog();
+    }, 1000);
+};
+
+let timeLeft = 25 * 60;
+let timerInterval;
+
+function setCustomTimer() {
+    const mins = document.getElementById('custom-timer-input').value;
+    if (mins > 0) {
+        timeLeft = mins * 60;
+        updateTimerDisplay();
+        // Log flash to show update
+        document.getElementById('timer').style.color = "#fff";
+        setTimeout(() => { document.getElementById('timer').style.color = "var(--glow)"; }, 500);
+    }
+}
+
+function updateTimerDisplay() {
+    const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+    const s = (timeLeft % 60).toString().padStart(2, '0');
+    document.getElementById('timer').innerText = `${m}:${s}`;
+}
+
+// Override the autoCycle to use the new timeLeft logic
+autoCycle = function() {
+    if (timerInterval) clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+        if (timeLeft > 0) {
+            timeLeft--;
+            updateTimerDisplay();
+        }
+        updatePilotLog();
+    }, 1000);
+};
