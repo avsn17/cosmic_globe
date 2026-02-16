@@ -81,3 +81,38 @@ button {
     cursor: pointer;
     text-transform: uppercase;
 }
+#timer {
+    font-size: 4rem;
+    margin: 20px 0;
+    font-weight: bold;
+    text-shadow: 0 0 20px var(--glow-color);
+}
+
+#progress-container {
+    width: 100%;
+    height: 20px;
+    border: 1px solid var(--glow-color);
+    margin: 20px 0;
+    background: rgba(0, 255, 65, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+#progress-bar {
+    width: 0%;
+    height: 100%;
+    background: var(--glow-color);
+    box-shadow: 0 0 15px var(--glow-color);
+    transition: width 1s linear;
+}
+
+input[type="text"] {
+    background: transparent;
+    border: 1px solid var(--glow-color);
+    color: var(--glow-color);
+    padding: 10px;
+    font-family: inherit;
+    text-align: center;
+    margin-bottom: 10px;
+    outline: none;
+}

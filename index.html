@@ -11,10 +11,23 @@
     <div id="star-container"></div>
 
     <div id="ui-container">
-        <h1 id="status">STATUS: STANDBY</h1>
-        <p>COSMIC_GLOBE OS v2.0</p>
-        <hr style="border: 0.5px solid #00ff41; opacity: 0.3; margin: 20px 0;">
-        <button onclick="startWarp()">ENGAGE WARP</button>
+        <div id="login-sector">
+            <p>IDENTIFY PILOT:</p>
+            <input type="text" id="username" placeholder="ENTER CALLSIGN..." autocomplete="off">
+            <button onclick="initPilot()">INITIALIZE</button>
+        </div>
+
+        <div id="mission-sector" style="display: none;">
+            <h1 id="status">STATUS: STANDBY</h1>
+            <p>PILOT: <span id="display-name">---</span></p>
+            <div id="timer">25:00</div>
+            
+            <div id="progress-container">
+                <div id="progress-bar"></div>
+            </div>
+
+            <button id="warp-btn" onclick="startWarp()">ENGAGE WARP</button>
+        </div>
     </div>
 
     <script src="script.js"></script>
