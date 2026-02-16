@@ -3,51 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COSMIC_GLOBE: DEEP SPACE</title>
+    <title>COSMIC_GLOBE: AUDIO_SYNC</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="scanlines"></div>
     <div id="star-container"></div>
-    <div id="nebula"></div>
+    <div id="meteor-field"></div>
 
     <div id="ui-container">
         <div id="login-sector">
-            <h2 style="color: var(--nebula-blue); text-shadow: 0 0 10px var(--nebula-blue);">[ INITIALIZE NEURAL LINK ]</h2>
-            <input type="text" id="username" placeholder="PILOT ID..." autocomplete="off">
+            <h2>[ INITIALIZE NEURAL LINK ]</h2>
+            <input type="text" id="username" placeholder="PILOT ID...">
             <br><br>
-            <button onclick="initPilot()">CONNECT</button>
+            <button onclick="initPilot()">CONNECT & PLAY MUSIC</button>
         </div>
 
         <div id="mission-sector" style="display: none;">
-            <div id="pursuit-display">
-                <div class="pursuit-lane" id="lane-1"><span class="ship-label">RANK 1</span><div class="ship" id="ship-1">🚀</div></div>
-                <div class="pursuit-lane user-lane"><span class="ship-label">YOU</span><div class="ship" id="user-ship">🛸</div></div>
+            <div id="iroh-comms">
+                <p id="iroh-quote">"Music is a form of expression that transcends all boundaries."</p>
             </div>
-
-            <div class="hud-grid">
-                <div class="hud-column">
-                    <div class="stat-box">
-                        <small>FUEL/O2 LEVEL</small>
-                        <div class="life-support-container"><div id="life-support-bar"></div></div>
-                    </div>
-                    <div id="timer">25:00</div>
-                    <div id="progress-container"><div id="progress-bar"></div></div>
-                    <h2 id="status">WARP STANDBY</h2>
-                </div>
-
-                <div class="hud-column">
-                    <div id="iroh-comms">
-                        <p id="iroh-quote">"Sometimes life is like this dark tunnel..."</p>
-                    </div>
-                    <div id="mission-log">
-                        <div class="log-entry">> SYSTEM BOOT COMPLETE</div>
-                        <div class="log-entry">> WAITING FOR PILOT...</div>
-                    </div>
-                </div>
-            </div>
+            <div id="timer">25:00</div>
+            <div id="status">AUDIO SYNC ACTIVE</div>
             
-            <input type="text" id="pilot-input" placeholder="MESSAGE UNCLE IROH..." onkeypress="handleIroh(event)">
+            <audio id="space-radio" crossorigin="anonymous" loop>
+                <source src="https://stream.zeno.fm/0r0xa792kwzuv" type="audio/mpeg">
+            </audio>
         </div>
     </div>
     <script src="script.js"></script>

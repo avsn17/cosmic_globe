@@ -1,74 +1,67 @@
-const irohQuotes = [
-    "Hope is something you give yourself. That is the meaning of inner strength.",
-    "Destiny is a funny thing. You never know how things are going to work out.",
-    "While it is best to believe in oneself, a little help from others is a blessing.",
-    "Sometimes the best way to solve your own problems is to help someone else."
-];
-
-let totalLY = 0;
+let audioCtx, analyser, dataArray;
+const irohQuotes = ["Hope is something you give yourself.", "Failure is the opportunity to begin again."];
 
 function initPilot() {
     const user = document.getElementById('username').value;
     if (user.trim() !== "") {
         document.getElementById('login-sector').style.display = "none";
         document.getElementById('mission-sector').style.display = "block";
-        startAutomatedMission();
+        setupAudio();
+        startWarp();
     }
 }
 
-function startAutomatedMission() {
+function setupAudio() {
+    const audio = document.getElementById('space-radio');
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    analyser = audioCtx.createAnalyser();
+    const source = audioCtx.createMediaElementSource(audio);
+    source.connect(analyser);
+    analyser.connect(audioCtx.destination);
+    analyser.fftSize = 256;
+    dataArray = new Uint8Array(analyser.frequencyBinCount);
+    
+    audio.play();
+    detectBeat();
+}
+
+function detectBeat() {
+    analyser.getByteFrequencyData(dataArray);
+    // Use low-frequency (bass) data to trigger meteors
+    let sum = 0;
+    for (let i = 0; i < 10; i++) sum += dataArray[i];
+    let average = sum / 10;
+
+    if (average > 180) { // Threshold for "beat"
+        spawnMeteor();
+    }
+    requestAnimationFrame(detectBeat);
+}
+
+function spawnMeteor() {
+    const field = document.getElementById('meteor-field');
+    const m = document.createElement('div');
+    m.className = 'meteor';
+    
+    // Random directions for the chase feel
+    const x = (Math.random() - 0.5) * 1000;
+    const y = (Math.random() - 0.5) * 1000;
+    m.style.setProperty('--x', `${x}px`);
+    m.style.setProperty('--y', `${y}px`);
+    m.style.left = '50%';
+    m.style.top = '50%';
+    m.style.animation = 'meteor-zoom 0.6s ease-out forwards';
+    
+    field.appendChild(m);
+    setTimeout(() => m.remove(), 600);
+}
+
+function startWarp() {
     let seconds = 25 * 60;
-    const ui = document.getElementById('ui-container');
-    const timerDisplay = document.getElementById('timer');
-    
-    ui.classList.add('warp-active');
-    
-    const cycle = setInterval(() => {
+    setInterval(() => {
         seconds--;
         let mins = Math.floor(seconds / 60);
         let secs = seconds % 60;
-        timerDisplay.innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-
-        // RANDOM HAZARD: 1% chance every second of an "Asteroid Field"
-        if (Math.random() < 0.01) triggerHazard();
-
-        if (seconds <= 0) {
-            clearInterval(cycle);
-            totalLY += 100;
-            triggerMilestone();
-            setTimeout(startAutomatedMission, 5000); // 5 sec reset
-        }
+        document.getElementById('timer').innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
     }, 1000);
 }
-
-function triggerHazard() {
-    const ui = document.getElementById('ui-container');
-    ui.classList.add('hazard-alert', 'shaking');
-    const originalQuote = document.getElementById('iroh-quote').innerText;
-    document.getElementById('iroh-quote').innerText = "Stay calm, pilot. This storm will pass.";
-    
-    setTimeout(() => {
-        ui.classList.remove('hazard-alert', 'shaking');
-        document.getElementById('iroh-quote').innerText = originalQuote;
-    }, 3000);
-}
-
-function triggerMilestone() {
-    document.body.style.backgroundColor = "white";
-    setTimeout(() => { document.body.style.backgroundColor = "#050505"; }, 200);
-}
-
-function createStars() {
-    const container = document.getElementById('star-container');
-    for (let i = 0; i < 150; i++) {
-        const star = document.createElement('div');
-        star.className = 'star';
-        star.style.width = Math.random() * 3 + 'px';
-        star.style.height = star.style.width;
-        star.style.left = Math.random() * 100 + 'vw';
-        star.style.animationDuration = (Math.random() * 2 + 1) + 's';
-        star.style.animationDelay = Math.random() * 5 + 's';
-        container.appendChild(star);
-    }
-}
-window.onload = createStars;
