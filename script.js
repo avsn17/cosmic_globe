@@ -1,9 +1,35 @@
-let timerInterval;
+const irohQuotes = [
+    "While it is always best to believe in oneself, a little help from others can be a great blessing.",
+    "Failure is only the opportunity to begin again, only this time, more wisely.",
+    "Hope is something you give yourself. That is the meaning of inner strength.",
+    "It is important to draw wisdom from many different places.",
+    "Good times become good memories, but bad times become good lessons.",
+    "You must look within yourself to save yourself from your other self. Only then will your true self reveal itself.",
+    "Protection and power are overrated. I think you are very wise to choose happiness and love.",
+    "Be careful what you wish for, Admiral. History is not always kind to its subjects."
+];
+
+function handleIroh(event) {
+    if (event.key === "Enter") {
+        const input = document.getElementById('pilot-input');
+        const quoteDisplay = document.getElementById('iroh-quote');
+        
+        // Pick a random piece of wisdom
+        const randomQuote = irohQuotes[Math.floor(Math.random() * irohQuotes.length)];
+        
+        // Visual feedback
+        quoteDisplay.style.opacity = 0;
+        setTimeout(() => {
+            quoteDisplay.innerText = `"${randomQuote}"`;
+            quoteDisplay.style.opacity = 1;
+            input.value = ""; // Clear input
+        }, 300);
+    }
+}
 
 function initPilot() {
     const user = document.getElementById('username').value;
     if (user.trim() === "") return alert("PILOT CALLSIGN REQUIRED");
-    
     document.getElementById('display-name').innerText = user.toUpperCase();
     document.getElementById('login-sector').style.display = "none";
     document.getElementById('mission-sector').style.display = "block";
@@ -12,37 +38,25 @@ function initPilot() {
 function startWarp() {
     const status = document.getElementById('status');
     const ui = document.getElementById('ui-container');
-    const warpBtn = document.getElementById('warp-btn');
     const bar = document.getElementById('progress-bar');
-    
-    let minutes = 25;
-    let seconds = minutes * 60;
-    let totalSeconds = seconds;
+    let seconds = 25 * 60;
+    let total = seconds;
 
     status.innerText = "WARP ACTIVE";
     status.classList.add('locked-in');
     ui.classList.add('shaking');
-    warpBtn.disabled = true;
-    warpBtn.style.opacity = "0.3";
 
-    timerInterval = setInterval(() => {
+    const timerInterval = setInterval(() => {
         seconds--;
-        
-        // Update Timer Text
         let mins = Math.floor(seconds / 60);
         let secs = seconds % 60;
-        document.getElementById('timer').innerText = 
-            `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-
-        // Update Progress Bar
-        let percent = ((totalSeconds - seconds) / totalSeconds) * 100;
-        bar.style.width = percent + "%";
+        document.getElementById('timer').innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        bar.style.width = ((total - seconds) / total * 100) + "%";
 
         if (seconds <= 0) {
             clearInterval(timerInterval);
             status.innerText = "MISSION SUCCESS";
             status.classList.remove('locked-in');
-            alert("OBJECTIVE REACHED. WELL DONE, PILOT.");
         }
     }, 1000);
 

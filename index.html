@@ -18,6 +18,11 @@
         </div>
 
         <div id="mission-sector" style="display: none;">
+            <div id="iroh-comms">
+                <small style="opacity: 0.5;">[COMMS CHANNEL: UNCLE IROH]</small>
+                <p id="iroh-quote">"Sharing tea with a fascinating stranger is one of life’s true delights."</p>
+            </div>
+            
             <h1 id="status">STATUS: STANDBY</h1>
             <p>PILOT: <span id="display-name">---</span></p>
             <div id="timer">25:00</div>
@@ -27,6 +32,8 @@
             </div>
 
             <button id="warp-btn" onclick="startWarp()">ENGAGE WARP</button>
+            <br>
+            <input type="text" id="pilot-input" placeholder="TALK TO IROH..." onkeypress="handleIroh(event)">
         </div>
     </div>
 
