@@ -1,16 +1,18 @@
-# 🌌 COSMIC_GLOBE: ELITE_HUD v9.0
+# 🌌 COSMIC_GLOBE: CENTERED_ELITE v12.0
 
 > **"Hope is something you give yourself."** — *Uncle Iroh*
 
-### 👉 [LAUNCH MISSION CONTROL](https://avsn17.github.io/cosmic_globe/)
+### 👉 [LIVE PRODUCTION LINK](https://avsn17.github.io/cosmic_globe/)
 
-## 🛰️ v9.0 ELITE SPECIFICATIONS
-* **Ergonomic Dashboard:** All HUD elements (Timer, Quote, and Menu) have been pulled from the edges into a centered "Cockpit Safe Zone."
-* **Golden Overdrive:** Upon reaching your Daily Goal, the entire universe—including shooting stars—turns to shimmering gold.
-* **Music-Reactive Fireworks:** Goal achievements trigger explosive particles synced to the bass of your frequency.
-* **Dockable Command Menu:** The central menu can be docked to the top-center to clear your visual field while maintaining control.
-* **Smart Auto-Save:** Persistent focus tracking that survives browser crashes and tab closures.
+## 🛰️ v12.0 CORE ARCHITECTURE
+* **Dead-Center Pillar:** Every HUD element is forced into a 400px vertical stack in the exact center of the screen.
+* **Selection Priority:** UI layering (Z-index) is optimized so you can click, type, and select without interference.
+* **Gold Overdrive:** Meteors, stars, and HUD turn gold once the daily mission goal is achieved.
+* **Music-Reactive Fireworks:** Celebratory particles trigger on the beat once you hit your focus target.
 
-## 🕹️ PILOT CONTROLS
-* **[ H ] Key:** Cinematic Mode (Hide HUD)
-* **[ Click Menu Header ]:** Toggle Dashboard/Docked state.
+## 🕹️ KEYBOARD COMMANDS
+* **[ H ] Key:** Toggle Cinematic Mode (Hides UI, keeps music/stars).
+* **[ F ] Key:** Toggle Fullscreen.
+
+---
+**[SYSTEM STATUS: OPTIMIZED]** *Safe travels, Pilot Avi.*
