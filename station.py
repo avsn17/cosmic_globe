@@ -148,3 +148,22 @@ def main():
 
 if __name__ == "__main__":
     main()
+# Add these options to your main() loop in station.py
+
+def music_menu():
+    print("\n\033[1;35m--- SELECT NEURAL STREAM ---")
+    print("1. Nightride FM (Synthwave)")
+    print("2. Lana Del Rey (Cozy/Noir)")
+    print("3. Cigarettes After Sex (Slowcore)")
+    print("4. Bee Gees (Space Disco)")
+    print("5. Back to Menu")
+    
+    choice = input("\nSTREAM_ID > ")
+    streams = {
+        "1": "https://stream.nightride.fm/nightride.mp3",
+        "2": "https://www.youtube.com/results?search_query=lana+del+rey+mix",
+        "3": "https://www.youtube.com/results?search_query=cigarettes+after+sex+mix",
+        "4": "https://www.youtube.com/results?search_query=bee+gees+mix"
+    }
+    if choice in streams:
+        webbrowser.open(streams[choice])
