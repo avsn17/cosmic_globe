@@ -50,3 +50,18 @@ body {
     50% { text-shadow: -2px 0 var(--accent), 2px 0 #f0f; }
     100% { text-shadow: 2px 0 var(--accent), -2px 0 #f0f; }
 }
+#toggle-panel {
+    position: absolute;
+    top: 20px; right: 20px;
+    background: rgba(0,0,0,0.8);
+    border: 1px solid var(--glow);
+    padding: 10px;
+    font-size: 0.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    z-index: 100;
+}
+
+#toggle-panel label { cursor: pointer; display: flex; align-items: center; gap: 5px; }
+#toggle-panel input { accent-color: var(--glow); }
