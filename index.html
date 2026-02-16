@@ -3,138 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CHRONOS_V33_NEBULA</title>
+    <title>CHRONOS_V35_PULSE</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --glow: #00ff41; --sparkle: #ffffff; --nebula: #001500; }
-        body, html { margin:0; padding:0; background: radial-gradient(circle at center, #001a00 0%, #000 100%); color:var(--glow); font-family:'Rajdhani',sans-serif; width:100vw; height:100vh; overflow:hidden; }
+        :root { --glow: #00ff41; --bg: #000; }
+        body, html { margin:0; padding:0; background: var(--bg); color:var(--glow); font-family:'Rajdhani',sans-serif; width:100vw; height:100vh; overflow:hidden; }
         
-        /* Sparkle Animation */
-        @keyframes twinkle { 0%, 100% { opacity: 0.3; transform: scale(1); } 50% { opacity: 1; transform: scale(1.2); } }
-        .star { position: absolute; background: white; border-radius: 50%; pointer-events: none; }
-        .sparkle { position: absolute; background: var(--glow); border-radius: 50%; filter: blur(1px); animation: twinkle var(--d) infinite; }
+        /* Reactive Background */
+        #nebula-canvas { position: fixed; top:0; left:0; z-index: 1; filter: blur(2px); transition: 0.5s; }
+        
+        /* The Pulse Animation */
+        @keyframes pulseGlow {
+            0% { text-shadow: 0 0 20px var(--glow); transform: scale(1); }
+            50% { text-shadow: 0 0 80px var(--glow), 0 0 120px #fff; transform: scale(1.02); }
+            100% { text-shadow: 0 0 20px var(--glow); transform: scale(1); }
+        }
+        .sync-active #timer-display { animation: pulseGlow 2s infinite ease-in-out; }
 
+        /* Sparkling Stars */
+        .star { position: absolute; background: white; border-radius: 50%; opacity: 0.5; z-index: 2; }
+        
         #menu-trigger {
             position: fixed; top: 25px; left: 25px; z-index: 10001;
             background: #000; border: 2px solid var(--glow); color: var(--glow);
             padding: 12px 25px; font-family: 'Orbitron'; font-weight: 900;
-            cursor: pointer; letter-spacing: 2px; transition: 0.3s; display: none;
-            box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+            cursor: pointer; display: none;
         }
-        #menu-trigger:hover { background: var(--glow); color: #000; box-shadow: 0 0 30px var(--glow); }
 
         #side-panel {
             width: 420px; position: fixed; left: -450px; top: 0; bottom: 0;
-            background: rgba(0, 10, 0, 0.95); border-right: 3px solid var(--glow);
+            background: rgba(0, 5, 0, 0.9); border-right: 2px solid var(--glow);
             display: flex; flex-direction: column; padding: 90px 25px 25px 25px;
-            box-sizing: border-box; transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1);
-            z-index: 10000; backdrop-filter: blur(10px);
+            z-index: 10000; backdrop-filter: blur(15px); transition: 0.5s;
         }
 
-        .card { background: rgba(0, 255, 65, 0.05); border: 1px solid rgba(0, 255, 65, 0.2); padding: 15px; margin-bottom: 20px; box-shadow: inset 0 0 10px rgba(0,255,65,0.1); }
-        h3 { font-family: 'Orbitron'; font-size: 0.75rem; margin: 0 0 10px 0; letter-spacing: 2px; color: #fff; }
-
-        textarea { width: 100%; height: 150px; background: rgba(0,0,0,0.7); border: 1px solid var(--dim); color: #fff; padding: 10px; box-sizing: border-box; resize: none; outline: none; border-left: 3px solid var(--glow); }
+        #timer-display { font-family: 'Orbitron'; font-size: 14rem; font-weight: 900; z-index: 5; position: relative; pointer-events: none; }
         
-        #timer-display { font-family: 'Orbitron'; font-size: 14rem; font-weight: 900; text-shadow: 0 0 60px var(--glow), 0 0 100px rgba(0,255,65,0.2); margin: 0; position: relative; z-index: 5; }
-        
-        .main-btn { width: 350px; height: 80px; background: var(--glow); border: none; font-family: 'Orbitron'; font-weight: 900; font-size: 1.5rem; cursor: pointer; transition: 0.4s; box-shadow: 0 0 20px rgba(0,255,65,0.4); }
-        .main-btn:hover { background: #fff; transform: scale(1.05); box-shadow: 0 0 40px #fff; }
+        .visualizer-bar { position: fixed; bottom: 0; background: var(--glow); width: 4px; z-index: 2; opacity: 0.3; transition: height 0.1s; }
     </style>
 </head>
-<body>
+<body class="sync-active">
+    <canvas id="nebula-canvas"></canvas>
     <div id="star-field"></div>
+    <div id="vis-container"></div>
     
-    <audio id="bg-audio" loop></audio>
-    <audio id="sfx-click" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
-    <audio id="sfx-complete" src="https://assets.mixkit.co/active_storage/sfx/1433/1433-preview.mp3"></audio>
-
+    <audio id="bg-audio" crossorigin="anonymous" loop></audio>
     <button id="menu-trigger" onclick="toggleMenu()">☰ HUD_COMMAND</button>
 
-    <div id="boot-screen" style="position:fixed; width:100%; height:100%; background:#000; z-index:99999; display:flex; align-items:center; justify-content:center; flex-direction:column; border: 15px solid var(--glow); box-sizing: border-box;">
-        <h1 style="font-family:'Orbitron'; font-size:4.5rem; letter-spacing:20px; text-shadow: 0 0 30px var(--glow);">NEBULA</h1>
-        <p style="font-family:'Orbitron'; opacity:0.6; margin-bottom:40px; letter-spacing: 5px;">STATION_V33_SPARKLE_SYSTEM</p>
-        <button onclick="startSystem()" style="width:300px; padding:20px; background:var(--glow); border:none; font-family:'Orbitron'; font-weight:900; cursor:pointer;">ENGAGE_WARP</button>
+    <div id="boot-screen" style="position:fixed; width:100%; height:100%; background:#000; z-index:99999; display:flex; align-items:center; justify-content:center; flex-direction:column; border: 10px solid var(--glow);">
+        <h1 style="font-family:'Orbitron'; font-size:4rem; letter-spacing:15px;">NEURAL_PULSE</h1>
+        <button onclick="startSystem()" style="width:300px; padding:20px; background:var(--glow); border:none; font-family:'Orbitron'; font-weight:900; cursor:pointer; margin-top:20px;">INITIALIZE_SYNC</button>
     </div>
 
-    <div id="main-container" style="display:none; width:100vw; height:100vh; position:relative; z-index:10; display:flex;">
+    <div id="main-container" style="display:none; width:100vw; height:100vh; position:relative; z-index:10; display:flex; align-items:center; justify-content:center;">
         <div id="side-panel">
-            <div class="card">
-                <h3>🛰️ SYNC_PROTOCOL</h3>
-                <div style="display:flex; justify-content:space-between;">
-                    <button class="sync-btn" style="width:48%; background:transparent; border:1px solid var(--glow); color:var(--glow); cursor:pointer; font-family:'Orbitron'; font-size:0.6rem; padding:5px;" onclick="exportData()">EXPORT .JSON</button>
-                    <button class="sync-btn" style="width:48%; background:transparent; border:1px solid var(--glow); color:var(--glow); cursor:pointer; font-family:'Orbitron'; font-size:0.6rem; padding:5px;" onclick="document.getElementById('fileInput').click()">IMPORT .JSON</button>
-                    <input type="file" id="fileInput" style="display:none" onchange="importData(event)">
-                </div>
-            </div>
-
-            <div class="card">
-                <h3>📖 STAR_LOGS</h3>
-                <textarea id="manual-log" oninput="saveLocal()" placeholder="Recording neural patterns..."></textarea>
-            </div>
-
-            <div class="card">
-                <h3>🏆 FLIGHT_DATA</h3>
-                <div style="display:flex; justify-content:space-around; text-align:center;">
-                    <div>SESSIONS<br><span id="s-count" style="font-family:'Orbitron'; font-size:1.5rem; color:#fff;">0</span></div>
-                    <div>MINUTES<br><span id="m-count" style="font-family:'Orbitron'; font-size:1.5rem; color:#fff;">0</span></div>
-                </div>
-            </div>
-
-            <button onclick="location.reload()" style="margin-top:auto; background:#300; color:#f44; border:1px solid #f44; padding:15px; cursor:pointer; font-family:'Orbitron'; font-weight:bold;">TERMINATE_STATION</button>
+             <h3 style="font-family:'Orbitron'; font-size:0.7rem;">LOGBOOK</h3>
+             <textarea id="manual-log" style="width:100%; height:200px; background:transparent; color:#fff; border:1px solid var(--glow);" oninput="saveLocal()"></textarea>
+             <button onclick="location.reload()" style="margin-top:auto; color:red; border:1px solid red; background:transparent; padding:10px;">EXIT_STATION</button>
         </div>
 
-        <div id="timer-zone" style="flex-grow:1; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+        <div id="timer-zone" style="text-align:center;">
             <div id="timer-display">25:00</div>
-            <p id="status-text" style="font-family:'Orbitron'; letter-spacing:10px; opacity:0.6; margin-bottom:50px; color:#fff;">SYSTEM_READY</p>
-            <button id="timer-btn" class="main-btn" onclick="timerControl()">START_MISSION</button>
+            <button id="timer-btn" onclick="timerControl()" style="width:300px; height:60px; background:var(--glow); border:none; font-family:'Orbitron'; font-weight:900; cursor:pointer;">ENGAGE_WARP</button>
         </div>
     </div>
 
     <script>
-        let rTime = 25 * 60; let running = false; let menuOpen = false;
-        let data = JSON.parse(localStorage.getItem('p_data_v32')) || { sessions: 0, minutes: 0, log: "", tasks: [] };
+        let rTime = 25 * 60; let running = false;
+        let data = JSON.parse(localStorage.getItem('p_data_v32')) || { sessions: 0, minutes: 0, log: "" };
 
-        function createStars() {
-            const field = document.getElementById('star-field');
-            for(let i=0; i<150; i++) {
-                const s = document.createElement('div');
-                const isSparkle = Math.random() > 0.7;
-                s.className = isSparkle ? 'sparkle' : 'star';
-                const size = Math.random() * (isSparkle ? 4 : 2);
-                s.style.width = s.style.height = size + 'px';
-                s.style.left = Math.random() * 100 + 'vw';
-                s.style.top = Math.random() * 100 + 'vh';
-                if(isSparkle) s.style.setProperty('--d', (Math.random() * 3 + 1) + 's');
-                field.appendChild(s);
-            }
-        }
-        createStars();
-
-        function playSfx(id) { document.getElementById(id).currentTime = 0; document.getElementById(id).play(); }
+        // --- VISUALIZER ENGINE ---
+        const canvas = document.getElementById('nebula-canvas');
+        const ctx = canvas.getContext('2d');
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize); resize();
 
         function startSystem() {
             document.getElementById('boot-screen').style.display = 'none';
             document.getElementById('main-container').style.display = 'flex';
             document.getElementById('menu-trigger').style.display = 'block';
-            document.getElementById('bg-audio').src = "https://stream.nightride.fm/nightride.mp3";
-            document.getElementById('bg-audio').volume = 0.4;
+            const audio = document.getElementById('bg-audio');
+            audio.src = "https://stream.nightride.fm/nightride.mp3";
+            audio.play();
+            renderNebula();
+            createVis();
             refreshUI();
         }
 
-        function toggleMenu() {
-            playSfx('sfx-click');
-            menuOpen = !menuOpen;
-            document.getElementById('side-panel').style.left = menuOpen ? "0px" : "-450px";
-            document.getElementById('menu-trigger').style.background = menuOpen ? "var(--glow)" : "#000";
-            document.getElementById('menu-trigger').style.color = menuOpen ? "#000" : "var(--glow)";
+        function createVis() {
+            const container = document.getElementById('vis-container');
+            for(let i=0; i<60; i++) {
+                let bar = document.createElement('div');
+                bar.className = 'visualizer-bar';
+                bar.style.left = (i * 1.7) + 'vw';
+                container.appendChild(bar);
+            }
+            animateVis();
+        }
+
+        function animateVis() {
+            const bars = document.querySelectorAll('.visualizer-bar');
+            bars.forEach(bar => {
+                let h = Math.random() * 40; // Simulated audio data
+                bar.style.height = h + 'vh';
+            });
+            setTimeout(animateVis, 150);
+        }
+
+        function renderNebula() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            let time = Date.now() * 0.001;
+            for(let i=0; i<5; i++) {
+                let x = canvas.width/2 + Math.sin(time + i) * 100;
+                let y = canvas.height/2 + Math.cos(time * 0.5 + i) * 100;
+                let grad = ctx.createRadialGradient(x, y, 0, x, y, 400);
+                grad.addColorStop(0, 'rgba(0, 255, 65, 0.05)');
+                grad.addColorStop(1, 'transparent');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0,0,canvas.width, canvas.height);
+            }
+            requestAnimationFrame(renderNebula);
         }
 
         function timerControl() {
-            playSfx('sfx-click');
             running = !running;
-            document.getElementById('timer-btn').innerText = running ? "HOLD_POSITION" : "RESUME_WARP";
-            document.getElementById('status-text').innerText = running ? "MISSION_IN_PROGRESS" : "SYSTEM_PAUSED";
+            document.getElementById('timer-btn').innerText = running ? "HOLD" : "RESUME";
             if(running) tick();
         }
 
@@ -146,42 +139,12 @@
                 const s = (rTime % 60).toString().padStart(2, '0');
                 document.getElementById('timer-display').innerText = `${m}:${s}`;
                 setTimeout(tick, 1000);
-            } else {
-                data.sessions++; data.minutes += 25;
-                saveLocal();
-                playSfx('sfx-complete');
-                alert("Mission Accomplished, Pilot AVI.");
-                location.reload();
             }
         }
-
-        function saveLocal() {
-            data.log = document.getElementById('manual-log').value;
-            localStorage.setItem('p_data_v32', JSON.stringify(data));
-            refreshUI();
-        }
-
-        function refreshUI() {
-            document.getElementById('s-count').innerText = data.sessions;
-            document.getElementById('m-count').innerText = data.minutes;
-            document.getElementById('manual-log').value = data.log || "";
-        }
-
-        function exportData() {
-            const blob = new Blob([JSON.stringify(data, null, 4)], {type: "application/json"});
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url; a.download = "pilot_data.json";
-            a.click();
-        }
-
-        function importData(event) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                data = JSON.parse(e.target.result);
-                saveLocal();
-            };
-            reader.readAsText(event.target.files[0]);
-        }
+        
+        function refreshUI() { document.getElementById('manual-log').value = data.log || ""; }
+        function saveLocal() { data.log = document.getElementById('manual-log').value; localStorage.setItem('p_data_v32', JSON.stringify(data)); }
+        function toggleMenu() { let p = document.getElementById('side-panel'); p.style.left = p.style.left === "0px" ? "-450px" : "0px"; }
     </script>
 </body>
 </html>
