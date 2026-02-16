@@ -153,3 +153,24 @@ autoCycle = function() {
     originalAutoCycle();
     setInterval(updatePilotLog, 1000);
 };
+
+function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+    } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+    }
+}
+
+function resetLog() {
+    if(confirm("Wipe Pilot Log and reset focus hours?")) {
+        totalFocusSeconds = 0;
+        localStorage.setItem('cosmic_focus_time', 0);
+        updatePilotLog();
+    }
+}
+
+function nextQuote() {
+    const q = irohQuotes[Math.floor(Math.random() * irohQuotes.length)];
+    document.getElementById('iroh-quote').innerText = q;
+}

@@ -71,3 +71,28 @@ button:hover {
     top: 0; left: 0;
     width: 100vw; height: 100vh;
 }
+.btn-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+}
+
+.util-btn {
+    background: transparent;
+    border: 1px solid var(--glow);
+    color: var(--glow);
+    font-size: 8px;
+    padding: 5px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: 0.2s;
+}
+
+.util-btn:hover {
+    background: var(--glow);
+    color: #000;
+}
+
+#cinematic-btn {
+    grid-column: span 2;
+}

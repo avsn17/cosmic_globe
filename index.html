@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COSMIC_GLOBE: COMMAND_CENTER_v7</title>
+    <title>COSMIC_GLOBE: COMMAND_CENTER_v8</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -22,7 +22,7 @@
             <br><br>
             <input type="text" id="username" placeholder="PILOT_ID..." autocomplete="off">
             <br><br>
-            <button onclick="initPilot()">ENGAGE</button>
+            <button id="engage-btn" onclick="initPilot()">ENGAGE SYSTEMS</button>
         </div>
 
         <div id="mission-sector" style="display: none;">
@@ -48,27 +48,25 @@
                     </div>
                     <hr>
                     <div class="menu-group stats-panel">
-                        <small>PILOT_LOG (TOTAL FOCUS)</small>
+                        <small>PILOT_LOG</small>
                         <div id="total-time">00h 00m 00s</div>
+                        <button class="util-btn" onclick="resetLog()" style="color:#ff3333; border-color:#ff3333; margin-top:5px;">RESET_LOG</button>
                     </div>
-                    <div class="menu-group">
-                        <button id="cinematic-btn" onclick="toggleHUD()">CINEMATIC [H]</button>
+                    <div class="menu-group btn-grid">
+                        <button class="util-btn" onclick="toggleFullscreen()">FULLSCREEN</button>
+                        <button class="util-btn" onclick="nextQuote()">NEW_QUOTE</button>
+                        <button class="util-btn" id="cinematic-btn" onclick="toggleHUD()">CINEMATIC [H]</button>
                     </div>
                 </div>
             </div>
 
             <div class="hud-grid">
                 <div class="hud-left">
-                    <div class="stat-box">
-                        <small>NEURAL LOAD</small>
-                        <div id="load-container"><div id="load-bar"></div></div>
-                    </div>
                     <div id="timer">25:00</div>
-                    <div id="progress-container"><div id="progress-bar"></div></div>
+                    <div id="load-container"><div id="load-bar"></div></div>
                 </div>
                 <div class="hud-right">
                     <div id="iroh-comms"><p id="iroh-quote">"Hope is something you give yourself."</p></div>
-                    <div id="mission-log"></div>
                 </div>
             </div>
             <audio id="space-radio" crossorigin="anonymous" loop></audio>
