@@ -1,18 +1,16 @@
-# 🌌 COSMIC_GLOBE: CENTERED_ELITE v12.0
+# 🌌 COSMIC_GLOBE: MULTI-CHROME v13.0
 
 > **"Hope is something you give yourself."** — *Uncle Iroh*
 
 ### 👉 [LIVE PRODUCTION LINK](https://avsn17.github.io/cosmic_globe/)
 
-## 🛰️ v12.0 CORE ARCHITECTURE
-* **Dead-Center Pillar:** Every HUD element is forced into a 400px vertical stack in the exact center of the screen.
-* **Selection Priority:** UI layering (Z-index) is optimized so you can click, type, and select without interference.
-* **Gold Overdrive:** Meteors, stars, and HUD turn gold once the daily mission goal is achieved.
-* **Music-Reactive Fireworks:** Celebratory particles trigger on the beat once you hit your focus target.
+## 🛰️ v13.0 THEME & LAYOUT ENGINE
+* **Instant Theme Swapping:** Select a frequency to instantly change the cockpit's color profile (Vapor, Disco, Techno).
+* **Interactive Selection:** Fixed Z-index and pointer-events so Pilot ID and Select menus are 100% clickable.
+* **Centered Pillar:** All UI elements are locked in a vertical stack in the dead center of the screen.
+* **Gold Overdrive Sync:** When goals are reached, the theme-specific colors shift to Elite Gold.
 
-## 🕹️ KEYBOARD COMMANDS
-* **[ H ] Key:** Toggle Cinematic Mode (Hides UI, keeps music/stars).
-* **[ F ] Key:** Toggle Fullscreen.
-
----
-**[SYSTEM STATUS: OPTIMIZED]** *Safe travels, Pilot Avi.*
+## 🕹️ OPERATION
+1. Select Frequency (Color will update immediately).
+2. Enter Pilot ID.
+3. Hit ENGAGE.
