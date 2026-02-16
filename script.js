@@ -1,5 +1,5 @@
 let audioCtx, analyser, dataArray, source, audio;
-const irohQuotes = ["Hope is something you give yourself.", "Destiny is a funny thing.", "Sharing tea is a delight."];
+const irohQuotes = ["Hope is something you give yourself.", "Sharing tea is a delight.", "Destiny is funny."];
 
 async function initPilot() {
     const sel = document.getElementById('freq-selector');
@@ -13,16 +13,18 @@ async function initPilot() {
     audio.src = sel.value;
     audio.play();
     
-    // UI Event Listeners
+    // --- FEATURE LISTENERS ---
     document.getElementById('toggle-scanlines').addEventListener('change', (e) => {
         document.getElementById('scanline-layer').style.display = e.target.checked ? 'block' : 'none';
     });
 
-    // Keyboard Shortcut: H to Hide Central HUD only
+    document.getElementById('toggle-mute').addEventListener('change', (e) => {
+        audio.muted = e.target.checked;
+    });
+
     window.addEventListener('keydown', (e) => {
         if (e.key.toLowerCase() === 'h') {
             const ui = document.getElementById('ui-container');
-            // Toggle opacity of the central UI box
             ui.style.opacity = ui.style.opacity === '0' ? '1' : '0';
         }
     });
@@ -65,15 +67,20 @@ function renderEngine() {
 
     let bass = dataArray[0];
     if (bass > 195 && document.getElementById('toggle-meteors').checked) { 
-        spawnLightStreak(bass);
+        spawnLightStreak();
     }
     requestAnimationFrame(renderEngine);
 }
 
-function spawnLightStreak(power) {
+function spawnLightStreak() {
     const field = document.getElementById('meteor-field');
     const m = document.createElement('div');
     m.className = 'meteor';
+    
+    // Get Warp Speed from Slider
+    const speedMult = document.getElementById('warp-speed').value;
+    const duration = 0.6 / speedMult;
+
     const angle = Math.random() * Math.PI * 2;
     const dist = 1200;
     const x = Math.cos(angle) * dist, y = Math.sin(angle) * dist;
@@ -81,9 +88,10 @@ function spawnLightStreak(power) {
     m.style.setProperty('--y', `${y}px`);
     m.style.left = '50%'; m.style.top = '50%';
     m.style.transform = `translate(-50%, -50%) rotate(${angle + Math.PI/2}rad)`;
-    m.style.animation = `zoom 0.5s linear forwards`;
+    m.style.animation = `zoom ${duration}s linear forwards`;
+    
     field.appendChild(m);
-    setTimeout(() => m.remove(), 500);
+    setTimeout(() => m.remove(), duration * 1000);
 }
 
 function autoCycle() {
@@ -98,15 +106,11 @@ function autoCycle() {
 
 window.onload = () => {
     const stars = document.getElementById('star-container');
-    for(let i=0; i<100; i++) {
+    for(let i=0; i<150; i++) {
         const s = document.createElement('div');
         s.className = 'star';
         s.style.left = Math.random()*100+'vw';
         s.style.top = Math.random()*100+'vh';
-        s.style.position = 'absolute';
-        s.style.width = '2px';
-        s.style.height = '2px';
-        s.style.background = 'white';
         stars.appendChild(s);
     }
 };
