@@ -1,5 +1,4 @@
 let audioCtx, analyser, dataArray, source, audio;
-let totalLY = parseInt(localStorage.getItem('aviDist')) || 0;
 const irohQuotes = ["Hope is something you give yourself.", "Destiny is a funny thing.", "Sharing tea is a delight."];
 
 async function initPilot() {
@@ -19,14 +18,12 @@ async function initPilot() {
         document.getElementById('scanline-layer').style.display = e.target.checked ? 'block' : 'none';
     });
 
-    // Keyboard Shortcut: H to Hide/Show UI
+    // Keyboard Shortcut: H to Hide Central HUD only
     window.addEventListener('keydown', (e) => {
         if (e.key.toLowerCase() === 'h') {
             const ui = document.getElementById('ui-container');
-            const panel = document.getElementById('toggle-panel');
-            const display = ui.style.opacity === '0' ? '1' : '0';
-            ui.style.opacity = display;
-            panel.style.opacity = display;
+            // Toggle opacity of the central UI box
+            ui.style.opacity = ui.style.opacity === '0' ? '1' : '0';
         }
     });
 
@@ -93,7 +90,9 @@ function autoCycle() {
     let sec = 25 * 60;
     setInterval(() => {
         sec--;
-        document.getElementById('timer').innerText = `${Math.floor(sec/60)}:${(sec%60).toString().padStart(2,'0')}`;
+        const mins = Math.floor(sec/60);
+        const s = (sec%60).toString().padStart(2,'0');
+        document.getElementById('timer').innerText = `${mins}:${s}`;
     }, 1000);
 }
 
@@ -104,6 +103,10 @@ window.onload = () => {
         s.className = 'star';
         s.style.left = Math.random()*100+'vw';
         s.style.top = Math.random()*100+'vh';
+        s.style.position = 'absolute';
+        s.style.width = '2px';
+        s.style.height = '2px';
+        s.style.background = 'white';
         stars.appendChild(s);
     }
 };
