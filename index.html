@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COSMIC_GLOBE: AUDIO_SYNC</title>
+    <title>COSMIC_HUD: MULTI-FREQ</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,19 +16,23 @@
             <h2>[ INITIALIZE NEURAL LINK ]</h2>
             <input type="text" id="username" placeholder="PILOT ID...">
             <br><br>
-            <button onclick="initPilot()">CONNECT & PLAY MUSIC</button>
+            <select id="freq-selector">
+                <option value="https://stream.zeno.fm/0r0xa792kwzuv">LO-FI VIBES (LANA/CAS STYLE)</option>
+                <option value="https://icecast.ndr.de/ndr/n-joy/disco/mp3/128/stream.mp3">70s DISCO (BEE GEES STYLE)</option>
+                <option value="https://driver.pinguin.stream/pinguin-techno">DEEP TECHNO</option>
+            </select>
+            <br><br>
+            <button onclick="initPilot()">CONNECT LINK</button>
         </div>
 
         <div id="mission-sector" style="display: none;">
             <div id="iroh-comms">
-                <p id="iroh-quote">"Music is a form of expression that transcends all boundaries."</p>
+                <p id="iroh-quote">"Sharing tea with a fascinating stranger is one of life’s true delights."</p>
             </div>
             <div id="timer">25:00</div>
-            <div id="status">AUDIO SYNC ACTIVE</div>
+            <div id="status">NEURAL LINK: STABLE</div>
             
-            <audio id="space-radio" crossorigin="anonymous" loop>
-                <source src="https://stream.zeno.fm/0r0xa792kwzuv" type="audio/mpeg">
-            </audio>
+            <audio id="space-radio" crossorigin="anonymous" loop></audio>
         </div>
     </div>
     <script src="script.js"></script>
