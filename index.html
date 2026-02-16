@@ -3,40 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COSMIC_GLOBE HUD</title>
+    <title>COSMIC_GLOBE HUD v2.0</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="scanlines"></div>
     <div id="star-container"></div>
-
     <div id="ui-container">
         <div id="login-sector">
-            <p>IDENTIFY PILOT:</p>
-            <input type="text" id="username" placeholder="ENTER CALLSIGN..." autocomplete="off">
-            <button onclick="initPilot()">INITIALIZE</button>
+            <p style="letter-spacing: 3px;">[ IDENTIFY PILOT ]</p>
+            <input type="text" id="username" placeholder="CALLSIGN..." autocomplete="off">
+            <br><br>
+            <button onclick="initPilot()">INITIALIZE SYSTEM</button>
         </div>
-
         <div id="mission-sector" style="display: none;">
             <div id="iroh-comms">
-                <small style="opacity: 0.5;">[COMMS CHANNEL: UNCLE IROH]</small>
-                <p id="iroh-quote">"Sharing tea with a fascinating stranger is one of life’s true delights."</p>
+                <small style="opacity: 0.5;">[ COMMS: UNCLE IROH ]</small>
+                <p id="iroh-quote">"Hope is something you give yourself."</p>
             </div>
-            
             <h1 id="status">STATUS: STANDBY</h1>
             <p>PILOT: <span id="display-name">---</span></p>
             <div id="timer">25:00</div>
-            
-            <div id="progress-container">
-                <div id="progress-bar"></div>
-            </div>
-
+            <div id="progress-container"><div id="progress-bar"></div></div>
             <button id="warp-btn" onclick="startWarp()">ENGAGE WARP</button>
             <br>
             <input type="text" id="pilot-input" placeholder="TALK TO IROH..." onkeypress="handleIroh(event)">
         </div>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
