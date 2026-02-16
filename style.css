@@ -8,12 +8,12 @@ body, html {
     margin: 0; padding: 0;
     background: var(--bg);
     color: var(--glow);
-    font-family: 'Segoe UI', 'Courier New', monospace; /* More user-friendly font */
+    font-family: 'Segoe UI', sans-serif;
     overflow: hidden;
     height: 100vh;
 }
 
-/* 🌌 STARFIELD & BACKGROUND */
+/* 🌌 BACKGROUND LAYERS */
 #star-container, #meteor-field {
     position: fixed;
     top: 0; left: 0;
@@ -21,114 +21,63 @@ body, html {
     z-index: 1;
 }
 
-/* 📟 CENTERED USER-FRIENDLY PANEL */
-#command-menu {
-    position: fixed;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 320px;
-    background: rgba(0, 10, 0, 0.9);
-    border: 2px solid var(--glow);
-    z-index: 2000;
-    box-shadow: 0 0 40px rgba(0, 255, 65, 0.15);
-    backdrop-filter: blur(15px);
-    border-radius: 8px; /* Softer edges for user friendliness */
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-#menu-header {
-    background: var(--glow);
-    color: #000;
-    padding: 12px;
-    font-weight: bold;
-    cursor: pointer;
-    text-align: center;
-    letter-spacing: 2px;
-    border-radius: 6px 6px 0 0;
-}
-
-#menu-content { 
-    padding: 25px; 
-    max-height: 70vh;
-    overflow-y: auto;
-}
-
-/* 🚀 GOLD MODE SYNC */
-.gold-achieved {
-    --glow: #FFD700;
-    --accent: #B8860B;
-}
-
-.gold-achieved #command-menu {
-    border-color: #FFD700;
-    box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
-}
-
-/* 🎆 METEOR & FIREWORK PHYSICS */
-.meteor, .firework-particle {
+/* 🎯 THE CENTRAL STACK (THE FIX) */
+#ui-container {
     position: absolute;
-    pointer-events: none;
-}
-
-.meteor {
-    width: 2px; height: 40px;
-    background: linear-gradient(to top, var(--glow), transparent);
-}
-
-/* 🛠️ USER FRIENDLY INPUTS */
-.menu-group { margin-bottom: 20px; }
-input[type="range"] { width: 100%; accent-color: var(--glow); cursor: pointer; }
-input[type="number"], select {
-    width: 100%; background: rgba(255,255,255,0.05);
-    border: 1px solid var(--glow); color: var(--glow);
-    padding: 8px; border-radius: 4px;
-}
-.util-btn {
-    background: transparent; border: 1px solid var(--glow);
-    color: var(--glow); font-size: 11px; padding: 10px;
-    cursor: pointer; text-transform: uppercase; border-radius: 4px;
-    font-weight: bold;
-}
-.util-btn:hover { background: var(--glow); color: #000; }
-/* Constrain the HUD to a central "Safe Zone" */
-.hud-grid {
-    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 90vw; /* Brings elements in from the extreme edges */
-    max-width: 1200px; /* Prevents stretching on ultra-wide screens */
+    width: 100%;
+    max-width: 450px; /* Constrains everything to a tight center column */
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-    pointer-events: none; /* Allows clicking through to the stars if needed */
-    z-index: 1000;
+    gap: 20px;
+    z-index: 5000;
+    text-align: center;
 }
 
-/* Specifically pull the Quote (Iroh Comms) inward */
-.hud-right {
-    text-align: right;
-    max-width: 300px;
-    padding-right: 20px;
+/* 📟 COMMAND MENU STYLING */
+#command-menu {
+    width: 100%;
+    background: rgba(0, 15, 0, 0.9);
+    border: 2px solid var(--glow);
+    border-radius: 8px;
+    box-shadow: 0 0 30px rgba(0, 255, 65, 0.2);
+    backdrop-filter: blur(10px);
 }
 
-/* Specifically pull the Timer/Load Bar inward */
-.hud-left {
-    text-align: left;
-    max-width: 300px;
-    padding-left: 20px;
+/* ⏱️ TIMER STYLING */
+#timer {
+    font-size: 5rem;
+    font-weight: 900;
+    text-shadow: 0 0 20px var(--glow);
+    margin: 0;
+}
+
+/* 🍵 IROH COMMS STYLING */
+#iroh-comms {
+    width: 100%;
+    padding: 10px;
 }
 
 #iroh-quote {
+    font-size: 1.2rem;
     font-style: italic;
-    font-size: 1.1rem;
-    line-height: 1.4;
-    text-shadow: 0 0 10px var(--glow);
+    opacity: 0.9;
+    margin: 0;
 }
 
-/* Ensure the Timer stays prominent but centered relative to its side */
-#timer {
-    font-size: 4rem;
-    font-weight: bold;
-    margin-bottom: 10px;
+/* 🚀 GOLD MODE */
+.gold-achieved { --glow: #FFD700; --accent: #B8860B; }
+
+/* 🛠️ BUTTONS & INPUTS */
+.menu-group { margin-bottom: 15px; }
+.util-btn {
+    background: transparent; border: 1px solid var(--glow);
+    color: var(--glow); padding: 8px; cursor: pointer;
+    text-transform: uppercase; border-radius: 4px; width: 100%;
 }
+.util-btn:hover { background: var(--glow); color: #000; }
+
+.btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
