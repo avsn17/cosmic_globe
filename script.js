@@ -234,3 +234,33 @@ checkGoalStatus = function() {
     }
     originalGoalCheck();
 };
+
+// Updated Toggle Menu to handle the centered state better
+function toggleMenu() {
+    const menu = document.getElementById('command-menu');
+    const content = document.getElementById('menu-content');
+    if (content.style.display === "none") {
+        content.style.display = "block";
+        menu.style.top = "50%"; // Center it when open
+    } else {
+        content.style.display = "none";
+        menu.style.top = "5%"; // Pin it to top when collapsed to see the HUD
+        menu.style.transform = "translate(-50%, 0)";
+    }
+}
+
+// Enhance Fireworks to be music-reactive once goal is hit
+function musicReactiveFireworks(intensity) {
+    if (goalReachedNotified && intensity > 80) {
+        launchFireworks(); // Micro-bursts on bass hits
+    }
+}
+
+// Inject reactive fireworks into renderEngine
+const originalRender = renderEngine;
+renderEngine = function() {
+    originalRender();
+    // Get intensity from the load bar for firework logic
+    const loadWidth = parseFloat(document.getElementById('load-bar').style.width);
+    musicReactiveFireworks(loadWidth);
+};
