@@ -8,8 +8,9 @@ body, html {
     margin: 0; padding: 0;
     background: var(--bg);
     color: var(--glow);
-    font-family: 'Courier New', monospace;
+    font-family: 'Segoe UI', 'Courier New', monospace; /* More user-friendly font */
     overflow: hidden;
+    height: 100vh;
 }
 
 /* 🌌 STARFIELD & BACKGROUND */
@@ -20,66 +21,72 @@ body, html {
     z-index: 1;
 }
 
-/* 📟 CENTERED COMMAND MENU */
+/* 📟 CENTERED USER-FRIENDLY PANEL */
 #command-menu {
     position: fixed;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    width: 280px;
-    background: rgba(0, 15, 0, 0.95);
-    border: 1px solid var(--glow);
+    width: 320px;
+    background: rgba(0, 10, 0, 0.9);
+    border: 2px solid var(--glow);
     z-index: 2000;
-    box-shadow: 0 0 30px rgba(0, 255, 65, 0.2);
-    backdrop-filter: blur(10px);
-    animation: menuSlideIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-@keyframes menuSlideIn {
-    0% { transform: translate(-50%, -40%); opacity: 0; }
-    100% { transform: translate(-50%, -50%); opacity: 1; }
+    box-shadow: 0 0 40px rgba(0, 255, 65, 0.15);
+    backdrop-filter: blur(15px);
+    border-radius: 8px; /* Softer edges for user friendliness */
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 #menu-header {
     background: var(--glow);
     color: #000;
-    padding: 10px;
+    padding: 12px;
     font-weight: bold;
     cursor: pointer;
     text-align: center;
-    letter-spacing: 3px;
+    letter-spacing: 2px;
+    border-radius: 6px 6px 0 0;
 }
 
-#menu-content { padding: 20px; }
-
-/* 🚀 HUD ANIMATIONS */
-.hud-grid {
-    animation: hudFade 1.5s ease-out;
+#menu-content { 
+    padding: 25px; 
+    max-height: 70vh;
+    overflow-y: auto;
 }
 
-@keyframes hudFade {
-    0% { opacity: 0; filter: blur(10px); }
-    100% { opacity: 1; filter: blur(0); }
+/* 🚀 GOLD MODE SYNC */
+.gold-achieved {
+    --glow: #FFD700;
+    --accent: #B8860B;
 }
 
-/* 🎇 FIREWORK & GOAL STYLING */
-.firework-particle {
+.gold-achieved #command-menu {
+    border-color: #FFD700;
+    box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
+}
+
+/* 🎆 METEOR & FIREWORK PHYSICS */
+.meteor, .firework-particle {
     position: absolute;
-    width: 4px; height: 4px;
-    border-radius: 50%;
     pointer-events: none;
-    animation: explode 1s ease-out forwards;
 }
 
-@keyframes explode {
-    0% { transform: translate(0, 0) scale(1); opacity: 1; }
-    100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+.meteor {
+    width: 2px; height: 40px;
+    background: linear-gradient(to top, var(--glow), transparent);
 }
 
-/* 🛠️ UTILITY STYLES */
-.btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+/* 🛠️ USER FRIENDLY INPUTS */
+.menu-group { margin-bottom: 20px; }
+input[type="range"] { width: 100%; accent-color: var(--glow); cursor: pointer; }
+input[type="number"], select {
+    width: 100%; background: rgba(255,255,255,0.05);
+    border: 1px solid var(--glow); color: var(--glow);
+    padding: 8px; border-radius: 4px;
+}
 .util-btn {
     background: transparent; border: 1px solid var(--glow);
-    color: var(--glow); font-size: 9px; padding: 8px;
-    cursor: pointer; text-transform: uppercase;
+    color: var(--glow); font-size: 11px; padding: 10px;
+    cursor: pointer; text-transform: uppercase; border-radius: 4px;
+    font-weight: bold;
 }
 .util-btn:hover { background: var(--glow); color: #000; }
