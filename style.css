@@ -1,106 +1,37 @@
-:root {
-    --nebula-blue: #00d4ff;
-    --matrix-green: #00ff41;
-    --alert-red: #ff3333;
-    --solar-gold: #ffcc33;
-    --void: #050505;
-}
+:root { --glow: #00ff41; --bg: #050505; --accent: #00d4ff; }
+.theme-vapor { --glow: #ff00c1; --accent: #00fff9; --bg: #1a0033; }
+.theme-disco { --glow: #ffcc33; --accent: #ffffff; }
 
-body {
-    background-color: var(--void);
-    color: var(--nebula-blue);
-    font-family: 'Courier New', monospace;
-    margin: 0;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-/* Background Nebula Layer */
-#nebula {
-    position: fixed;
-    width: 200%; height: 200%;
-    background: radial-gradient(circle, rgba(0, 212, 255, 0.05) 0%, transparent 60%);
-    z-index: 0;
-    pointer-events: none;
+body { 
+    background: var(--bg); color: var(--glow); font-family: 'Courier New', monospace; 
+    margin: 0; overflow: hidden; height: 100vh; display: flex; justify-content: center; align-items: center;
     transition: background 2s ease;
 }
 
-/* The Main HUD Frame */
 #ui-container {
-    border: 1px solid var(--nebula-blue);
-    padding: 50px;
-    background: rgba(0, 0, 0, 0.85);
-    box-shadow: 0 0 40px rgba(0, 212, 255, 0.1);
-    z-index: 5;
-    text-align: center;
-    position: relative;
-    transition: all 0.5s ease;
+    border: 1px solid var(--glow); padding: 40px; background: rgba(0,0,0,0.9);
+    box-shadow: 0 0 40px rgba(0,0,0,1); z-index: 10; position: relative;
 }
 
-/* Alerts and Warp States */
-.warp-active { border-color: var(--matrix-green); box-shadow: 0 0 50px rgba(0, 255, 65, 0.2); }
-.hazard-alert { border-color: var(--alert-red); box-shadow: 0 0 60px rgba(255, 51, 51, 0.4); }
+#timer { font-size: 5rem; font-weight: bold; text-shadow: 0 0 20px var(--glow); }
 
-#timer {
-    font-size: 5rem;
-    font-weight: bold;
-    letter-spacing: -2px;
-    margin: 20px 0;
-    text-shadow: 0 0 20px var(--nebula-blue);
+/* Tactical Map */
+#pursuit-display { border-bottom: 1px solid var(--glow); margin-bottom: 20px; padding: 10px; }
+.pursuit-lane { height: 25px; position: relative; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.ship { position: absolute; left: 0; transition: left 1s linear; }
+
+/* Mission Log */
+#mission-log { height: 100px; overflow-y: hidden; font-size: 0.7rem; color: var(--accent); text-align: left; }
+
+/* Meteors */
+.meteor {
+    position: absolute; background: linear-gradient(to top, transparent, var(--accent));
+    width: 2px; height: 80px; pointer-events: none;
 }
-
-#iroh-comms {
-    font-style: italic;
-    color: var(--solar-gold);
-    max-width: 400px;
-    margin-bottom: 30px;
-    min-height: 50px;
-}
-
-/* Starfield effects */
-.star {
-    position: absolute;
-    background: white;
-    border-radius: 50%;
-    animation: fly linear infinite;
-    pointer-events: none;
-}
-
-@keyframes fly {
-    from { transform: translateZ(0) translateY(-10vh); opacity: 0; }
-    50% { opacity: 1; }
-    to { transform: translateZ(100px) translateY(110vh); opacity: 0; }
-}
-
-@keyframes shake {
-    0% { transform: translate(1px, 1px); }
-    10% { transform: translate(-2px, -3px); }
-    20% { transform: translate(3px, 0px); }
-    100% { transform: translate(1px, 1px); }
+@keyframes zoom {
+    from { transform: scale(0) translate(0,0); opacity: 0; }
+    to { transform: scale(5) translate(var(--x), var(--y)); opacity: 0; }
 }
 
 .shaking { animation: shake 0.2s infinite; }
-#meteor-field {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    z-index: 2;
-    pointer-events: none;
-}
-
-.meteor {
-    position: absolute;
-    background: linear-gradient(to top, transparent, var(--nebula-blue));
-    width: 2px;
-    height: 50px;
-    opacity: 0;
-    filter: blur(1px);
-}
-
-@keyframes meteor-zoom {
-    from { transform: scale(0) translate(0, 0); opacity: 0; }
-    50% { opacity: 0.8; }
-    to { transform: scale(3) translate(var(--x), var(--y)); opacity: 0; }
-}
+@keyframes shake { 0% { transform: translate(1px, 1px); } 50% { transform: translate(-2px, -1px); } 100% { transform: translate(1px, 1px); } }

@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COSMIC_GLOBE: ULTIMATE HUD</title>
+    <title>COSMIC_GLOBE: FINAL_LEVEL</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="theme-default">
+<body>
     <div class="scanlines"></div>
     <div id="star-container"></div>
     <div id="meteor-field"></div>
@@ -14,24 +14,35 @@
 
     <div id="ui-container">
         <div id="login-sector">
-            <h1 class="glitch-text">[ NEURAL LINK REQUIRED ]</h1>
+            <h2 class="glitch-text">[ NEURAL LINK INITIALIZATION ]</h2>
             <select id="freq-selector">
                 <option value="https://stream.zeno.fm/0r0xa792kwzuv" data-theme="vapor">DREAMY (Lana / CAS)</option>
                 <option value="https://icecast.ndr.de/ndr/n-joy/disco/mp3/128/stream.mp3" data-theme="disco">70s GOLD (Bee Gees)</option>
                 <option value="https://driver.pinguin.stream/pinguin-techno" data-theme="techno">DEEP TECHNO (Pulse)</option>
             </select>
             <br><br>
-            <input type="text" id="username" placeholder="ENTER CALLSIGN..." autocomplete="off">
+            <input type="text" id="username" placeholder="PILOT CALLSIGN..." autocomplete="off">
             <br><br>
-            <button onclick="initPilot()">INITIALIZE COCKPIT</button>
+            <button onclick="initPilot()">ENGAGE ALL SYSTEMS</button>
         </div>
 
         <div id="mission-sector" style="display: none;">
-            <div id="iroh-comms">
-                <p id="iroh-quote">"Hope is something you give yourself."</p>
+            <div id="pursuit-display">
+                <div class="pursuit-lane" id="lane-1"><span class="ship-label">LEAD</span><div class="ship" id="ship-1">🚀</div></div>
+                <div class="pursuit-lane user-lane"><span class="ship-label">YOU</span><div class="ship" id="user-ship">🛸</div></div>
             </div>
-            <div id="timer">25:00</div>
-            <div id="status">SYNCING TO BEAT...</div>
+
+            <div class="hud-grid">
+                <div class="hud-left">
+                    <div id="timer">25:00</div>
+                    <div id="progress-container"><div id="progress-bar"></div></div>
+                    <h1 id="status">WARP ACTIVE</h1>
+                </div>
+                <div class="hud-right">
+                    <div id="iroh-comms"><p id="iroh-quote">"Hope is something you give yourself."</p></div>
+                    <div id="mission-log"></div>
+                </div>
+            </div>
             <audio id="space-radio" crossorigin="anonymous" loop></audio>
         </div>
     </div>
