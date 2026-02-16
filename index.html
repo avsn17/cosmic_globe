@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COSMIC_GLOBE: ADVANCED_HUD</title>
+    <title>COSMIC_GLOBE: COMMAND_CENTER</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,29 +13,39 @@
 
     <div id="ui-container">
         <div id="login-sector">
-            <h1 class="glitch-text">[ NEURAL_LINK_v5 ]</h1>
+            <h1 class="glitch-text">[ NEURAL_LINK ]</h1>
             <select id="freq-selector">
                 <option value="https://stream.zeno.fm/0r0xa792kwzuv" data-theme="vapor">DREAMY (Vaporwave)</option>
                 <option value="https://icecast.ndr.de/ndr/n-joy/disco/mp3/128/stream.mp3" data-theme="disco">70s GOLD (Disco)</option>
                 <option value="https://driver.pinguin.stream/pinguin-techno" data-theme="techno">DEEP TECHNO (Pulse)</option>
             </select>
             <br><br>
-            <input type="text" id="username" placeholder="PILOT CALLSIGN..." autocomplete="off">
+            <input type="text" id="username" placeholder="PILOT_ID..." autocomplete="off">
             <br><br>
-            <button onclick="initPilot()">ENGAGE SYSTEMS</button>
+            <button onclick="initPilot()">ENGAGE</button>
         </div>
 
         <div id="mission-sector" style="display: none;">
-            <div id="toggle-panel">
-                <div class="panel-header">SYSTEM CONFIG</div>
-                <label><input type="checkbox" id="toggle-meteors" checked> METEORS</label>
-                <label><input type="checkbox" id="toggle-pulse"> RED_ALERT_PULSE</label>
-                <label><input type="checkbox" id="toggle-scanlines" checked> SCANLINES</label>
-                <label><input type="checkbox" id="toggle-mute"> MUTE_AUDIO</label>
-                <hr>
-                <div class="panel-header">WARP DRIVE</div>
-                <input type="range" id="warp-speed" min="0.1" max="2" step="0.1" value="1">
-                <small>SPEED MULTIPLIER</small>
+            <div id="command-menu">
+                <div id="menu-header" onclick="toggleMenu()">
+                    <span>🛰️ TACTICAL_MENU</span>
+                    <span id="menu-arrow">▼</span>
+                </div>
+                <div id="menu-content">
+                    <div class="menu-group">
+                        <label><input type="checkbox" id="toggle-meteors" checked> METEORS</label>
+                        <label><input type="checkbox" id="toggle-pulse"> RED_PULSE</label>
+                        <label><input type="checkbox" id="toggle-scanlines" checked> SCANLINES</label>
+                        <label><input type="checkbox" id="toggle-mute"> MUTE_LINK</label>
+                    </div>
+                    <div class="menu-group">
+                        <small>WARP_VELOCITY</small>
+                        <input type="range" id="warp-speed" min="0.1" max="3" step="0.1" value="1">
+                    </div>
+                    <div class="menu-group">
+                        <button id="cinematic-btn" onclick="toggleHUD()">CINEMATIC [H]</button>
+                    </div>
+                </div>
             </div>
 
             <div class="hud-grid">

@@ -114,3 +114,20 @@ window.onload = () => {
         stars.appendChild(s);
     }
 };
+
+function toggleMenu() {
+    const content = document.getElementById('menu-content');
+    const arrow = document.getElementById('menu-arrow');
+    if (content.style.display === "none") {
+        content.style.display = "block";
+        arrow.innerText = "▼";
+    } else {
+        content.style.display = "none";
+        arrow.innerText = "▲";
+    }
+}
+
+function toggleHUD() {
+    const ui = document.getElementById('ui-container');
+    ui.style.opacity = ui.style.opacity === '0' ? '1' : '0';
+}
