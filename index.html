@@ -3,206 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COSMIC_GLOBE: v26_COMMAND_CENTER</title>
+    <title>COSMIC_GLOBE_V27_FINAL</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --glow: #00ff41; --bg: #000500; --ui-glow: rgba(0, 255, 65, 0.2); }
-        body.theme-vapor { --glow: #ff71ce; --bg: #01012b; --ui-glow: rgba(255, 113, 206, 0.2); }
-        body.theme-disco { --glow: #f4d03f; --bg: #1a0633; --ui-glow: rgba(244, 208, 63, 0.2); }
+        :root { --glow: #00ff41; --bg: #000000; }
+        body.theme-vapor { --glow: #ff71ce; --bg: #01012b; }
+        body.theme-disco { --glow: #f4d03f; --bg: #1a0633; }
         
         body, html {
             margin: 0; padding: 0; background: var(--bg); color: var(--glow);
             font-family: 'Rajdhani', sans-serif; width: 100vw; height: 100vh;
-            overflow: hidden; transition: 0.5s;
+            overflow: hidden;
         }
 
-        #star-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
-        .star { position: absolute; background: white; border-radius: 50%; opacity: 0.5; filter: blur(2px); }
+        #star-field { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+        .mega-star { position: absolute; background: white; border-radius: 50%; opacity: 0.6; filter: blur(2px); box-shadow: 0 0 15px white; }
 
-        /* 🖥️ MAIN HUD LAYOUT */
-        #viewport {
-            display: flex; width: 100vw; height: 100vh; position: relative; z-index: 10;
-        }
+        #main-layout { display: flex; width: 100vw; height: 100vh; position: relative; z-index: 10; }
 
-        /* 🗄️ PERSISTENT SIDE MENU */
-        #side-menu {
-            width: 320px; background: rgba(0, 8, 0, 0.9); 
-            border-right: 1px solid var(--glow); padding: 20px;
+        /* 🗄️ SIDE MENU - UNIFIED */
+        #side-panel {
+            width: 340px; background: rgba(0, 10, 0, 0.95); 
+            border-right: 2px solid var(--glow); padding: 25px;
             display: flex; flex-direction: column; gap: 20px;
-            box-shadow: 10px 0 30px rgba(0,0,0,0.5); backdrop-filter: blur(10px);
-            transition: 0.3s;
+            box-shadow: 10px 0 50px rgba(0,0,0,1); backdrop-filter: blur(20px);
         }
 
-        /* 🎯 CENTER TIMER ZONE */
-        #timer-zone {
-            flex-grow: 1; display: flex; flex-direction: column; 
-            align-items: center; justify-content: center;
-        }
+        #center-hud { flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 
-        .hud-card {
-            background: rgba(0, 15, 0, 0.5); border: 1px solid var(--glow);
-            padding: 15px; margin-bottom: 10px;
-        }
-
-        h3 { font-family: 'Orbitron'; font-size: 0.8rem; margin: 0 0 10px 0; letter-spacing: 2px; opacity: 0.8; }
+        .card { background: rgba(0, 20, 0, 0.4); border: 1px solid var(--glow); padding: 15px; border-radius: 4px; }
+        h3 { font-family: 'Orbitron'; font-size: 0.75rem; letter-spacing: 3px; margin: 0 0 10px 0; color: #fff; }
         
-        #timer { 
-            font-family: 'Orbitron', sans-serif; font-size: 8rem; font-weight: 900; 
-            text-shadow: 0 0 30px var(--glow); margin: 0;
-        }
+        #timer-display { font-family: 'Orbitron', sans-serif; font-size: 9rem; font-weight: 900; text-shadow: 0 0 40px var(--glow); margin: 0; }
 
         input, select, button {
-            font-family: 'Rajdhani', sans-serif; width: 100%; padding: 10px; margin: 5px 0;
-            background: #000; border: 1px solid var(--glow); color: var(--glow);
-            font-weight: bold; text-transform: uppercase;
+            font-family: 'Rajdhani', sans-serif; width: 100%; padding: 12px; margin: 5px 0;
+            background: #000; border: 1px solid var(--glow); color: var(--glow); font-weight: bold;
         }
 
-        button { background: var(--glow); color: #000; border: none; cursor: pointer; }
-        button:hover { filter: brightness(1.2); }
-        .btn-small { padding: 5px; font-size: 0.7rem; }
+        button { background: var(--glow); color: #000; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; }
+        button:hover { background: #fff; box-shadow: 0 0 20px #fff; }
 
-        #task-list { max-height: 150px; overflow-y: auto; font-size: 0.85rem; }
-        .task-item { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid rgba(0,255,65,0.1); }
+        #task-box { max-height: 140px; overflow-y: auto; margin-bottom: 10px; font-size: 0.9rem; }
+        .task { display: flex; justify-content: space-between; padding: 6px; border-bottom: 1px solid rgba(255,255,255,0.1); }
 
-        #iroh-chat { font-style: italic; font-size: 0.9rem; min-height: 50px; text-align: center; border-bottom: 1px solid var(--glow); margin-bottom: 10px; padding-bottom: 5px; }
+        #iroh-wisdom-box { font-style: italic; font-size: 1rem; text-align: center; color: #fff; min-height: 60px; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid var(--glow); margin-bottom: 10px; }
         
-        /* 🏆 LEADERBOARD / STATS */
-        #stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; text-align: center; font-family: 'Orbitron'; font-size: 0.7rem; }
+        #leaderboard { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .stat-val { font-family: 'Orbitron'; font-size: 1.2rem; display: block; }
 
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column; }
         .hidden { display: none !important; }
     </style>
 </head>
 <body class="theme-techno">
-    <div id="star-container"></div>
-    <audio id="radio-player" loop></audio>
+    <div id="star-field"></div>
+    <audio id="bg-audio" loop></audio>
 
-    <div id="boot-screen" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:9999; display:flex; align-items:center; justify-content:center; flex-direction:column;">
-        <h1 style="font-family:'Orbitron'; letter-spacing:10px;">COSMIC_GLOBE</h1>
-        <div style="width:300px;">
-            <select id="audio-select">
-                <option value="https://stream.nightride.fm/nightride.mp3" data-theme="techno">SYNTH_WAVE</option>
-                <option value="https://icecast.ndr.de/ndr/n-joy/disco/mp3/128/stream.mp3" data-theme="disco">RETRO_DISCO</option>
+    <div id="startup-overlay" class="overlay">
+        <h1 style="font-family:'Orbitron'; font-size: 3rem; letter-spacing: 15px; margin-bottom: 40px;">COSMIC_GLOBE</h1>
+        <div style="width: 350px; text-align: center;">
+            <select id="station-picker">
+                <option value="https://stream.nightride.fm/nightride.mp3" data-theme="techno">SYNTHWAVE_PRIMARY</option>
+                <option value="https://icecast.ndr.de/ndr/n-joy/disco/mp3/128/stream.mp3" data-theme="disco">DISCO_RETRO</option>
             </select>
-            <button onclick="bootSystem()" style="margin-top:20px; padding:20px;">INITIALIZE_COCKPIT</button>
+            <button onclick="engageSystem()" style="padding: 25px; font-size: 1.2rem; margin-top: 20px;">INITIATE_DEPLOYMENT</button>
         </div>
     </div>
 
-    <div id="viewport">
-        <div id="side-menu">
-            <div>
-                <h3>📡 NEURAL_IROH</h3>
-                <div id="iroh-chat">"Click below to seek wisdom."</div>
-                <input type="text" id="iroh-input" placeholder="Enter query..." onkeydown="if(event.key==='Enter') getIrohWisdom()">
-                <button class="btn-small" onclick="getIrohWisdom()">ASK_IROH</button>
+    <div id="main-layout">
+        <div id="side-panel">
+            <div class="card">
+                <h3>🍵 NEURAL_IROH</h3>
+                <div id="iroh-wisdom-box">"Standing at the edge of the universe."</div>
+                <input type="text" id="iroh-input" placeholder="Query wisdom..." onkeydown="if(event.key==='Enter') askIroh()">
+                <button onclick="askIroh()" style="font-size: 0.7rem; padding: 5px;">CONSULT</button>
             </div>
 
-            <div>
+            <div class="card">
                 <h3>📋 OBJECTIVES</h3>
-                <div id="task-list"></div>
-                <button class="btn-small" onclick="addTask()">+ NEW_TASK</button>
+                <div id="task-box"></div>
+                <button onclick="addNewTask()" style="font-size: 0.7rem; padding: 5px;">+ NEW_TASK</button>
             </div>
 
-            <div>
-                <h3>🏆 PILOT_LOGS</h3>
-                <div id="stats-grid">
-                    <div class="hud-card">SESSIONS<br><span id="stat-sessions">0</span></div>
-                    <div class="hud-card">MINUTES<br><span id="stat-time">0</span></div>
+            <div class="card">
+                <h3>🏆 PILOT_STATS</h3>
+                <div id="leaderboard">
+                    <div style="text-align:center;">SESSIONS<br><span id="count-sessions" class="stat-val">0</span></div>
+                    <div style="text-align:center;">FOCUS_MIN<br><span id="count-minutes" class="stat-val">0</span></div>
                 </div>
             </div>
 
-            <div style="margin-top:auto;">
-                <h3>⚙️ AUDIO_SYSTEM</h3>
-                <button id="audio-toggle" onclick="toggleAudio()">🔇 PAUSED</button>
-                <button onclick="location.reload()" style="background:#ff4141; color:#fff; margin-top:10px;">EXIT_STATION</button>
+            <div style="margin-top: auto;">
+                <button id="audio-btn" onclick="togglePlay()" style="background:transparent; border: 1px solid var(--glow); color: var(--glow);">🔇 AUDIO_OFF</button>
+                <button onclick="location.reload()" style="background:#ff3333; color:white; margin-top:10px; font-size: 0.7rem;">RESET_STATION</button>
             </div>
         </div>
 
-        <div id="timer-zone">
-            <div id="timer">25:00</div>
-            <p id="mode-label" style="font-family:'Orbitron'; letter-spacing:5px;">FOCUS_MODE</p>
-            <button onclick="toggleTimer()" id="start-btn" style="width:200px; height:60px; font-size:1.2rem; margin-top:20px;">START_MISSION</button>
+        <div id="center-hud">
+            <div id="timer-display">25:00</div>
+            <div style="font-family:'Orbitron'; letter-spacing: 8px; opacity: 0.6; margin-bottom: 30px;">ACTIVE_MISSION</div>
+            <button id="control-btn" onclick="startMission()" style="width: 280px; height: 70px; font-size: 1.5rem;">START_TIMER</button>
         </div>
     </div>
 
     <script>
-        let timeLeft = 25 * 60;
-        let timerRunning = false;
-        let stats = JSON.parse(localStorage.getItem('pilot_stats')) || { sessions: 0, time: 0 };
-        let tasks = JSON.parse(localStorage.getItem('pilot_tasks')) || [];
-        const irohQuotes = ["Hope is something you give yourself.", "Wisdom comes from many places.", "Tea is better with friends.", "Believe in yourself."];
+        let timeRemaining = 25 * 60;
+        let isRunning = false;
+        let pilotStats = JSON.parse(localStorage.getItem('pilot_stats_v27')) || { sessions: 0, minutes: 0 };
+        let currentTasks = JSON.parse(localStorage.getItem('pilot_tasks_v27')) || [];
+        const quotes = ["Hope is something you give yourself.", "Wisdom comes from many places.", "Tea is better with friends.", "Believe in yourself.", "Destiny is a funny thing."];
 
-        function createStars() {
-            const container = document.getElementById('star-container');
-            for (let i = 0; i < 40; i++) {
-                const s = document.createElement('div'); s.className = 'star';
-                const size = Math.random() * 30 + 5;
-                s.style.width = s.style.height = `${size}px`;
-                s.style.left = `${Math.random() * 100}vw`; s.style.top = `${Math.random() * 100}vh`;
-                container.appendChild(s);
+        function makeStars() {
+            const f = document.getElementById('star-field');
+            for(let i=0; i<50; i++) {
+                const s = document.createElement('div'); s.className = 'mega-star';
+                const size = Math.random() * 35 + 5;
+                s.style.width = s.style.height = size + 'px';
+                s.style.left = Math.random() * 100 + 'vw'; s.style.top = Math.random() * 100 + 'vh';
+                f.appendChild(s);
             }
         }
-        createStars();
+        makeStars();
 
-        function bootSystem() {
-            const radio = document.getElementById('radio-player');
-            const select = document.getElementById('audio-select');
-            radio.src = select.value;
-            document.body.className = 'theme-' + select.selectedOptions[0].getAttribute('data-theme');
-            document.getElementById('boot-screen').classList.add('hidden');
-            renderTasks(); updateStats();
+        function engageSystem() {
+            const audio = document.getElementById('bg-audio');
+            const picker = document.getElementById('station-picker');
+            audio.src = picker.value;
+            document.body.className = 'theme-' + picker.selectedOptions[0].getAttribute('data-theme');
+            document.getElementById('startup-overlay').classList.add('hidden');
+            refreshTasks(); refreshStats();
         }
 
-        function toggleTimer() {
-            timerRunning = !timerRunning;
-            document.getElementById('start-btn').innerText = timerRunning ? "ABORT_MISSION" : "RESUME_MISSION";
-            if(timerRunning) runTimer();
+        function startMission() {
+            isRunning = !isRunning;
+            document.getElementById('control-btn').innerText = isRunning ? "PAUSE_MISSION" : "RESUME_MISSION";
+            if(isRunning) countdown();
         }
 
-        function runTimer() {
-            if(!timerRunning) return;
-            if(timeLeft > 0) {
-                timeLeft--;
-                const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
-                const s = (timeLeft % 60).toString().padStart(2, '0');
-                document.getElementById('timer').innerText = `${m}:${s}`;
-                setTimeout(runTimer, 1000);
+        function countdown() {
+            if(!isRunning) return;
+            if(timeRemaining > 0) {
+                timeRemaining--;
+                const m = Math.floor(timeRemaining / 60).toString().padStart(2, '0');
+                const s = (timeRemaining % 60).toString().padStart(2, '0');
+                document.getElementById('timer-display').innerText = `${m}:${s}`;
+                setTimeout(countdown, 1000);
             } else {
-                completeSession();
+                pilotStats.sessions++; pilotStats.minutes += 25;
+                localStorage.setItem('pilot_stats_v27', JSON.stringify(pilotStats));
+                alert("Session Complete!"); location.reload();
             }
         }
 
-        function completeSession() {
-            stats.sessions++; stats.time += 25;
-            localStorage.setItem('pilot_stats', JSON.stringify(stats));
-            alert("Mission Accomplished."); location.reload();
-        }
-
-        function getIrohWisdom() {
-            document.getElementById('iroh-chat').innerText = `"${irohQuotes[Math.floor(Math.random()*irohQuotes.length)]}"`;
+        function askIroh() {
+            document.getElementById('iroh-wisdom-box').innerText = `"${quotes[Math.floor(Math.random()*quotes.length)]}"`;
             document.getElementById('iroh-input').value = "";
         }
 
-        function toggleAudio() {
-            const p = document.getElementById('radio-player');
-            const b = document.getElementById('audio-toggle');
-            if(p.paused) { p.play(); b.innerText = "🔊 PLAYING"; }
-            else { p.pause(); b.innerText = "🔇 PAUSED"; }
+        function togglePlay() {
+            const a = document.getElementById('bg-audio');
+            const b = document.getElementById('audio-btn');
+            if(a.paused) { a.play(); b.innerText = "🔊 AUDIO_ON"; }
+            else { a.pause(); b.innerText = "🔇 AUDIO_OFF"; }
         }
 
-        function addTask() {
-            const t = prompt("Objective:");
-            if(t) { tasks.push(t); localStorage.setItem('pilot_tasks', JSON.stringify(tasks)); renderTasks(); }
+        function addNewTask() {
+            const t = prompt("Task:");
+            if(t) { currentTasks.push(t); localStorage.setItem('pilot_tasks_v27', JSON.stringify(currentTasks)); refreshTasks(); }
         }
 
-        function renderTasks() {
-            document.getElementById('task-list').innerHTML = tasks.map((t, i) => `<div class="task-item"><span>> ${t}</span><span onclick="removeTask(${i})" style="color:red; cursor:pointer;">[X]</span></div>`).join('');
+        function refreshTasks() {
+            document.getElementById('task-box').innerHTML = currentTasks.map((t, i) => `<div class="task"><span>> ${t}</span><span onclick="delTask(${i})" style="color:red; cursor:pointer;">[X]</span></div>`).join('');
         }
 
-        function removeTask(i) { tasks.splice(i,1); localStorage.setItem('pilot_tasks', JSON.stringify(tasks)); renderTasks(); }
+        function delTask(i) { currentTasks.splice(i, 1); localStorage.setItem('pilot_tasks_v27', JSON.stringify(currentTasks)); refreshTasks(); }
 
-        function updateStats() {
-            document.getElementById('stat-sessions').innerText = stats.sessions;
-            document.getElementById('stat-time').innerText = stats.time;
+        function refreshStats() {
+            document.getElementById('count-sessions').innerText = pilotStats.sessions;
+            document.getElementById('count-minutes').innerText = pilotStats.minutes;
         }
     </script>
 </body>
