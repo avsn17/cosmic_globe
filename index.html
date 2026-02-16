@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COSMIC_GLOBE: v18_SUPERNOVA</title>
+    <title>COSMIC_GLOBE: v19_OMNI</title>
     <style>
         :root { --glow: #00ff41; --bg: #000500; }
         body.theme-vapor { --glow: #ff71ce; --bg: #01012b; }
@@ -21,7 +21,6 @@
             z-index: 1; pointer-events: none;
         }
 
-        /* 🎯 ABSOLUTE CENTER HUD */
         #ui-container {
             position: fixed; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
@@ -65,11 +64,12 @@
     <div id="ui-container">
         <div id="login-sector" class="hud-card">
             <h2 style="margin:0 0 10px 0;">[ NEURAL_LINK ]</h2>
-            <select id="audio-station">
+            <select id="audio-station" onchange="checkCustom(this.value)">
                 <option value="https://stream.nightride.fm/nightride.mp3" data-theme="techno">NIGHTRIDE FM (Synthwave)</option>
                 <option value="https://icecast.ndr.de/ndr/n-joy/disco/mp3/128/stream.mp3" data-theme="disco">DISCO GOLD (70s)</option>
-                <option value="http://stream.klassikradio.de/dreams/mp3-128/" data-theme="vapor">CLASSIC DREAMS (Ambient)</option>
+                <option value="CUSTOM" data-theme="vapor">🚀 USE CUSTOM URL</option>
             </select>
+            <input type="text" id="custom-url" placeholder="Paste Audio URL here..." style="display:none;">
             <input type="text" id="pilot-id" placeholder="ENTER CALLSIGN...">
             <button onclick="igniteEngines()">ENGAGE SYSTEMS</button>
         </div>
@@ -84,9 +84,7 @@
                     <button id="play-pause" onclick="toggleRadio()">🔇 PAUSED</button>
                     <button onclick="addTask()">+ OBJECTIVE</button>
                 </div>
-
                 <div id="task-list"></div>
-
                 <div style="font-size: 0.65rem; margin-top: 10px; border-top: 1px solid var(--glow); padding-top: 5px; opacity: 0.7;">
                     SESSIONS: <span id="stat-sessions">0</span> | FOCUS: <span id="stat-time">0</span>m
                 </div>
@@ -99,18 +97,18 @@
         let timeLeft = 25 * 60;
         let stats = JSON.parse(localStorage.getItem('pilot_stats')) || { sessions: 0, time: 0 };
         let tasks = JSON.parse(localStorage.getItem('pilot_tasks')) || [];
-        const irohQuotes = [
-            "Hope is something you give yourself. That is the meaning of inner strength.",
-            "It is important to draw wisdom from many different places.",
-            "Sharing tea with a fascinating stranger is one of life's true delights.",
-            "While it is always best to believe in oneself, a little help from others can be a great blessing."
-        ];
+        const irohQuotes = ["Hope is something you give yourself.", "Wisdom comes from many places.", "Tea is better with friends.", "Believe in yourself."];
+
+        function checkCustom(val) {
+            document.getElementById('custom-url').style.display = (val === 'CUSTOM') ? 'block' : 'none';
+        }
 
         function igniteEngines() {
             const player = document.getElementById('radio-player');
-            player.src = document.getElementById('audio-station').value;
-            document.body.className = 'theme-' + document.getElementById('audio-station').selectedOptions[0].getAttribute('data-theme');
+            const station = document.getElementById('audio-station');
+            player.src = (station.value === 'CUSTOM') ? document.getElementById('custom-url').value : station.value;
             
+            document.body.className = 'theme-' + station.selectedOptions[0].getAttribute('data-theme');
             document.getElementById('login-sector').style.display = 'none';
             document.getElementById('mission-sector').style.display = 'block';
             
@@ -129,46 +127,36 @@
             } else {
                 stats.sessions++; stats.time += 25;
                 localStorage.setItem('pilot_stats', JSON.stringify(stats));
-                alert("Mission Objective Accomplished.");
                 location.reload();
             }
         }
 
         function toggleRadio() {
-            const player = document.getElementById('radio-player');
-            const btn = document.getElementById('play-pause');
-            if (player.paused) { player.play(); btn.innerText = "🔊 PLAYING"; }
-            else { player.pause(); btn.innerText = "🔇 PAUSED"; }
+            const p = document.getElementById('radio-player');
+            const b = document.getElementById('play-pause');
+            if (p.paused) { p.play(); b.innerText = "🔊 PLAYING"; }
+            else { p.pause(); b.innerText = "🔇 PAUSED"; }
         }
 
         function irohWisdom() {
             const input = document.getElementById('iroh-input');
             const display = document.getElementById('iroh-display');
             if (!input.value) return;
-            display.innerText = "Thinking...";
-            setTimeout(() => {
-                display.innerText = `"${irohQuotes[Math.floor(Math.random() * irohQuotes.length)]}"`;
-                input.value = "";
-            }, 600);
+            display.innerText = `"${irohQuotes[Math.floor(Math.random() * irohQuotes.length)]}"`;
+            input.value = "";
         }
 
         function addTask() {
-            const val = prompt("Enter mission objective:");
-            if (!val) return;
-            tasks.push(val);
-            localStorage.setItem('pilot_tasks', JSON.stringify(tasks));
-            renderTasks();
+            const val = prompt("Objective:");
+            if (val) { tasks.push(val); localStorage.setItem('pilot_tasks', JSON.stringify(tasks)); renderTasks(); }
         }
 
         function renderTasks() {
-            const list = document.getElementById('task-list');
-            list.innerHTML = tasks.map((t, i) => `<div class="task-item"><span>${t}</span><span onclick="removeTask(${i})" style="color:#ff4141; cursor:pointer;">[X]</span></div>`).join('');
+            document.getElementById('task-list').innerHTML = tasks.map((t, i) => `<div class="task-item"><span>${t}</span><span onclick="removeTask(${i})" style="color:red; cursor:pointer;">[X]</span></div>`).join('');
         }
 
         function removeTask(i) {
-            tasks.splice(i, 1);
-            localStorage.setItem('pilot_tasks', JSON.stringify(tasks));
-            renderTasks();
+            tasks.splice(i, 1); localStorage.setItem('pilot_tasks', JSON.stringify(tasks)); renderTasks();
         }
 
         function updateStatsDisplay() {
@@ -181,9 +169,8 @@
             const m = document.createElement('div');
             m.className = 'meteor';
             const angle = Math.random() * Math.PI * 2;
-            const dist = 1500;
-            m.style.setProperty('--tx', `${Math.cos(angle)*dist}px`);
-            m.style.setProperty('--ty', `${Math.sin(angle)*dist}px`);
+            m.style.setProperty('--tx', `${Math.cos(angle)*1500}px`);
+            m.style.setProperty('--ty', `${Math.sin(angle)*1500}px`);
             m.style.left = '50%'; m.style.top = '50%';
             m.style.transform = `translate(-50%, -50%) rotate(${angle + Math.PI/2}rad)`;
             m.style.animation = `warp 0.8s linear forwards`;
