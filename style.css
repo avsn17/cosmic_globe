@@ -1,278 +1,73 @@
-:root { 
-    --glow: #00ff41; --bg: #050505; --accent: #00d4ff; 
-    --matrix-fade: rgba(0, 255, 65, 0.1);
+:root {
+    --glow: #00ff41;
+    --accent: #008f11;
+    --bg: #000500;
 }
 
-.theme-vapor { --glow: #ff00c1; --accent: #00fff9; --bg: #1a0033; }
-.theme-disco { --glow: #ffcc33; --accent: #ffffff; --bg: #201000; }
-.theme-techno { --glow: #00ff41; --accent: #00ffff; --bg: #000a00; }
-
-body { 
-    background: var(--bg); color: var(--glow); font-family: 'Courier New', monospace; 
-    margin: 0; overflow: hidden; height: 100vh; display: flex; justify-content: center; align-items: center;
-    transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+body, html {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    color: var(--glow);
+    font-family: 'Courier New', monospace;
+    overflow: hidden;
+    height: 100vh;
 }
 
+/* Ensure the Login UI is visible and centered */
 #ui-container {
-    border: 2px solid var(--glow); padding: 40px; background: rgba(0,0,0,0.92);
-    box-shadow: 0 0 50px rgba(0,0,0,1), inset 0 0 20px var(--glow);
-    z-index: 10; position: relative; backdrop-filter: blur(5px);
-}
-
-/* Neural Load Meter */
-#load-container {
-    width: 100%; height: 4px; background: #222; margin: 10px 0; overflow: hidden;
-}
-#load-bar { height: 100%; width: 0%; background: var(--glow); transition: width 0.1s; }
-
-/* Light Streaks (Upgraded Meteors) */
-.meteor {
-    position: absolute; width: 1px; height: 150px;
-    background: linear-gradient(to top, transparent, var(--accent), #fff);
-    pointer-events: none; filter: blur(1px);
-}
-
-@keyframes zoom {
-    0% { transform: translate(-50%, -50%) scale(0) translate(0,0); opacity: 0; }
-    20% { opacity: 1; }
-    100% { transform: translate(-50%, -50%) scale(1) translate(var(--x), var(--y)); opacity: 0; }
-}
-
-/* Digital Glitch Text */
-.glitch-text {
-    text-transform: uppercase;
-    text-shadow: 2px 0 var(--accent), -2px 0 #f0f;
-    animation: glitch 3s infinite;
-}
-
-@keyframes glitch {
-    0% { text-shadow: 2px 0 var(--accent), -2px 0 #f0f; }
-    50% { text-shadow: -2px 0 var(--accent), 2px 0 #f0f; }
-    100% { text-shadow: 2px 0 var(--accent), -2px 0 #f0f; }
-}
-#toggle-panel {
     position: absolute;
-    top: 20px; right: 20px;
-    background: rgba(0,0,0,0.8);
-    border: 1px solid var(--glow);
-    padding: 10px;
-    font-size: 0.6rem;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    z-index: 100;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 5000; /* Higher than stars and scanlines */
 }
 
-#toggle-panel label { cursor: pointer; display: flex; align-items: center; gap: 5px; }
-#toggle-panel input { accent-color: var(--glow); }#toggle-panel {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: rgba(0, 0, 0, 0.85);
-    border: 1px solid var(--glow);
-    padding: 15px;
-    z-index: 1000;
-    transition: opacity 0.3s ease;
-    font-size: 10px;
-    letter-spacing: 1px;
-}
-#toggle-panel label { display: block; margin-bottom: 5px; cursor: pointer; color: var(--glow); }
-#ui-container { transition: opacity 0.5s ease; }
-#toggle-panel {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: rgba(0, 0, 0, 0.85);
-    border: 1px solid var(--glow);
-    padding: 15px;
-    z-index: 1000;
-    transition: opacity 0.3s ease;
-    font-size: 10px;
-    letter-spacing: 1px;
-}
-#toggle-panel label { display: block; margin-bottom: 5px; cursor: pointer; color: var(--glow); }
-#ui-container { transition: opacity 0.5s ease; }
-#toggle-panel {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: rgba(0, 15, 5, 0.85); /* Darker tint for contrast */
+#login-sector {
+    background: rgba(0, 20, 0, 0.9);
+    padding: 40px;
     border: 2px solid var(--glow);
-    border-radius: 4px;
-    padding: 15px;
-    z-index: 1000;
-    opacity: 1 !important; /* Force visibility */
-    box-shadow: 0 0 15px var(--glow);
-    font-family: 'Courier New', monospace;
-    transition: transform 0.3s ease;
+    box-shadow: 0 0 20px var(--glow);
 }
 
-#toggle-panel:hover {
-    transform: scale(1.05);
-}
-
-#toggle-panel label {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 8px;
-    color: var(--glow);
-    font-size: 11px;
+button {
+    background: var(--glow);
+    color: #000;
+    border: none;
+    padding: 15px 30px;
     font-weight: bold;
-    text-transform: uppercase;
-}
-
-#toggle-panel input[type="checkbox"] {
     cursor: pointer;
-    filter: hue-rotate(90deg); /* Adjust checkbox color to match theme */
-}
-#toggle-panel {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: rgba(0, 15, 5, 0.85); /* Darker tint for contrast */
-    border: 2px solid var(--glow);
-    border-radius: 4px;
-    padding: 15px;
-    z-index: 1000;
-    opacity: 1 !important; /* Force visibility */
-    box-shadow: 0 0 15px var(--glow);
-    font-family: 'Courier New', monospace;
-    transition: transform 0.3s ease;
-}
-
-#toggle-panel:hover {
-    transform: scale(1.05);
-}
-
-#toggle-panel label {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 8px;
-    color: var(--glow);
-    font-size: 11px;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-#toggle-panel input[type="checkbox"] {
-    cursor: pointer;
-    filter: hue-rotate(90deg); /* Adjust checkbox color to match theme */
-}
-#toggle-panel {
-    position: fixed;
-    top: 20px; right: 20px;
-    background: rgba(0, 10, 0, 0.9);
-    border: 2px solid var(--glow);
-    padding: 15px;
-    z-index: 1000;
-    box-shadow: 0 0 20px rgba(0,255,65,0.2);
-    min-width: 180px;
-}
-.panel-header {
-    font-size: 0.7rem;
-    color: var(--accent);
-    border-bottom: 1px solid var(--accent);
-    margin-bottom: 10px;
-    padding-bottom: 5px;
     letter-spacing: 2px;
+    margin-top: 20px;
+    display: inline-block; /* Ensure it renders properly */
 }
-#toggle-panel hr { border: 0; border-top: 1px solid #333; margin: 10px 0; }
-#warp-speed { width: 100%; cursor: pointer; accent-color: var(--glow); }
-small { font-size: 0.6rem; opacity: 0.7; }
-#command-menu {
+
+button:hover {
+    box-shadow: 0 0 30px var(--glow);
+    transform: scale(1.05);
+}
+
+/* Starfield & Background Layers */
+#star-container, #meteor-field {
     position: fixed;
-    top: 20px; right: 20px;
-    width: 220px;
-    background: rgba(0, 20, 10, 0.9);
-    border: 1px solid var(--glow);
-    color: var(--glow);
-    z-index: 2000;
-    font-size: 10px;
-    box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
-    backdrop-filter: blur(5px);
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 1;
 }
 
-#menu-header {
-    background: var(--glow);
-    color: #000;
-    padding: 8px 12px;
-    font-weight: bold;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.scanlines {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 2px, 3px 100%;
+    z-index: 2;
+    pointer-events: none;
 }
 
-#menu-content {
-    padding: 15px;
-    transition: max-height 0.3s ease;
-    overflow: hidden;
-}
-
-.menu-group {
-    margin-bottom: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.menu-group label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-}
-
-#cinematic-btn {
-    background: transparent;
-    border: 1px solid var(--glow);
-    color: var(--glow);
-    padding: 5px;
-    width: 100%;
-    cursor: pointer;
-}
-
-#cinematic-btn:hover {
-    background: var(--glow);
-    color: #000;
-}
-.status-display {
-    background: rgba(0, 255, 65, 0.05);
-    padding: 8px;
-    border: 1px dashed var(--glow);
-    margin-bottom: 10px;
-}
-
-#track-info {
-    font-size: 0.65rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: var(--accent);
-}
-
-@keyframes shake {
-    0% { transform: translate(1px, 1px) rotate(0deg); }
-    10% { transform: translate(-1px, -2px) rotate(-1deg); }
-    30% { transform: translate(3px, 2px) rotate(0deg); }
-    50% { transform: translate(-1px, 2px) rotate(1deg); }
-    100% { transform: translate(1px, -2px) rotate(-1deg); }
-}
-
-.shake-active {
-    animation: shake 0.2s infinite;
-}
-.stats-panel {
-    background: rgba(0, 0, 0, 0.5);
-    padding: 10px;
-    border-left: 2px solid var(--accent);
-    margin-bottom: 10px;
-}
-#total-time {
-    font-family: 'Courier New', monospace;
-    font-size: 0.9rem;
-    color: var(--accent);
-    margin-top: 5px;
+/* Mission HUD positioning */
+#mission-sector {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
 }
