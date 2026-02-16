@@ -131,3 +131,25 @@ function toggleHUD() {
     const ui = document.getElementById('ui-container');
     ui.style.opacity = ui.style.opacity === '0' ? '1' : '0';
 }
+
+// PILOT LOG PERSISTENCE
+let totalFocusSeconds = parseInt(localStorage.getItem('cosmic_focus_time')) || 0;
+
+function updatePilotLog() {
+    totalFocusSeconds++;
+    localStorage.setItem('cosmic_focus_time', totalFocusSeconds);
+    
+    const h = Math.floor(totalFocusSeconds / 3600).toString().padStart(2, '0');
+    const m = Math.floor((totalFocusSeconds % 3600) / 60).toString().padStart(2, '0');
+    const s = (totalFocusSeconds % 60).toString().padStart(2, '0');
+    
+    const display = document.getElementById('total-time');
+    if(display) display.innerText = `${h}h ${m}m ${s}s`;
+}
+
+// Update the autoCycle to include the log
+const originalAutoCycle = autoCycle;
+autoCycle = function() {
+    originalAutoCycle();
+    setInterval(updatePilotLog, 1000);
+};

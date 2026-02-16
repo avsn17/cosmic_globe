@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COSMIC_GLOBE: COMMAND_CENTER_v6</title>
+    <title>COSMIC_GLOBE: COMMAND_CENTER_v7</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -36,17 +36,20 @@
                         <small>CURRENT_FREQUENCY:</small>
                         <div id="track-info" class="glow-text">SYNCHRONIZING...</div>
                     </div>
-                    <hr>
                     <div class="menu-group">
                         <label><input type="checkbox" id="toggle-meteors" checked> METEORS</label>
                         <label><input type="checkbox" id="toggle-pulse"> RED_PULSE</label>
                         <label><input type="checkbox" id="toggle-shake"> SCREEN_SHAKE</label>
-                        <label><input type="checkbox" id="toggle-scanlines" checked> SCANLINES</label>
                         <label><input type="checkbox" id="toggle-mute"> MUTE_LINK</label>
                     </div>
                     <div class="menu-group">
                         <small>WARP_VELOCITY</small>
                         <input type="range" id="warp-speed" min="0.1" max="3" step="0.1" value="1">
+                    </div>
+                    <hr>
+                    <div class="menu-group stats-panel">
+                        <small>PILOT_LOG (TOTAL FOCUS)</small>
+                        <div id="total-time">00h 00m 00s</div>
                     </div>
                     <div class="menu-group">
                         <button id="cinematic-btn" onclick="toggleHUD()">CINEMATIC [H]</button>

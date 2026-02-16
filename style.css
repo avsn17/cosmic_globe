@@ -264,3 +264,15 @@ small { font-size: 0.6rem; opacity: 0.7; }
 .shake-active {
     animation: shake 0.2s infinite;
 }
+.stats-panel {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-left: 2px solid var(--accent);
+    margin-bottom: 10px;
+}
+#total-time {
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    color: var(--accent);
+    margin-top: 5px;
+}
