@@ -3,150 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COSMIC_GLOBE: v23_TYPOGRAPHY</title>
+    <title>COSMIC_GLOBE: v24_DREADNOUGHT</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --glow: #00ff41; --bg: #000500; }
-        body.theme-vapor { --glow: #ff71ce; --bg: #01012b; }
-        body.theme-disco { --glow: #f4d03f; --bg: #1a0633; }
-        body.theme-techno { --glow: #00f2ff; --bg: #000000; }
+        :root { --glow: #00ff41; --bg: #000500; --ui-glow: rgba(0, 255, 65, 0.3); }
+        body.theme-vapor { --glow: #ff71ce; --bg: #01012b; --ui-glow: rgba(255, 113, 206, 0.3); }
+        body.theme-disco { --glow: #f4d03f; --bg: #1a0633; --ui-glow: rgba(244, 208, 63, 0.3); }
         
         body, html {
             margin: 0; padding: 0; background: var(--bg); color: var(--glow);
-            /* Updated to Rajdhani for general text */
-            font-family: 'Rajdhani', sans-serif; 
-            width: 100vw; height: 100vh;
-            overflow: hidden; transition: 0.5s;
+            font-family: 'Rajdhani', sans-serif; width: 100vw; height: 100vh;
+            overflow: hidden; transition: background 1s, color 0.5s;
         }
 
-        #star-container, #meteor-field {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 1; pointer-events: none;
+        /* 📺 SCANLINE EFFECT */
+        body::after {
+            content: " "; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 10000; background-size: 100% 3px, 3px 100%; pointer-events: none; opacity: 0.3;
         }
 
+        #star-container, #meteor-field { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+
+        /* ✨ PARALLAX STARS */
         .star {
-            position: absolute;
-            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
-            border-radius: 50%; opacity: 0.4;
+            position: absolute; background: white; border-radius: 50%; opacity: 0.5;
+            animation: starPulse 4s infinite ease-in-out;
         }
+        @keyframes starPulse { 0%, 100% { transform: scale(1); opacity: 0.3; } 50% { transform: scale(1.2); opacity: 0.6; } }
 
         #ui-container {
-            position: fixed; top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 440px; z-index: 9999;
-            display: flex; flex-direction: column; gap: 10px;
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 440px; z-index: 999; display: flex; flex-direction: column; gap: 10px;
         }
 
         .hud-card {
-            background: rgba(0, 5, 0, 0.96);
-            border: 1px solid var(--glow); border-radius: 4px; /* Sharper edges for sci-fi */
-            padding: 20px; box-shadow: 0 0 40px rgba(0,0,0,1);
-            backdrop-filter: blur(15px);
+            background: rgba(0, 5, 0, 0.85); border: 1px solid var(--glow); border-radius: 2px;
+            padding: 20px; box-shadow: 0 0 20px var(--ui-glow); backdrop-filter: blur(10px);
+            position: relative; overflow: hidden;
         }
 
-        /* 🎯 SCI-FI TIMER FONT */
+        /* 🚨 ALERT PULSE */
+        .emergency { animation: alertPulse 1.5s infinite; }
+        @keyframes alertPulse { 0% { box-shadow: 0 0 10px red; border-color: red; } 50% { box-shadow: 0 0 30px red; border-color: #ff4d4d; } 100% { box-shadow: 0 0 10px red; border-color: red; } }
+
         #timer { 
-            font-family: 'Orbitron', sans-serif;
-            font-size: 6rem; font-weight: 900; 
-            text-shadow: 0 0 20px var(--glow); margin: 0;
-            letter-spacing: -2px;
+            font-family: 'Orbitron', sans-serif; font-size: 6rem; font-weight: 900; 
+            text-align: center; margin: 0; letter-spacing: -2px;
         }
-
-        h2 { font-family: 'Orbitron', sans-serif; text-transform: uppercase; letter-spacing: 4px; font-size: 1.2rem; }
 
         input, select, button {
-            font-family: 'Rajdhani', sans-serif;
-            width: 100%; padding: 12px; margin: 4px 0;
-            background: rgba(0,0,0,0.8); border: 1px solid var(--glow);
+            font-family: 'Rajdhani', sans-serif; width: 100%; padding: 12px; margin: 4px 0;
+            background: rgba(0,0,0,0.9); border: 1px solid var(--glow);
             color: var(--glow); font-weight: 700; text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
-        button { background: var(--glow); color: #000; border: none; cursor: pointer; transition: 0.3s; }
-        button:hover { background: #fff; color: #000; box-shadow: 0 0 20px #fff; }
+        button { cursor: pointer; transition: 0.2s; background: var(--glow); color: #000; border: none; }
+        button:hover { filter: brightness(1.3); transform: translateY(-1px); }
+        .btn-outline { background: transparent; color: var(--glow); }
 
-        #iroh-display { 
-            height: 70px; font-weight: 300; font-size: 1.1rem; 
-            display: flex; align-items: center; justify-content: center; 
-            border-bottom: 1px solid rgba(0,255,65,0.1); margin-bottom: 10px; 
-        }
+        #task-list { max-height: 80px; overflow-y: auto; text-align: left; margin: 10px 0; font-size: 0.9rem; border-left: 2px solid var(--glow); padding-left: 10px; }
         
-        #task-list { max-height: 80px; overflow-y: auto; text-align: left; font-size: 0.9rem; }
-        .task-item { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(0,255,65,0.05); padding: 5px 0; }
-        
-        .meteor { position: absolute; width: 2px; height: 150px; background: linear-gradient(to top, var(--glow), transparent); }
-        @keyframes warp { from { transform: translate(-50%, -50%) scale(0); opacity: 1; } to { transform: translate(var(--tx), var(--ty)) scale(3); opacity: 0; } }
+        .meteor { position: absolute; width: 2px; height: 150px; background: linear-gradient(to top, var(--glow), transparent); opacity: 0.6; }
+        @keyframes warp { from { transform: translate(-50%, -50%) scale(0); opacity: 1; } to { transform: translate(var(--tx), var(--ty)) scale(4); opacity: 0; } }
     </style>
 </head>
 <body class="theme-techno">
     <div id="star-container"></div>
     <div id="meteor-field"></div>
     <audio id="radio-player" loop></audio>
+    <audio id="ambience-engine" loop src="https://www.soundjay.com/mechanical/spaceship-hum-1.mp3"></audio>
 
     <div id="ui-container">
         <div id="login-sector" class="hud-card">
-            <h2>Neural Link</h2>
-            <select id="audio-station" onchange="checkCustom(this.value)">
-                <option value="https://stream.nightride.fm/nightride.mp3" data-theme="techno">NIGHTRIDE FM</option>
-                <option value="https://icecast.ndr.de/ndr/n-joy/disco/mp3/128/stream.mp3" data-theme="disco">DISCO GOLD</option>
-                <option value="CUSTOM" data-theme="vapor">🚀 CUSTOM URL</option>
+            <h2 style="font-family:'Orbitron'; font-size: 1rem; letter-spacing: 3px;">SYSTEMS_OFFLINE</h2>
+            <select id="audio-station">
+                <option value="https://stream.nightride.fm/nightride.mp3" data-theme="techno">DEEP_SPACE (Synth)</option>
+                <option value="https://icecast.ndr.de/ndr/n-joy/disco/mp3/128/stream.mp3" data-theme="disco">GOLD_STATION (70s)</option>
+                <option value="CUSTOM" data-theme="vapor">EXTERNAL_LINK (URL)</option>
             </select>
-            <input type="text" id="custom-url" placeholder="PASTE URL..." style="display:none;">
-            <input type="text" id="pilot-id" placeholder="PILOT_ID...">
-            <button onclick="igniteEngines()">Initialize</button>
+            <input type="text" id="custom-url" placeholder="PASTE_FREQ_URL..." style="display:none;">
+            <button onclick="igniteDreadnought()">BOOT_SYSTEM</button>
         </div>
 
         <div id="mission-sector" style="display:none;">
             <div id="timer">25:00</div>
-            <div class="hud-card">
-                <div id="iroh-display">"Good tea is its own reward."</div>
-                <input type="text" id="iroh-input" placeholder="Consult Uncle Iroh..." onkeydown="if(event.key==='Enter') irohWisdom()">
+            <div id="hud-main" class="hud-card">
+                <div id="iroh-display" style="height: 60px; font-style: italic; font-size: 1.1rem; text-align: center;">Initializing Wisdom...</div>
+                <input type="text" id="iroh-input" placeholder="Neural Query to Iroh..." onkeydown="if(event.key==='Enter') irohWisdom()">
                 
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-top:10px;">
-                    <button id="play-pause" onclick="toggleRadio()" style="background:transparent; border: 1px solid var(--glow); color: var(--glow);">🔇 PAUSED</button>
-                    <button onclick="addTask()">+ Objective</button>
+                    <button id="play-pause" class="btn-outline" onclick="toggleAudio()">🔊 AUDIO</button>
+                    <button class="btn-outline" onclick="toggleShields()">🛡️ SHIELDS</button>
                 </div>
+
                 <div id="task-list"></div>
-                <div style="font-size: 0.8rem; margin-top: 15px; border-top: 1px solid rgba(0,255,65,0.2); padding-top: 8px; opacity: 0.7; letter-spacing: 2px;">
-                    SESSIONS: <span id="stat-sessions">0</span> | TIME: <span id="stat-time">0</span>M
+                <button onclick="addTask()" style="background:transparent; border: 1px dashed var(--glow); color:var(--glow); font-size: 0.7rem;">+ ADD_OBJECTIVE</button>
+
+                <div style="font-size: 0.7rem; margin-top: 15px; opacity: 0.6; display: flex; justify-content: space-between;">
+                    <span>LOGS: <span id="stat-sessions">0</span></span>
+                    <span>FLIGHT_TIME: <span id="stat-time">0</span>M</span>
                 </div>
-                <button onclick="location.reload()" style="background:#ff4141; color:#fff; margin-top:10px; font-size:0.7rem;">Terminate</button>
             </div>
         </div>
     </div>
 
     <script>
-        // JS remains the same, just keeping the core logic intact for the new UI
         let timeLeft = 25 * 60;
+        let isBreak = false;
         let stats = JSON.parse(localStorage.getItem('pilot_stats')) || { sessions: 0, time: 0 };
         let tasks = JSON.parse(localStorage.getItem('pilot_tasks')) || [];
-        const irohQuotes = ["Hope is something you give yourself.", "Wisdom comes from many places.", "Tea is better with friends.", "Believe in yourself."];
+        const irohQuotes = ["Hope is something you give yourself.", "Wisdom comes from many places.", "Tea is better with friends.", "Believe in yourself.", "Look within to save yourself."];
 
         function createStars() {
             const container = document.getElementById('star-container');
-            for (let i = 0; i < 50; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                const size = Math.random() * 35 + 5; 
-                star.style.width = `${size}px`; star.style.height = `${size}px`;
-                star.style.left = `${Math.random() * 100}vw`; star.style.top = `${Math.random() * 100}vh`;
-                star.style.filter = `blur(${Math.random() * 4}px)`;
-                container.appendChild(star);
+            for (let i = 0; i < 60; i++) {
+                const s = document.createElement('div');
+                s.className = 'star';
+                const size = Math.random() * 25 + 5;
+                s.style.width = s.style.height = `${size}px`;
+                s.style.left = `${Math.random() * 100}vw`;
+                s.style.top = `${Math.random() * 100}vh`;
+                s.style.filter = `blur(${Math.random() * 3}px)`;
+                container.appendChild(s);
             }
         }
         createStars();
 
-        function checkCustom(val) { document.getElementById('custom-url').style.display = (val === 'CUSTOM') ? 'block' : 'none'; }
-
-        function igniteEngines() {
-            const player = document.getElementById('radio-player');
+        function igniteDreadnought() {
+            const radio = document.getElementById('radio-player');
             const station = document.getElementById('audio-station');
-            player.src = (station.value === 'CUSTOM') ? document.getElementById('custom-url').value : station.value;
+            radio.src = (station.value === 'CUSTOM') ? document.getElementById('custom-url').value : station.value;
+            
             document.body.className = 'theme-' + station.selectedOptions[0].getAttribute('data-theme');
             document.getElementById('login-sector').style.display = 'none';
             document.getElementById('mission-sector').style.display = 'block';
+            
+            document.getElementById('ambience-engine').volume = 0.2;
+            document.getElementById('ambience-engine').play();
+            
             renderTasks(); updateStatsDisplay();
-            setInterval(tick, 1000); setInterval(spawnMeteor, 200);
+            setInterval(tick, 1000); setInterval(spawnMeteor, 180);
         }
 
         function tick() {
@@ -155,35 +153,49 @@
                 const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
                 const s = (timeLeft % 60).toString().padStart(2, '0');
                 document.getElementById('timer').innerText = `${m}:${s}`;
+                if(timeLeft < 60) document.getElementById('hud-main').classList.add('emergency');
             } else {
-                stats.sessions++; stats.time += 25;
-                localStorage.setItem('pilot_stats', JSON.stringify(stats));
-                location.reload();
+                handleCycle();
             }
         }
 
-        function toggleRadio() {
+        function handleCycle() {
+            isBreak = !isBreak;
+            if(!isBreak) {
+                stats.sessions++; stats.time += 25;
+                localStorage.setItem('pilot_stats', JSON.stringify(stats));
+                timeLeft = 25 * 60;
+                document.getElementById('hud-main').classList.remove('emergency');
+            } else {
+                timeLeft = 5 * 60;
+                alert("Mission Complete. Shift to Break Mode.");
+            }
+            updateStatsDisplay();
+        }
+
+        function toggleShields() {
+            if (!document.fullscreenElement) { document.documentElement.requestFullscreen(); }
+            else { document.exitFullscreen(); }
+        }
+
+        function toggleAudio() {
             const p = document.getElementById('radio-player');
-            const b = document.getElementById('play-pause');
-            if (p.paused) { p.play(); b.innerText = "🔊 PLAYING"; }
-            else { p.pause(); b.innerText = "🔇 PAUSED"; }
+            p.paused ? p.play() : p.pause();
         }
 
         function irohWisdom() {
-            const input = document.getElementById('iroh-input');
-            const display = document.getElementById('iroh-display');
-            if (!input.value) return;
-            display.innerText = `"${irohQuotes[Math.floor(Math.random() * irohQuotes.length)]}"`;
-            input.value = "";
+            const inp = document.getElementById('iroh-input');
+            document.getElementById('iroh-display').innerText = `"${irohQuotes[Math.floor(Math.random()*irohQuotes.length)]}"`;
+            inp.value = "";
         }
 
         function addTask() {
-            const val = prompt("Objective:");
-            if (val) { tasks.push(val); localStorage.setItem('pilot_tasks', JSON.stringify(tasks)); renderTasks(); }
+            const v = prompt("Objective:");
+            if(v) { tasks.push(v); localStorage.setItem('pilot_tasks', JSON.stringify(tasks)); renderTasks(); }
         }
 
         function renderTasks() {
-            document.getElementById('task-list').innerHTML = tasks.map((t, i) => `<div class="task-item"><span>${t}</span><span onclick="removeTask(${i})" style="color:red; cursor:pointer;">[X]</span></div>`).join('');
+            document.getElementById('task-list').innerHTML = tasks.map((t, i) => `<div class="task-item"><span>> ${t}</span><span onclick="removeTask(${i})" style="color:red; cursor:pointer;">[X]</span></div>`).join('');
         }
 
         function removeTask(i) { tasks.splice(i, 1); localStorage.setItem('pilot_tasks', JSON.stringify(tasks)); renderTasks(); }
@@ -198,13 +210,14 @@
             const m = document.createElement('div');
             m.className = 'meteor';
             const angle = Math.random() * Math.PI * 2;
+            const spd = isBreak ? 0.3 : 0.8;
             m.style.setProperty('--tx', `${Math.cos(angle)*1500}px`);
             m.style.setProperty('--ty', `${Math.sin(angle)*1500}px`);
             m.style.left = '50%'; m.style.top = '50%';
             m.style.transform = `translate(-50%, -50%) rotate(${angle + Math.PI/2}rad)`;
-            m.style.animation = `warp 0.7s linear forwards`;
+            m.style.animation = `warp ${spd}s linear forwards`;
             field.appendChild(m);
-            setTimeout(() => m.remove(), 700);
+            setTimeout(() => m.remove(), spd * 1000);
         }
     </script>
 </body>
