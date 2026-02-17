@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CHRONOS_V36_ECHOES</title>
+    <title>CHRONOS_V37_IDENTITY</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root { --glow: #00ff41; --bg: #000; }
@@ -12,7 +12,7 @@
         
         @keyframes pulseGlow {
             0% { text-shadow: 0 0 20px var(--glow); transform: scale(1); }
-            50% { text-shadow: 0 0 70px var(--glow); transform: scale(1.01); }
+            50% { text-shadow: 0 0 70px var(--glow); transform: scale(1.02); }
             100% { text-shadow: 0 0 20px var(--glow); transform: scale(1); }
         }
         .sync-active #timer-display { animation: pulseGlow 3s infinite ease-in-out; }
@@ -21,39 +21,42 @@
         #side-panel { width: 420px; position: fixed; left: -450px; top: 0; bottom: 0; background: rgba(0, 5, 0, 0.95); border-right: 2px solid var(--glow); display: flex; flex-direction: column; padding: 90px 25px 25px 25px; z-index: 10000; backdrop-filter: blur(15px); transition: 0.5s; overflow-y: auto; }
         
         .card { background: rgba(0,255,65,0.05); border: 1px solid var(--glow); padding: 15px; margin-bottom: 15px; }
-        select { width: 100%; background: #000; color: var(--glow); border: 1px solid var(--glow); padding: 10px; font-family: 'Orbitron'; cursor: pointer; }
-        
         #timer-display { font-family: 'Orbitron'; font-size: 14rem; font-weight: 900; z-index: 5; position: relative; }
         .main-btn { width: 350px; height: 70px; background: var(--glow); border: none; font-family: 'Orbitron'; font-weight: 900; font-size: 1.5rem; cursor: pointer; }
+        input[type="text"] { background: #000; border: 1px solid var(--glow); color: #fff; padding: 10px; font-family: 'Orbitron'; width: 80%; }
     </style>
 </head>
 <body class="sync-active">
     <canvas id="nebula-canvas"></canvas>
-    <audio id="bg-audio" loop></audio>
+    <audio id="bg-audio" loop autoplay></audio>
     <button id="menu-trigger" onclick="toggleMenu()">☰ HUD_COMMAND</button>
 
     <div id="boot-screen" style="position:fixed; width:100%; height:100%; background:#000; z-index:99999; display:flex; align-items:center; justify-content:center; flex-direction:column; border: 10px solid var(--glow);">
-        <h1 style="font-family:'Orbitron'; font-size:3.5rem;">ECHO_STATION_V36</h1>
-        <button onclick="startSystem()" style="width:300px; padding:20px; background:var(--glow); border:none; font-family:'Orbitron'; font-weight:900; cursor:pointer; margin-top:20px;">INITIALIZE_SYNC</button>
+        <h1 style="font-family:'Orbitron'; font-size:3rem; margin-bottom: 30px;">IDENTITY_REQUIRED</h1>
+        <input type="text" id="username-input" placeholder="ENTER_PILOT_ID" style="text-align:center; margin-bottom: 20px;">
+        <button onclick="startSystem()" style="width:300px; padding:20px; background:var(--glow); border:none; font-family:'Orbitron'; font-weight:900; cursor:pointer;">INITIALIZE_SESSION</button>
     </div>
 
     <div id="main-container" style="display:none; width:100vw; height:100vh; position:relative; z-index:10; display:flex; align-items:center; justify-content:center;">
         <div id="side-panel">
             <div class="card">
-                <h3 style="font-family:'Orbitron'; font-size:0.7rem;">NEURAL_STREAMS</h3>
-                <select id="stream-selector" onchange="changeStream()">
-                    <option value="https://stream.nightride.fm/nightride.mp3">NIGHTRIDE (Synthwave)</option>
-                    <option value="https://www.youtube.com/embed/videoseries?list=PL_XasS8K3tKj9Xz2m4r1fK_mEqD-2I8yS">LANA DEL REY MIX</option>
-                    <option value="https://www.youtube.com/embed/videoseries?list=PL8_tHsh1iL_y0F5X5qj5P1E6oVz6k5M6v">CAS MIX (Slowcore)</option>
-                    <option value="https://www.youtube.com/embed/videoseries?list=PLmXN_61tA1m5uKjG7Yf7V9Lz_9wFhI0uV">BEE GEES (Space Disco)</option>
-                </select>
-                <p style="font-size:0.6rem; opacity:0.6; margin-top:5px;">Note: YouTube links will open in background.</p>
+                <h3 style="font-family:'Orbitron'; font-size:0.7rem;">PILOT: <span id="pilot-id-display">---</span></h3>
+                <p style="font-size:0.6rem; opacity:0.6;">Stats are auto-saved to your ID.</p>
             </div>
             <div class="card">
-                <h3 style="font-family:'Orbitron'; font-size:0.7rem;">LOGBOOK</h3>
-                <textarea id="manual-log" style="width:100%; height:150px; background:transparent; color:#fff; border:1px solid var(--glow);" oninput="saveLocal()"></textarea>
+                <h3 style="font-family:'Orbitron'; font-size:0.7rem;">NEURAL_STREAMS</h3>
+                <select id="stream-selector" onchange="changeStream()" style="width:100%; background:#000; color:var(--glow); border:1px solid var(--glow); font-family:'Orbitron';">
+                    <option value="https://stream.nightride.fm/nightride.mp3">NIGHTRIDE (Autoplay Active)</option>
+                    <option value="https://www.youtube.com/results?search_query=lana+del+rey+mix">LANA DEL REY</option>
+                    <option value="https://www.youtube.com/results?search_query=cigarettes+after+sex">CAS</option>
+                    <option value="https://www.youtube.com/results?search_query=bee+gees">BEE GEES</option>
+                </select>
             </div>
-            <button onclick="location.reload()" style="margin-top:auto; color:red; border:1px solid red; background:transparent; padding:10px; font-family:'Orbitron';">SHUTDOWN</button>
+            <div class="card">
+                <h3 style="font-family:'Orbitron'; font-size:0.7rem;">FLIGHT_STATS</h3>
+                <p>Sessions: <span id="s-count">0</span></p>
+            </div>
+            <button onclick="location.reload()" style="margin-top:auto; color:red; border:1px solid red; background:transparent; padding:10px; font-family:'Orbitron'; cursor:pointer;">TERMINATE_STATION</button>
         </div>
 
         <div id="timer-zone" style="text-align:center;">
@@ -64,51 +67,76 @@
 
     <script>
         let rTime = 25 * 60; let running = false;
-        let data = JSON.parse(localStorage.getItem('p_data_v32')) || { log: "" };
+        let pilotID = "";
+        let data = { sessions: 0, log: "", history: [] };
 
         function startSystem() {
+            pilotID = document.getElementById('username-input').value || "PILOT_UNKNOWN";
+            document.getElementById('pilot-id-display').innerText = pilotID;
+            
+            // Load Pilot-specific data
+            const saved = localStorage.getItem('data_' + pilotID);
+            if(saved) data = JSON.parse(saved);
+
             document.getElementById('boot-screen').style.display = 'none';
             document.getElementById('main-container').style.display = 'flex';
             document.getElementById('menu-trigger').style.display = 'block';
-            changeStream();
+            
+            const audio = document.getElementById('bg-audio');
+            audio.src = "https://stream.nightride.fm/nightride.mp3";
+            audio.play(); // Autoplay engaged
+            
             renderNebula();
+            refreshUI();
         }
 
-        function changeStream() {
-            const audio = document.getElementById('bg-audio');
-            const val = document.getElementById('stream-selector').value;
-            if(val.includes("youtube")) {
-                window.open(val, '_blank');
-                audio.pause();
+        function timerControl() {
+            running = !running;
+            document.getElementById('timer-btn').innerText = running ? "HOLD" : "RESUME";
+            if(running) tick();
+        }
+
+        function tick() {
+            if(!running) return;
+            if(rTime > 0) {
+                rTime--;
+                const m = Math.floor(rTime / 60).toString().padStart(2, '0');
+                const s = (rTime % 60).toString().padStart(2, '0');
+                document.getElementById('timer-display').innerText = `${m}:${s}`;
+                setTimeout(tick, 1000);
             } else {
-                audio.src = val;
-                audio.play();
+                // AUTO-SAVE LOGIC
+                data.sessions++;
+                data.history.push(new Date().toLocaleString());
+                localStorage.setItem('data_' + pilotID, JSON.stringify(data));
+                alert("Mission Complete. Stats saved to ID: " + pilotID);
+                location.reload();
             }
         }
 
+        function refreshUI() {
+            document.getElementById('s-count').innerText = data.sessions;
+        }
+
+        // Nebula Background Animation logic same as v36...
         const canvas = document.getElementById('nebula-canvas');
         const ctx = canvas.getContext('2d');
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.addEventListener('resize', resize); resize();
-
         function renderNebula() {
             ctx.clearRect(0,0,canvas.width, canvas.height);
             let time = Date.now() * 0.0005;
             for(let i=0; i<3; i++) {
-                let x = canvas.width/2 + Math.sin(time + i) * 200;
-                let y = canvas.height/2 + Math.cos(time * 0.5 + i) * 200;
-                let grad = ctx.createRadialGradient(x, y, 0, x, y, 600);
+                let x = canvas.width/2 + Math.sin(time + i) * 150;
+                let y = canvas.height/2 + Math.cos(time * 0.5 + i) * 150;
+                let grad = ctx.createRadialGradient(x, y, 0, x, y, 500);
                 grad.addColorStop(0, 'rgba(0, 255, 65, 0.1)');
                 grad.addColorStop(1, 'transparent');
                 ctx.fillStyle = grad; ctx.fillRect(0,0,canvas.width, canvas.height);
             }
             requestAnimationFrame(renderNebula);
         }
-
         function toggleMenu() { let p = document.getElementById('side-panel'); p.style.left = p.style.left === "0px" ? "-450px" : "0px"; }
-        function timerControl() { running = !running; if(running) tick(); }
-        function tick() { if(!running) return; if(rTime > 0) { rTime--; const m = Math.floor(rTime / 60).toString().padStart(2, '0'); const s = (rTime % 60).toString().padStart(2, '0'); document.getElementById('timer-display').innerText = `${m}:${s}`; setTimeout(tick, 1000); } }
-        function saveLocal() { data.log = document.getElementById('manual-log').value; localStorage.setItem('p_data_v32', JSON.stringify(data)); }
     </script>
 </body>
 </html>

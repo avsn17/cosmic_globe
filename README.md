@@ -1,21 +1,20 @@
-# 🛰️ CHRONOS_STATION: COSMIC_GLOBE v33.0 "Nebula-X"
+# 🛰️ CHRONOS_STATION: COSMIC_GLOBE v37.0 "Identity Core"
 
-A high-performance productivity ecosystem merging deep-space atmospheric immersion with tactical efficiency. This version introduces the **Nebula-X** visual engine and integrated audio feedback.
+The ultimate synchronization build. This version introduces unique Pilot IDs, automated data persistence, and immediate neural stream engagement.
 
 ---
 
-## 🌌 New in v33.0 "Nebula-X"
-- **Star & Sparkle Engine:** 150+ stars and twinkling sparkles with "shimmer" animations.
-- **Tactical Audio:** Mechanical click sounds and mission completion chimes.
-- **Nebula Gradient:** Deep space-green radial background for focus.
-- **Quantum Sync:** Full JSON bridging between Web and Terminal.
+## 🆔 New in v37.0
+- **Pilot Identity Protocol:** Login with your Username to load specific stats and history logs.
+- **Music Autoplay:** Neural streams initialize automatically upon system boot.
+- **Instant Auto-Save:** Session data, flight hours, and history logs are saved immediately upon mission completion.
+- **Nebula Pulse:** Synchronized visual breathing effect for deep focus sessions.
 
 ---
 
 ## 📡 Operational Protocol
-1. **Web:** https://avsn17.github.io/cosmic_globe/
-2. **Terminal:** Run `station` (python3 station.py)
-3. **Sync:** Use the Import/Export buttons to bridge `pilot_data.json`.
+1. **Login:** Enter your Pilot ID (e.g., AVI) to access your unique profile.
+2. **Music:** Streams start on boot. Use the HUD to switch between Lana Del Rey, CAS, or Synthwave.
+3. **Sync:** Your `pilot_[ID].json` is the key to cross-platform data migration.
 
-**Status:** NEBULA_ACTIVE | **Pilot:** AVI | **Build:** v33.0
- 
+**Status:** IDENTITY_LOCKED | **Pilot:** AVI | **Build:** v37.0
