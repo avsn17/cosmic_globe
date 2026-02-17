@@ -1,512 +1,232 @@
-# SOVEREIGN APEX v2.1 GALAXY EDITION
-## Enhanced Focus Timer & Progress Tracker
+# 🌌 COSMIC GLOBE
+### Galaxy Edition Focus Timer — v2.1
 
-A beautiful terminal-based Pomodoro timer with gamification, progress tracking, ambient music integration, and a **full animated galaxy visualization**!
+> A beautiful terminal-based Pomodoro timer with animated galaxy visualization, gamification, and ambient music integration. Live at [avsn17.github.io/cosmic_globe](https://avsn17.github.io/cosmic_globe/)
 
----
-
-## 🌌 Galaxy Visualization Features (NEW in v2.1!)
-
-Experience a living, breathing galaxy during your focus sessions:
-
-### Multi-Layer Star System
-- **Background Stars** (80+) - Slow-moving, dim stars creating depth
-- **Mid-Layer Stars** (40+) - Various star types (✦, ★, ◌, ●, +, ✧, ⋆) in multiple colors
-- **Foreground Stars** (25+) - Fast-moving bright stars with twinkling effects
-- **Dynamic Star Generation** - New stars continuously spawn
-
-### Cosmic Elements
-- **Nebula Clouds** (8+) - Colorful gas clouds (░, ▒, ▓) drifting through space
-- **Shooting Stars/Comets** (3+) - Streaking across the screen with tails
-- **Parallax Scrolling** - Multiple speed layers create 3D depth effect
-- **Twinkling Effects** - Stars pulse and shimmer realistically
-
-### Color Palette
-- Yellow, Pink, Cyan, Blue, Green, White stars
-- Color-coded nebulae matching your stream theme
-- Cosmic progress bar with gradient effects
-
----
-
-## ✨ What's New in v2.1
-
-### Major Improvements
-
-1. **Better Code Structure**
-   - Object-oriented design with clear class separation
-   - PilotData, Leaderboard, ActivityLog, VisualEffects classes
-   - Type hints for better code clarity
-   - Improved error handling throughout
-
-2. **Enhanced Features**
-   - Multiple session duration options (15/25/45/60 min)
-   - Achievement system with milestone unlocks
-   - Daily streak tracking
-   - Comprehensive statistics dashboard
-   - Data export functionality
-   - Settings menu for customization
-
-3. **Improved Data Management**
-   - Automatic data backup on corruption
-   - Centralized data directory (`sovereign_data/`)
-   - Better JSON error handling
-   - Safe file operations with Path objects
-
-4. **Better UX**
-   - More intuitive menu system
-   - Real-time progress percentage display
-   - Welcome back messages
-   - Achievement notifications
-   - Improved visual formatting
-
-5. **New Audio Options**
-   - Added 2 new stream options (Lofi, Ambient Space)
-   - Total of 5 curated music streams
-   - Easy stream switching mid-session
-
-6. **Extended Wisdom Library**
-   - More Uncle Iroh quotes
-   - Better quote display formatting
+![Version](https://img.shields.io/badge/version-2.1-blue)
+![Python](https://img.shields.io/badge/python-3.6+-green)
+![License](https://img.shields.io/badge/license-MIT-orange)
+![Stars](https://img.shields.io/github/stars/avsn17/cosmic_globe?style=social)
 
 ---
 
 ## 🚀 Quick Start
 
-# ⚡ SOVEREIGN APEX - INSTANT SETUP
-
-## The Fastest Way to Start (2 Minutes!)
-
----
-
-## 🚀 OPTION 1: Automatic Install (EASIEST!)
-
 ```bash
-# 1. Download all files to ~/sovereign-apex
-mkdir -p ~/sovereign-apex
-cd ~/sovereign-apex
-
-# 2. Move downloaded files here
-# (Drag from Downloads folder)
-
-# 3. Run the installer
-chmod +x install.sh
-./install.sh
-
-# 4. Open NEW terminal and type:
-apex
-```
-
-**Done! 🎉**
-
----
-
-## 🎯 OPTION 2: Manual 3-Line Setup
-
-```bash
-# 1. Go to your project folder
-cd ~/sovereign-apex
-
-# 2. Add alias to your shell
-echo 'alias apex="python3 ~/sovereign-apex/sovereign_apex_improved.py"' >> ~/.zshrc
-
-# 3. Reload shell and run
-source ~/.zshrc
-apex
-```
-
-**That's it! 🚀**
-
----
-
-## 📋 Copy-Paste Commands
-
-### For macOS (zsh)
-```bash
-mkdir -p ~/sovereign-apex && cd ~/sovereign-apex
-echo 'alias apex="python3 ~/sovereign-apex/sovereign_apex_improved.py"' >> ~/.zshrc
-source ~/.zshrc
-```
-
-### For Linux (bash)
-```bash
-mkdir -p ~/sovereign-apex && cd ~/sovereign-apex
-echo 'alias apex="python3 ~/sovereign-apex/sovereign_apex_improved.py"' >> ~/.bashrc
-source ~/.bashrc
-```
-
----
-
-## ✅ Verify It Works
-
-```bash
-# Test from any directory
-cd ~
-apex
-
-# Should launch the app! 🌌
-```
-
----
-
-## 🎮 First Time Using
-
-When you run `apex` for the first time:
-
-1. Enter your **pilot ID** (username)
-2. Choose **music stream** (1-5)
-3. Set your **goal** (what you'll work on)
-4. Pick **[1] Launch Mission**
-5. Choose **duration** (25 min recommended)
-6. Watch the galaxy and focus! ✨
-
----
-
-## 💾 Your Data Location
-
-Everything is saved in:
-```
-~/sovereign-apex/sovereign_data/
-```
-
-This includes:
-- Your progress (XP, level, achievements)
-- Session history
-- Leaderboard data
-
----
-
-## 🔄 Running It Again
-
-From ANY directory:
-```bash
-apex
-```
-
-That's it! Just type `apex` anywhere, anytime.
-
----
-
-## 🆘 Quick Troubleshooting
-
-### "apex: command not found"
-```bash
-source ~/.zshrc  # Reload shell config
-```
-
-### "Permission denied"
-```bash
-chmod +x ~/sovereign-apex/sovereign_apex_improved.py
-```
-
-### "python3: command not found"
-```bash
-brew install python3  # macOS
-```
-
----
-
-## 📱 Share Your Progress
-
-After a session, screenshot and share:
-- Your level and XP
-- Your streak
-- Your leaderboard rank
-
-Tag: `#SovereignApex` `#ProductivityGalaxy`
-
----
-
-## 🎯 Daily Workflow
-
-```bash
-# Morning
-apex  # Set your goal, focus for 25 min
-
-# After lunch
-apex  # Another session
-
-# Evening
-apex  # Check your stats, leaderboard
-```
-
-Build your streak! 🔥
-
----
-
-## 📚 Need More Help?
-
-- **Full Guide**: Read `RUN_FROM_ANYWHERE.md`
-- **Deployment**: Read `DEPLOYMENT_GUIDE.md`
-- **Features**: Read `README.md`
-- **Galaxy**: Read `GALAXY_SHOWCASE.md`
-
----
-
-**You're ready to fly through the galaxy! 🚀✨**
-
-*Remember: Type `apex` from any terminal, any directory, anytime!*
-
-### Installation
-
-```bash
-# Clone or download the script
-chmod +x sovereign_apex_improved.py
+# Clone
+git clone https://github.com/avsn17/cosmic_globe.git
+cd cosmic_globe
 
 # Run
-python3 sovereign_apex_improved.py
+python3 cosmic_globe.py
 ```
 
-### Requirements
+**Or install the `apex` command globally:**
+
+```bash
+chmod +x install.sh && ./install.sh
+# Then from anywhere:
+apex
+```
+
+---
+
+## 🌌 Galaxy Visualization
+
+Every focus session takes place inside a living, breathing galaxy:
+
+```
+·  ★  ░▒░  *  ✶  ·  ★  *  ·  +  ·  ⭐︎  ·
+ ·  *  ░▒▓▒░  ·  *  ·  ★  ·  *  ·  ★
+★  ·  ░▒░  ☄*······  ·  ✶  ★  ·  *  ·
+  ·  ★  ·  *  ·  ★  ·  *  ·  ★  ·
+
+           25:00 — Deep Work
+```
+
+**3 parallax layers:**
+- `·` Background stars — slow, dim, 80+ objects
+- `* ✶ ★` Mid-layer stars — varied types, multiple colors, 40+ objects
+- `★ ✶ * ⭐︎` Foreground stars — bright, fast, twinkling, 25+ objects
+
+**Cosmic elements:**
+- Nebula clouds (`░▒▓`) drifting through space
+- Shooting stars with glowing tails
+- Animated boot sequence on startup
+- Station select screen with galaxy background
+
+---
+
+## 📁 Project Structure
+
+```
+cosmic_globe/
+├── cosmic_globe.py        # Main focus timer application
+├── station.py             # Music station manager
+├── index.html             # GitHub Pages landing page
+├── style.css              # Web styles
+├── manifest.json          # Web app manifest
+├── install.sh             # Global installer script
+├── pilot_data.json        # Pilot progress data
+└── mission_log.txt        # Session activity log
+```
+
+---
+
+## ✨ Features
+
+| Feature | Details |
+|---|---|
+| 🎮 Gamification | XP, levels, achievements |
+| 🏆 Leaderboard | Compete with other pilots |
+| 🎵 Music Stations | 5 curated ambient streams |
+| ⏱ Session Durations | 15 / 25 / 45 / 60 min + custom |
+| 📊 Statistics | Sessions, time, streaks, averages |
+| 🔥 Streaks | Daily consistency tracking |
+| 💾 Data Export | Backup your progress |
+| ⚙️ Settings | Customize your experience |
+| 🌐 Web App | Live at GitHub Pages |
+
+---
+
+## 🎵 Music Stations
+
+| # | Station | Artist | Vibe |
+|---|---|---|---|
+| 1 | NEBULA | Lana Del Rey | Dreamy |
+| 2 | VOID | Cigarettes After Sex | Ambient |
+| 3 | SPIRAL | Bee Gees | Classic |
+| 4 | DRIFT | Lofi Hip Hop | Focus |
+| 5 | COSMOS | Ambient Space | Deep |
+
+---
+
+## 🎮 Gamification
+
+**XP System**
+- Earn 4 XP per minute of focus time
+- Level up every `level × 300` XP
+
+**Achievements**
+
+| Achievement | Requirement |
+|---|---|
+| First Mission | Complete 1 session |
+| Veteran Pilot | Complete 10 sessions |
+| Mission Master | Complete 50 sessions |
+| Millennium Flight | 1000 total minutes |
+| Week Warrior | 7-day streak |
+| Elite Captain | Reach level 10 |
+
+---
+
+## 📖 Commands
+
+```
+[1]  Launch Mission    — Start a focus session
+[2]  View Statistics   — See your progress
+[3]  Mission History   — Past sessions
+[4]  Leaderboard       — Fleet rankings
+[5]  Wisdom           — Uncle Iroh quotes
+[6]  Settings         — Customize
+[7]  Change Stream    — Switch music
+[0]  Exit             — Save and quit
+```
+
+---
+
+## 💾 Data
+
+All data stored locally:
+
+```
+cosmic_globe/
+├── pilot_data.json        # Your XP, level, achievements
+├── mission_log.txt        # Session activity log
+└── sovereign_data/        # Extended pilot profiles
+    └── pilot_<ID>.json
+```
+
+No cloud sync. Your data stays on your machine.
+
+---
+
+## ⚙️ Requirements
+
 - Python 3.6+
 - Terminal with ANSI color support
-- Web browser for music streaming
+- Web browser (for music streams)
 
-No external dependencies required!
-
----
-
-## 📖 How to Use
-
-### First Time Setup
-
-1. **Login**: Enter your pilot ID (username)
-2. **Select Stream**: Choose ambient music (1-5)
-3. **Set Goal**: Define what you'll work on
-4. **Launch Mission**: Start your focus session!
-
-### Main Menu Commands
-
-```
-[1] 🚀 LAUNCH MISSION - Start a focus session
-[2] 📊 VIEW STATISTICS - See your progress stats
-[3] 📜 MISSION HISTORY - Review past sessions
-[4] 🏆 LEADERBOARD - Compare with other pilots
-[5] 💭 WISDOM - Get inspired by Uncle Iroh
-[6] ⚙️  SETTINGS - Customize your experience
-[7] 🔊 CHANGE STREAM - Switch music
-[0] 🚪 EXIT - Save and quit
-```
-
-### Focus Session
-
-During a session:
-- Watch the animated starfield
-- See your timer countdown
-- View your goal at the center
-- Progress bar shows completion percentage
-- Press Ctrl+C to abort (no XP earned)
-
----
-
-## 🎮 Gamification System
-
-### XP & Leveling
-- Earn **4 XP per minute** of focus time
-- Level up every **300 XP × current level**
-- Higher levels = higher leaderboard rank
-
-### Achievements
-
-Unlock special achievements:
-- **First Mission** - Complete your first session
-- **Veteran Pilot** - Complete 10 sessions
-- **Mission Master** - Complete 50 sessions
-- **Millennium Flight** - Reach 1000 total minutes
-- **Week Warrior** - Maintain a 7-day streak
-- **Elite Captain** - Reach level 10
-
-### Leaderboard
-
-Compete with other pilots on your system:
-- Rankings based on level and XP
-- See total sessions and minutes
-- Track your rank over time
-
----
-
-## 🎵 Music Streams
-
-1. **NEBULA** - Lana Del Rey (Dreamy, Melancholic)
-2. **VOID** - Cigarettes After Sex (Ambient, Chill)
-3. **SPIRAL** - Bee Gees (Classic, Upbeat)
-4. **DRIFT** - Lofi Hip Hop (Focus, Beats)
-5. **COSMOS** - Ambient Space (Atmospheric, Deep)
-
-Music auto-opens in your browser and re-triggers after each session.
-
----
-
-## 📊 Data & Privacy
-
-### Data Storage
-
-All data is stored locally in `sovereign_data/`:
-```
-sovereign_data/
-├── pilot_<ID>.json      # Individual pilot data
-├── fleet_activity.log   # Global activity log
-└── export_*.json        # Data exports (if created)
-```
-
-### Data Backup
-
-- Corrupted files are automatically backed up
-- Use Settings → Export Data to create manual backups
-- No cloud sync - your data stays on your machine
-
-### Reset Progress
-
-Settings → Reset Progress → Type "RESET" to confirm
-⚠️ This permanently deletes your data!
-
----
-
-## 🎨 Customization
-
-### Session Durations
-
-Built-in options:
-- Quick Sprint: 15 minutes
-- Standard: 25 minutes (classic Pomodoro)
-- Deep Dive: 45 minutes
-- Ultra Focus: 60 minutes
-- Custom: Any duration you want
-
-### Default Duration
-
-Set in Settings menu to skip selection each time.
-
----
-
-## 💡 Tips for Maximum Productivity
-
-1. **Set Specific Goals**: Instead of "work", try "finish chapter 3" or "debug login function"
-
-2. **Use Appropriate Durations**:
-   - 15 min for quick tasks
-   - 25 min for focused work (standard)
-   - 45-60 min for deep, complex work
-
-3. **Build Your Streak**: Daily consistency unlocks achievements and builds habits
-
-4. **Check Stats Regularly**: Track your progress to stay motivated
-
-5. **Compete on Leaderboard**: Friendly competition with roommates/colleagues
-
-6. **Match Music to Task**:
-   - Creative work → Nebula, Drift
-   - Technical work → Void, Cosmos
-   - Energizing → Spiral
+No external dependencies required.
 
 ---
 
 ## 🔧 Troubleshooting
 
-### Music Doesn't Open
+**`apex: command not found`**
+```bash
+source ~/.zshrc
+```
 
-**Issue**: Browser doesn't launch
-**Solution**: Check that your system can run `webbrowser` module. Try manually opening URLs.
+**Permission denied**
+```bash
+chmod +x cosmic_globe.py
+```
 
-### Colors Look Wrong
+**Python not found**
+```bash
+brew install python3
+```
 
-**Issue**: Terminal doesn't support ANSI colors
-**Solution**: Use a modern terminal (iTerm2, Windows Terminal, GNOME Terminal)
+**Colors look wrong**
 
-### Data Corrupted
-
-**Issue**: JSON error on startup
-**Solution**: The script auto-creates backups. Check `sovereign_data/` for backup files.
-
-### Permission Error
-
-**Issue**: Can't write to directory
-**Solution**: Run with proper permissions or change DATA_DIR in code
+Use a modern terminal — iTerm2, macOS Terminal, GNOME Terminal.
 
 ---
 
 ## 📝 Changelog
 
-### v2.1 GALAXY EDITION (Current)
-- 🌌 Full galaxy visualization system
-- 150+ animated stars across 3 parallax layers
-- Nebula clouds with colorful gas effects
-- Shooting stars and comets with tails
-- Dynamic star spawning and twinkling
-- Cosmic-themed progress bar
-- Enhanced mission display with live stats
-- Better visual depth and immersion
+**v2.1 — Galaxy Edition**
+- Full galaxy with 3 parallax layers
+- Nebulae, shooting stars, comet tails
+- Animated boot sequence
+- Station select with galaxy background
+- `station.py` module added
 
-### v2.0
-- Complete rewrite with OOP structure
-- Added achievements and streaks
+**v2.0**
+- Complete OOP rewrite
+- Achievements and daily streaks
 - Multiple session durations
-- Enhanced statistics
-- Better error handling
-- Data export feature
-- Settings menu
-- 2 new music streams
-- Expanded wisdom quotes
+- Statistics dashboard, settings, data export
 
-### v1.0 (Original)
+**v1.0**
 - Basic Pomodoro timer
-- XP and leveling system
-- 3 music streams
-- Simple leaderboard
-- Mission history
+- XP/leveling, leaderboard, mission history
 
+---
 
-![Version](https://img.shields.io/badge/version-2.1-blue)
-![Python](https://img.shields.io/badge/python-3.6+-green)
-![License](https://img.shields.io/badge/license-MIT-orange)
-![Stars](https://img.shields.io/github/stars/avsn17/sovereign-apex?style=social)
+## 🌐 Web App
+
+Visit the live site:
+**[avsn17.github.io/cosmic_globe](https://avsn17.github.io/cosmic_globe/)**
+
 ---
 
 ## 🙏 Credits
 
-- **Music Streams**: YouTube (links in code)
-- **Wisdom**: Avatar: The Last Airbender (Uncle Iroh)
-- **Design Inspiration**: Retro terminal aesthetics
+- Music via YouTube
+- Wisdom: *Avatar: The Last Airbender* (Uncle Iroh)
+- Design: Retro terminal aesthetics
 
 ---
 
 ## 📄 License
 
-Free to use, modify, and share. No warranty provided.
+Free to use, modify, and share.
 
 ---
 
-## 🤝 Contributing
+**Fly through the galaxy. Focus. Level up. 🚀✨**
 
-Feel free to fork and improve! Some ideas:
+*Made by [avsn17](https://github.com/avsn17)*
 
-- Add sound effects (requires external library)
-- Desktop notifications
-- Custom music playlist support
-- Break reminders between sessions
-- Task list integration
-- Statistics charts (requires matplotlib)
-- Mobile app version
-- Multi-language support
-
----
-
-## ❓ FAQ
-
-**Q: Can I use this without internet?**
-A: Yes, but music links won't work. The timer functions fully offline.
-
-**Q: Does this sync between computers?**
-A: No, data is local only. Use the export feature to transfer manually.
-
-**Q: Can I compete with friends?**
-A: Yes! If you share the same `sovereign_data/` folder (e.g., on a network drive).
-
-**Q: Why "Sovereign Apex"?**
-A: It sounds cool and space-themed. Feel free to rename!
-
-**Q: Can I modify the XP formula?**
-A: Yes! Edit the `add_xp()` method and `complete_mission()` calculations.
-
----
-
-**Enjoy your focus sessions, Captain! 🚀**
