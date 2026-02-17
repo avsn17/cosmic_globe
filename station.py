@@ -1,92 +1,101 @@
 import time, os, json, webbrowser, random, sys
 from datetime import datetime
 
+# --- CAPTAIN'S REFINED PLAYLIST ---
 STREAMS = {
-    "1": ("Coffee Dreams (2026 Lo-Fi)", "https://www.youtube.com/watch?v=sd2kAWVtOis"),
-    "2": ("Lana Del Rey (Noir Hits)", "https://www.youtube.com/watch?v=OlXWoEvLig0"),
-    "3": ("Cigarettes After Sex (Deep Focus)", "https://www.youtube.com/watch?v=3DhndiNT_4s"),
-    "4": ("Bee Gees (Space Disco)", "https://www.youtube.com/watch?v=F2jTY0GZrds")
+    "1": ("Lana Del Rey (Noir Hits)", "https://www.youtube.com/watch?v=OlXWoEvLig0"),
+    "2": ("Cigarettes After Sex (Ethereal Focus)", "https://www.youtube.com/watch?v=3DhndiNT_4s"),
+    "3": ("Bee Gees (Space Disco)", "https://www.youtube.com/watch?v=F2jTY0GZrds")
 }
 
 def load_data(pilot_id):
     filename = f"pilot_{pilot_id}.json"
-    defaults = {"sessions": 0, "xp": 0, "level": 1, "log": "", "history": []}
-    
+    defaults = {"sessions": 0, "xp": 0, "level": 1, "history": []}
     if os.path.exists(filename):
         with open(filename, 'r') as f:
-            try:
-                data = json.load(f)
-                # SELF-HEALING: Fill in any missing keys from defaults
-                for key, value in defaults.items():
-                    if key not in data:
-                        data[key] = value
-                return data
-            except:
-                return defaults
+            data = json.load(f)
+            for k, v in defaults.items():
+                if k not in data: data[k] = v
+            return data
     return defaults
 
 def save_data(pilot_id, data):
-    with open(f"pilot_{pilot_id}.json", 'w') as f:
-        json.dump(data, f, indent=4)
+    with open(f"pilot_{pilot_id}.json", 'w') as f: json.dump(data, f, indent=4)
 
 def clear(): os.system('cls' if os.name == 'nt' else 'clear')
 
-def get_rank(lvl):
-    ranks = ["ROOKIE", "PILOT", "COMMANDER", "ACE", "SOVEREIGN"]
-    return ranks[min(lvl-1, 4)]
+def star_warp(m, s, goal, lvl):
+    """Dynamic Starfield Warp Experience"""
+    # Color changes based on Level
+    color = "\033[1;32m" if lvl < 5 else "\033[1;35m" 
+    stars = ["+", "*", "°", "•", "✧", "★"]
+    clear()
+    print(f"{color}{' '*10}─── WARP DRIVE ENGAGED ───\033[0m")
+    for _ in range(5):
+        line = "".join(random.choice(stars) if random.random() > 0.96 else " " for _ in range(60))
+        print(f"    {line}")
+    print(f"\n\033[1;97m{' '*20}TIME: {m:02d}:{s:02d}\033[0m")
+    print(f"\033[1;33m{' '*20}MISSION: {goal}\033[0m\n")
+    for _ in range(5):
+        line = "".join(random.choice(stars) if random.random() > 0.96 else " " for _ in range(60))
+        print(f"    {line}")
 
 def main():
     clear()
-    print("\033[1;32m" + "═" * 60)
-    print(" CHRONOS_SOVEREIGN v39.5 | RECOVERY_MODE_ACTIVE")
-    print("═" * 60 + "\033[0m")
-    
-    pilot_id = input("\nENTER_CAPTAIN_ID > ").strip() or "AVI"
+    print("\033[1;32m[ IDENTITY ]\033[0m Enter Captain ID:")
+    pilot_id = input(">> ").strip() or "AVI"
     data = load_data(pilot_id)
     
-    print("\n\033[1;36m[COMMAND] SELECT NEURAL ATMOSPHERE:\033[0m")
-    for k, v in STREAMS.items(): print(f"  {k}. {v[0]}")
+    clear()
+    print("\033[1;36m[ VIBE ]\033[0m Select Neural Atmosphere:")
+    for k, v in STREAMS.items(): print(f" {k} > {v[0]}")
+    m_choice = input(">> ")
+    stream = STREAMS.get(m_choice, STREAMS["1"])
+    webbrowser.open(stream[1])
     
-    m_choice = input("\nATMOSPHERE_ID > ")
-    selected_stream = STREAMS.get(m_choice, STREAMS["1"])
-    webbrowser.open(selected_stream[1])
-    
-    goal = input("\n[GAMIFICATION] SET MISSION OBJECTIVE: ")
+    clear()
+    print("\033[1;33m[ MISSION ]\033[0m Objective:")
+    goal = input(">> ")
 
     while True:
-        # These keys are now guaranteed to exist thanks to self-healing
-        req = data['level'] * 300
-        percent = int(((data['xp'] % req) / req) * 20)
-        bar = "█" * percent + "░" * (20 - percent)
-        
         clear()
-        print(f"\033[1;32m═" * 60)
-        print(f" CAPTAIN: {pilot_id} | LVL: {data['level']} | {get_rank(data['level'])}")
-        print(f" {bar} {data['xp'] % req}/{req} XP")
-        print("═" * 60 + "\033[0m")
-        print(f"\n MISSION: \033[1;33m{goal}\033[0m")
-        print(f" VIBE: \033[1;36m{selected_stream[0]}\033[0m")
+        lvl = data['level']
+        req = lvl * 300
+        prog = int(((data['xp'] % req) / req) * 20)
+        bar = "█" * prog + "░" * (20 - prog)
         
-        print("\n 1. [ ENGAGE ]   2. [ LOGS ]   3. [ SWITCH_MUSIC ]   4. [ EXIT ]")
+        print(f"\033[1;32m╔═ CAPTAIN: {pilot_id} {'═'*30}╗")
+        print(f"║ LVL: {lvl} | {bar} {data['xp']%req}/{req} XP ║")
+        print(f"╚═{'═'*48}╝\033[0m")
+        print(f"\n CURRENT MISSION: {goal}")
+        print(f" ACTIVE ATMOSPHERE: {stream[0]}")
+        print("\n COMMANDS: [1] START WARP | [2] NEW VIBE | [3] EXIT")
         
-        choice = input("\nACTION > ")
-        if choice == "1":
+        cmd = input("\n>> ")
+        if cmd == "1":
             duration = 25 * 60
             try:
                 while duration > 0:
                     m, s = divmod(duration, 60)
-                    sys.stdout.write(f"\r    \033[1;35mWARP ACTIVE: {m:02d}:{s:02d} | TASK: {goal}\033[0m")
-                    sys.stdout.flush()
+                    star_warp(m, s, goal, lvl)
                     time.sleep(1)
                     duration -= 1
                 data['xp'] += 100
                 if data['xp'] >= (data['level'] * 300): data['level'] += 1
-                data['history'].append(f"{datetime.now().strftime('%Y-%m-%d %H:%M')} - {goal}")
+                data['history'].append(f"{datetime.now().strftime('%Y-%m-%d')} - {goal}")
                 save_data(pilot_id, data)
-                print("\n\n\033[1;32m✔ MISSION COMPLETE. XP GAINED.\033[0m")
-                input("Press Enter...")
+                print("\n\033[1;32m✔ MISSION COMPLETE. 100 XP AWARDED.\033[0m")
+                time.sleep(3)
             except KeyboardInterrupt: pass
-        elif choice == "4": 
+        elif cmd == "2":
+            clear()
+            for k, v in STREAMS.items(): print(f" {k} > {v[0]}")
+            m_choice = input("NEW VIBE >> ")
+            if m_choice in STREAMS:
+                stream = STREAMS[m_choice]
+                webbrowser.open(stream[1])
+        elif cmd == "3":
             save_data(pilot_id, data)
             break
+
 if __name__ == "__main__": main()
