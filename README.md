@@ -1,11 +1,34 @@
-# SOVEREIGN APEX v2.0
+# SOVEREIGN APEX v2.1 GALAXY EDITION
 ## Enhanced Focus Timer & Progress Tracker
 
-A beautiful terminal-based Pomodoro timer with gamification, progress tracking, and ambient music integration.
+A beautiful terminal-based Pomodoro timer with gamification, progress tracking, ambient music integration, and a **full animated galaxy visualization**!
 
 ---
 
-## ✨ What's New in v2.0
+## 🌌 Galaxy Visualization Features (NEW in v2.1!)
+
+Experience a living, breathing galaxy during your focus sessions:
+
+### Multi-Layer Star System
+- **Background Stars** (80+) - Slow-moving, dim stars creating depth
+- **Mid-Layer Stars** (40+) - Various star types (✦, ★, ◌, ●, +, ✧, ⋆) in multiple colors
+- **Foreground Stars** (25+) - Fast-moving bright stars with twinkling effects
+- **Dynamic Star Generation** - New stars continuously spawn
+
+### Cosmic Elements
+- **Nebula Clouds** (8+) - Colorful gas clouds (░, ▒, ▓) drifting through space
+- **Shooting Stars/Comets** (3+) - Streaking across the screen with tails
+- **Parallax Scrolling** - Multiple speed layers create 3D depth effect
+- **Twinkling Effects** - Stars pulse and shimmer realistically
+
+### Color Palette
+- Yellow, Pink, Cyan, Blue, Green, White stars
+- Color-coded nebulae matching your stream theme
+- Cosmic progress bar with gradient effects
+
+---
+
+## ✨ What's New in v2.1
 
 ### Major Improvements
 
@@ -229,7 +252,17 @@ Set in Settings menu to skip selection each time.
 
 ## 📝 Changelog
 
-### v2.0 (Current)
+### v2.1 GALAXY EDITION (Current)
+- 🌌 Full galaxy visualization system
+- 150+ animated stars across 3 parallax layers
+- Nebula clouds with colorful gas effects
+- Shooting stars and comets with tails
+- Dynamic star spawning and twinkling
+- Cosmic-themed progress bar
+- Enhanced mission display with live stats
+- Better visual depth and immersion
+
+### v2.0
 - Complete rewrite with OOP structure
 - Added achievements and streaks
 - Multiple session durations
@@ -247,6 +280,11 @@ Set in Settings menu to skip selection each time.
 - Simple leaderboard
 - Mission history
 
+
+![Version](https://img.shields.io/badge/version-2.1-blue)
+![Python](https://img.shields.io/badge/python-3.6+-green)
+![License](https://img.shields.io/badge/license-MIT-orange)
+![Stars](https://img.shields.io/github/stars/avsn17/sovereign-apex?style=social)
 ---
 
 ## 🙏 Credits
