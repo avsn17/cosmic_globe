@@ -10,12 +10,24 @@ STREAMS = {
 
 def load_data(pilot_id):
     filename = f"pilot_{pilot_id}.json"
+    defaults = {"sessions": 0, "xp": 0, "level": 1, "log": "", "history": []}
+    
     if os.path.exists(filename):
-        with open(filename, 'r') as f: return json.load(f)
-    return {"sessions": 0, "xp": 0, "level": 1, "log": "", "history": []}
+        with open(filename, 'r') as f:
+            try:
+                data = json.load(f)
+                # SELF-HEALING: Fill in any missing keys from defaults
+                for key, value in defaults.items():
+                    if key not in data:
+                        data[key] = value
+                return data
+            except:
+                return defaults
+    return defaults
 
 def save_data(pilot_id, data):
-    with open(f"pilot_{pilot_id}.json", 'w') as f: json.dump(data, f, indent=4)
+    with open(f"pilot_{pilot_id}.json", 'w') as f:
+        json.dump(data, f, indent=4)
 
 def clear(): os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -26,7 +38,7 @@ def get_rank(lvl):
 def main():
     clear()
     print("\033[1;32m" + "═" * 60)
-    print(" CHRONOS_SOVEREIGN v39.4 | CAPTAIN'S BRIDGE")
+    print(" CHRONOS_SOVEREIGN v39.5 | RECOVERY_MODE_ACTIVE")
     print("═" * 60 + "\033[0m")
     
     pilot_id = input("\nENTER_CAPTAIN_ID > ").strip() or "AVI"
@@ -42,6 +54,7 @@ def main():
     goal = input("\n[GAMIFICATION] SET MISSION OBJECTIVE: ")
 
     while True:
+        # These keys are now guaranteed to exist thanks to self-healing
         req = data['level'] * 300
         percent = int(((data['xp'] % req) / req) * 20)
         bar = "█" * percent + "░" * (20 - percent)
@@ -51,8 +64,8 @@ def main():
         print(f" CAPTAIN: {pilot_id} | LVL: {data['level']} | {get_rank(data['level'])}")
         print(f" {bar} {data['xp'] % req}/{req} XP")
         print("═" * 60 + "\033[0m")
-        print(f"\n CURRENT_OBJECTIVE: \033[1;33m{goal}\033[0m")
-        print(f" ATMOSPHERE: \033[1;36m{selected_stream[0]}\033[0m")
+        print(f"\n MISSION: \033[1;33m{goal}\033[0m")
+        print(f" VIBE: \033[1;36m{selected_stream[0]}\033[0m")
         
         print("\n 1. [ ENGAGE ]   2. [ LOGS ]   3. [ SWITCH_MUSIC ]   4. [ EXIT ]")
         
@@ -73,5 +86,7 @@ def main():
                 print("\n\n\033[1;32m✔ MISSION COMPLETE. XP GAINED.\033[0m")
                 input("Press Enter...")
             except KeyboardInterrupt: pass
-        elif choice == "4": break
+        elif choice == "4": 
+            save_data(pilot_id, data)
+            break
 if __name__ == "__main__": main()
