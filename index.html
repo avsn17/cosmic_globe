@@ -3,60 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CHRONOS_V37_IDENTITY</title>
+    <title>CHRONOS_V38_SOVEREIGN</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root { --glow: #00ff41; --bg: #000; }
-        body, html { margin:0; padding:0; background: var(--bg); color:var(--glow); font-family:'Rajdhani',sans-serif; width:100vw; height:100vh; overflow:hidden; }
-        #nebula-canvas { position: fixed; top:0; left:0; z-index: 1; filter: blur(3px); opacity: 0.6; }
+        body, html { margin:0; padding:0; background: #000; color:var(--glow); font-family:'Rajdhani',sans-serif; width:100vw; height:100vh; overflow:hidden; }
         
-        @keyframes pulseGlow {
-            0% { text-shadow: 0 0 20px var(--glow); transform: scale(1); }
-            50% { text-shadow: 0 0 70px var(--glow); transform: scale(1.02); }
-            100% { text-shadow: 0 0 20px var(--glow); transform: scale(1); }
-        }
-        .sync-active #timer-display { animation: pulseGlow 3s infinite ease-in-out; }
+        /* SUPERIOR STAR ENGINE */
+        #star-field { position: fixed; width: 100%; height: 100%; z-index: 0; background: radial-gradient(circle at center, #001a00 0%, #000 100%); }
+        .star { position: absolute; background: white; border-radius: 50%; opacity: 0.5; animation: twinkle var(--d) infinite; }
+        @keyframes twinkle { 0%, 100% { opacity: 0.3; transform: scale(1); } 50% { opacity: 1; transform: scale(1.2); } }
 
         #menu-trigger { position: fixed; top: 25px; left: 25px; z-index: 10001; background: #000; border: 2px solid var(--glow); color: var(--glow); padding: 12px 25px; font-family: 'Orbitron'; cursor: pointer; display: none; }
-        #side-panel { width: 420px; position: fixed; left: -450px; top: 0; bottom: 0; background: rgba(0, 5, 0, 0.95); border-right: 2px solid var(--glow); display: flex; flex-direction: column; padding: 90px 25px 25px 25px; z-index: 10000; backdrop-filter: blur(15px); transition: 0.5s; overflow-y: auto; }
+        #side-panel { width: 450px; position: fixed; left: -480px; top: 0; bottom: 0; background: rgba(0, 10, 0, 0.98); border-right: 2px solid var(--glow); display: flex; flex-direction: column; padding: 90px 25px 25px 25px; z-index: 10000; backdrop-filter: blur(20px); transition: 0.5s; overflow-y: auto; }
         
-        .card { background: rgba(0,255,65,0.05); border: 1px solid var(--glow); padding: 15px; margin-bottom: 15px; }
-        #timer-display { font-family: 'Orbitron'; font-size: 14rem; font-weight: 900; z-index: 5; position: relative; }
-        .main-btn { width: 350px; height: 70px; background: var(--glow); border: none; font-family: 'Orbitron'; font-weight: 900; font-size: 1.5rem; cursor: pointer; }
-        input[type="text"] { background: #000; border: 1px solid var(--glow); color: #fff; padding: 10px; font-family: 'Orbitron'; width: 80%; }
+        .card { background: rgba(0,255,65,0.05); border: 1px solid rgba(0,255,65,0.3); padding: 15px; margin-bottom: 15px; border-left: 5px solid var(--glow); }
+        #timer-display { font-family: 'Orbitron'; font-size: 14rem; font-weight: 900; z-index: 5; position: relative; text-shadow: 0 0 50px var(--glow); }
+        .main-btn { width: 350px; height: 70px; background: var(--glow); border: none; font-family: 'Orbitron'; font-weight: 900; font-size: 1.5rem; cursor: pointer; transition: 0.3s; }
+        .main-btn:hover { background: #fff; box-shadow: 0 0 30px #fff; }
+        textarea { width: 100%; background: rgba(0,0,0,0.5); border: 1px solid var(--glow); color: #fff; font-family: 'Rajdhani'; padding: 10px; box-sizing: border-box; }
     </style>
 </head>
-<body class="sync-active">
-    <canvas id="nebula-canvas"></canvas>
+<body>
+    <div id="star-field"></div>
     <audio id="bg-audio" loop autoplay></audio>
     <button id="menu-trigger" onclick="toggleMenu()">☰ HUD_COMMAND</button>
 
-    <div id="boot-screen" style="position:fixed; width:100%; height:100%; background:#000; z-index:99999; display:flex; align-items:center; justify-content:center; flex-direction:column; border: 10px solid var(--glow);">
-        <h1 style="font-family:'Orbitron'; font-size:3rem; margin-bottom: 30px;">IDENTITY_REQUIRED</h1>
-        <input type="text" id="username-input" placeholder="ENTER_PILOT_ID" style="text-align:center; margin-bottom: 20px;">
-        <button onclick="startSystem()" style="width:300px; padding:20px; background:var(--glow); border:none; font-family:'Orbitron'; font-weight:900; cursor:pointer;">INITIALIZE_SESSION</button>
+    <div id="boot-screen" style="position:fixed; width:100%; height:100%; background:#000; z-index:99999; display:flex; align-items:center; justify-content:center; flex-direction:column; border: 15px solid var(--glow);">
+        <h1 style="font-family:'Orbitron'; font-size:4rem; letter-spacing:15px;">SOVEREIGN_V38</h1>
+        <input type="text" id="username-input" placeholder="PILOT_ID" style="background:#000; border:2px solid var(--glow); color:#fff; padding:15px; font-family:'Orbitron'; text-align:center; margin: 20px;">
+        <button onclick="startSystem()" style="width:300px; padding:20px; background:var(--glow); font-family:'Orbitron'; font-weight:900; cursor:pointer;">INITIALIZE_ALL_SYSTEMS</button>
     </div>
 
     <div id="main-container" style="display:none; width:100vw; height:100vh; position:relative; z-index:10; display:flex; align-items:center; justify-content:center;">
         <div id="side-panel">
             <div class="card">
                 <h3 style="font-family:'Orbitron'; font-size:0.7rem;">PILOT: <span id="pilot-id-display">---</span></h3>
-                <p style="font-size:0.6rem; opacity:0.6;">Stats are auto-saved to your ID.</p>
+                <p>Sessions: <span id="s-count">0</span> | Minutes: <span id="m-count">0</span></p>
             </div>
+            
             <div class="card">
-                <h3 style="font-family:'Orbitron'; font-size:0.7rem;">NEURAL_STREAMS</h3>
-                <select id="stream-selector" onchange="changeStream()" style="width:100%; background:#000; color:var(--glow); border:1px solid var(--glow); font-family:'Orbitron';">
-                    <option value="https://stream.nightride.fm/nightride.mp3">NIGHTRIDE (Autoplay Active)</option>
-                    <option value="https://www.youtube.com/results?search_query=lana+del+rey+mix">LANA DEL REY</option>
-                    <option value="https://www.youtube.com/results?search_query=cigarettes+after+sex">CAS</option>
-                    <option value="https://www.youtube.com/results?search_query=bee+gees">BEE GEES</option>
+                <h3 style="font-family:'Orbitron'; font-size:0.7rem;">NEURAL_STREAM (AUTOPLAY)</h3>
+                <select id="stream-selector" onchange="changeStream()" style="width:100%; background:#000; color:var(--glow); border:1px solid var(--glow); font-family:'Orbitron'; padding:5px;">
+                    <option value="https://stream.nightride.fm/nightride.mp3">NIGHTRIDE FM</option>
+                    <option value="LANA">LANA DEL REY MIX</option>
+                    <option value="CAS">CIGARETTES AFTER SEX</option>
+                    <option value="BEEGEES">BEE GEES / DISCO</option>
                 </select>
             </div>
+
             <div class="card">
-                <h3 style="font-family:'Orbitron'; font-size:0.7rem;">FLIGHT_STATS</h3>
-                <p>Sessions: <span id="s-count">0</span></p>
+                <h3 style="font-family:'Orbitron'; font-size:0.7rem;">UNCLE_IROH_ADVICE</h3>
+                <p id="iroh-text" style="font-style:italic; font-size:0.9rem;">"Tea is just hot leaf juice..."</p>
+                <button onclick="newIroh()" style="background:transparent; border:1px solid var(--glow); color:var(--glow); cursor:pointer; font-size:0.7rem;">CONSULT_IROH</button>
             </div>
-            <button onclick="location.reload()" style="margin-top:auto; color:red; border:1px solid red; background:transparent; padding:10px; font-family:'Orbitron'; cursor:pointer;">TERMINATE_STATION</button>
+
+            <div class="card">
+                <h3 style="font-family:'Orbitron'; font-size:0.7rem;">LOGBOOK</h3>
+                <textarea id="manual-log" rows="5" oninput="saveLocal()"></textarea>
+            </div>
+
+            <div class="card" style="max-height: 150px; overflow-y: auto;">
+                <h3 style="font-family:'Orbitron'; font-size:0.7rem;">FLIGHT_HISTORY</h3>
+                <ul id="history-list" style="font-size:0.7rem; padding-left:15px;"></ul>
+            </div>
+
+            <button onclick="location.reload()" style="margin-top:auto; color:red; border:1px solid red; background:transparent; padding:10px; font-family:'Orbitron';">DISCONNECT</button>
         </div>
 
         <div id="timer-zone" style="text-align:center;">
@@ -66,36 +78,46 @@
     </div>
 
     <script>
-        let rTime = 25 * 60; let running = false;
-        let pilotID = "";
-        let data = { sessions: 0, log: "", history: [] };
+        let rTime = 25 * 60; let running = false; let pilotID = "";
+        let data = { sessions: 0, minutes: 0, log: "", history: [] };
+        const quotes = ["Hope is something you give yourself.", "Protection and power are overrated.", "Sharing tea with a stranger is a delight."];
+
+        function createStars() {
+            const field = document.getElementById('star-field');
+            for(let i=0; i<150; i++) {
+                const s = document.createElement('div'); s.className = 'star';
+                const size = Math.random() * 3;
+                s.style.width = s.style.height = size + 'px';
+                s.style.left = Math.random() * 100 + 'vw'; s.style.top = Math.random() * 100 + 'vh';
+                s.style.setProperty('--d', (Math.random() * 4 + 2) + 's');
+                field.appendChild(s);
+            }
+        }
+        createStars();
 
         function startSystem() {
-            pilotID = document.getElementById('username-input').value || "PILOT_UNKNOWN";
-            document.getElementById('pilot-id-display').innerText = pilotID;
-            
-            // Load Pilot-specific data
-            const saved = localStorage.getItem('data_' + pilotID);
+            pilotID = document.getElementById('username-input').value || "PILOT_AVI";
+            const saved = localStorage.getItem('dreadnought_' + pilotID);
             if(saved) data = JSON.parse(saved);
-
+            
             document.getElementById('boot-screen').style.display = 'none';
             document.getElementById('main-container').style.display = 'flex';
             document.getElementById('menu-trigger').style.display = 'block';
+            document.getElementById('pilot-id-display').innerText = pilotID;
             
-            const audio = document.getElementById('bg-audio');
-            audio.src = "https://stream.nightride.fm/nightride.mp3";
-            audio.play(); // Autoplay engaged
-            
-            renderNebula();
+            changeStream();
             refreshUI();
         }
 
-        function timerControl() {
-            running = !running;
-            document.getElementById('timer-btn').innerText = running ? "HOLD" : "RESUME";
-            if(running) tick();
+        function changeStream() {
+            const audio = document.getElementById('bg-audio');
+            const val = document.getElementById('stream-selector').value;
+            const ytStreams = { "LANA": "https://www.youtube.com/results?search_query=lana+del+rey+mix", "CAS": "https://www.youtube.com/results?search_query=cigarettes+after+sex+mix", "BEEGEES": "https://www.youtube.com/results?search_query=bee+gees+disco" };
+            if(ytStreams[val]) { window.open(ytStreams[val], '_blank'); audio.pause(); } 
+            else { audio.src = val; audio.play(); }
         }
 
+        function timerControl() { running = !running; if(running) tick(); }
         function tick() {
             if(!running) return;
             if(rTime > 0) {
@@ -105,38 +127,29 @@
                 document.getElementById('timer-display').innerText = `${m}:${s}`;
                 setTimeout(tick, 1000);
             } else {
-                // AUTO-SAVE LOGIC
-                data.sessions++;
+                data.sessions++; data.minutes += 25;
                 data.history.push(new Date().toLocaleString());
-                localStorage.setItem('data_' + pilotID, JSON.stringify(data));
-                alert("Mission Complete. Stats saved to ID: " + pilotID);
+                saveLocal();
+                alert("MISSION_COMPLETE: Stats Auto-Saved to " + pilotID);
                 location.reload();
             }
         }
 
-        function refreshUI() {
-            document.getElementById('s-count').innerText = data.sessions;
+        function saveLocal() {
+            data.log = document.getElementById('manual-log').value;
+            localStorage.setItem('dreadnought_' + pilotID, JSON.stringify(data));
         }
 
-        // Nebula Background Animation logic same as v36...
-        const canvas = document.getElementById('nebula-canvas');
-        const ctx = canvas.getContext('2d');
-        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.addEventListener('resize', resize); resize();
-        function renderNebula() {
-            ctx.clearRect(0,0,canvas.width, canvas.height);
-            let time = Date.now() * 0.0005;
-            for(let i=0; i<3; i++) {
-                let x = canvas.width/2 + Math.sin(time + i) * 150;
-                let y = canvas.height/2 + Math.cos(time * 0.5 + i) * 150;
-                let grad = ctx.createRadialGradient(x, y, 0, x, y, 500);
-                grad.addColorStop(0, 'rgba(0, 255, 65, 0.1)');
-                grad.addColorStop(1, 'transparent');
-                ctx.fillStyle = grad; ctx.fillRect(0,0,canvas.width, canvas.height);
-            }
-            requestAnimationFrame(renderNebula);
+        function refreshUI() {
+            document.getElementById('s-count').innerText = data.sessions;
+            document.getElementById('m-count').innerText = data.minutes;
+            document.getElementById('manual-log').value = data.log || "";
+            const hList = document.getElementById('history-list');
+            hList.innerHTML = data.history.map(h => `<li>${h}</li>`).join('');
         }
-        function toggleMenu() { let p = document.getElementById('side-panel'); p.style.left = p.style.left === "0px" ? "-450px" : "0px"; }
+
+        function newIroh() { document.getElementById('iroh-text').innerText = quotes[Math.floor(Math.random()*quotes.length)]; }
+        function toggleMenu() { let p = document.getElementById('side-panel'); p.style.left = p.style.left === "0px" ? "-480px" : "0px"; }
     </script>
 </body>
 </html>
