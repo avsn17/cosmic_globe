@@ -1,8 +1,8 @@
 import time, os, json, webbrowser, random, sys, glob, uuid
 from datetime import datetime
 
-# --- SYSTEM STYLING ---
-# Colors: Pink (95), Yellow (93), Blue (94), Green (32), Cyan (36), White (97)
+# --- SYSTEM THEME & FONTS ---
+# P: Pink, Y: Yellow, B: Blue, G: Green, C: Cyan, W: White, R: Reset
 P, Y, B, G, C, W, R = "\033[1;95m", "\033[1;93m", "\033[1;94m", "\033[1;32m", "\033[1;36m", "\033[1;97m", "\033[0m"
 
 STREAMS = {
@@ -14,11 +14,10 @@ STREAMS = {
 IROH = [
     "Hope is something you give yourself. That is the meaning of inner strength.",
     "Destiny is a funny thing. You never know how things are going to work out.",
-    "Sharing tea with a stranger is one of life's true delights.",
-    "It is important to draw wisdom from many different places."
+    "Good tea is its own reward.",
+    "While it is always best to believe in oneself, a little help from others can be a great blessing."
 ]
 
-# --- CORE LOGIC ---
 def load_data(pilot_id):
     filename = f"pilot_{pilot_id}.json"
     defaults = {"xp": 0, "level": 1, "history": [], "total_min": 0}
@@ -44,54 +43,40 @@ def get_leaderboard():
 
 def clear(): os.system('cls' if os.name == 'nt' else 'clear')
 
-# --- THE BEST ANIMATED SPACE ENGINE ---
 def generate_parallax_line(width=110):
     line = [" "] * width
-    # Layer 1: Distant stars (Slowest feel)
-    if random.random() < 0.06: line[random.randint(0, width-1)] = f"{W}·{R}"
-    # Layer 2: Mid-range (Yellow/Blue stars)
-    if random.random() < 0.04: line[random.randint(0, width-1)] = random.choice([f"{Y}★{R}", f"{B}◌{R}"])
-    # Layer 3: Supergiants (Pink/Blue - Nearest/Fastest feel)
-    if random.random() < 0.02: line[random.randint(0, width-1)] = random.choice([f"{P}✦{R}", f"{B}●{R}"])
+    # Layered Depth Logic
+    if random.random() < 0.07: line[random.randint(0, width-1)] = f"{W}·{R}" # Distant
+    if random.random() < 0.04: line[random.randint(0, width-1)] = random.choice([f"{Y}★{R}", f"{B}◌{R}"]) # Mid
+    if random.random() < 0.02: line[random.randint(0, width-1)] = random.choice([f"{P}✦{R}", f"{B}●{R}"]) # Close
     return "".join(line)
-
-def show_manual():
-    clear()
-    print(f"{G}--- PILOT OPERATING MANUAL ---{R}\n")
-    print(f"{W}1. WARP:{R} Starts a 25m session with parallax galaxy animation.")
-    print(f"{W}2. LOGS:{R} View your history with Unique Session IDs and rank tracking.")
-    print(f"{W}3. LEADERBOARD:{R} Compare your XP/Level with all local pilot IDs.")
-    print(f"{W}4. IROH:{R} Access wisdom for mental health breaks.")
-    print(f"\n{Y}* AUTOMATION:{R} Music autoplays at start and restarts after completion.")
-    input("\n[PRESS ENTER TO EXIT MANUAL]")
 
 def main():
     clear()
-    print(f"{G}  SOVEREIGN OMNIVERSE v58.0 | 2026-02-17 SYNC{R}")
-    pilot_id = input(f"\n{G}[ IDENTITY ]{R} LOGIN CAPTAIN ID: ").strip().upper() or "AVI"
+    print(f"{G}  SOVEREIGN SINGULARITY v60.0 | PILOT: AVI-2026-SYNC{R}")
+    pilot_id = input(f"\n{G}[ IDENTITY ]{R} ENTER ID: ").strip().upper() or "AVI"
     data = load_data(pilot_id)
     
     clear()
-    print(f"{C}[ ATMOSPHERE ]{R} SELECT NEURAL SETTING (AUTOPLAY ACTIVE):")
+    print(f"{C}[ ATMOSPHERE ]{R} NEURAL STREAM SELECT (AUTO-PLAY ON):")
     for k, v in STREAMS.items(): print(f" {v[3]}[{k}]{R} > {v[0]} ({v[2]})")
     choice = input("\n>> ")
     stream_data = STREAMS.get(choice, STREAMS["1"])
     webbrowser.open(stream_data[1]) 
     
     clear()
-    goal = input(f"{Y}[ MISSION ]{R} SET GOAL FOR {pilot_id}: ")
+    goal = input(f"{Y}[ MISSION ]{R} DEFINE TARGET FOR {pilot_id}: ")
 
     while True:
         clear()
         lvl, xp, req = data['level'], data['xp'], data['level'] * 300
-        # Progress Bar for current level
         prog = int(((xp % req) / req) * 40)
         bar = f"{G}█{R}" * prog + f"{W}░{R}" * (40 - prog)
         
         print(f"{G}╔═ CAPTAIN: {pilot_id} {'═'*75}╗")
         print(f"║ LVL: {lvl} | {bar} {xp%req}/{req} XP ║")
         print(f"╚═{'═'*93}╝{R}")
-        print(f"\n [1] WARP [2] HISTORY_LOG [3] LEADERBOARD [4] IROH [5] MANUAL [6] EXIT")
+        print(f"\n [1] ENGAGE_WARP [2] DEEP_LOGS [3] LEADERBOARD [4] IROH [5] EXIT")
         
         cmd = input("\n>> ")
         
@@ -103,7 +88,7 @@ def main():
                 while duration > 0:
                     m, s = divmod(int(duration), 60)
                     clear()
-                    print(f"{W}{'═'*40} SESSION_{sid} | {stream_data[2]} {'═'*40}{R}")
+                    print(f"{W}{'═'*35} WARP_ACTIVE | {sid} | {stream_data[2]} {'═'*35}{R}")
                     field.pop(0); field.append(generate_parallax_line())
                     for i, line in enumerate(field):
                         if i == 11: print(f"  {line[:45]}  {W}{m:02d}:{s:02d}{R}  {line[55:]}")
@@ -111,31 +96,43 @@ def main():
                         else: print(f"  {line}")
                     time.sleep(0.3); duration -= 0.3
                 
-                # Auto-Save & Log
+                # --- AUTO-PROCESS SUCCESS ---
                 data['xp'] += 100; data['total_min'] += 25
                 if data['xp'] >= (data['level'] * 300): data['level'] += 1
-                rank = next((i + 1 for i, p in enumerate(get_leaderboard()) if p['id'] == pilot_id), "?")
-                data['history'].append({"id": sid, "ts": datetime.now().strftime('%y-%m-%d %H:%M'), "goal": goal, "rank": rank})
+                
+                lb = get_leaderboard()
+                rank = next((i + 1 for i, p in enumerate(lb) if p['id'] == pilot_id), "?")
+                
+                data['history'].append({
+                    "id": sid, "ts": datetime.now().strftime('%Y-%m-%d %H:%M'),
+                    "goal": goal, "rank": rank, "xp_gain": 100
+                })
                 save_data(pilot_id, data)
                 
-                print(f"\n{G}✔ MISSION COMPLETE. LOGGED {sid} | RANK: {rank}. RESTARTING MUSIC...{R}")
+                print(f"\n{G}✔ LOGGED. RANK: {rank}. TRIGGERING CONTINUOUS AUTOPLAY...{R}")
                 webbrowser.open(stream_data[1])
                 time.sleep(4)
             except KeyboardInterrupt: pass
-        
+
         elif cmd == "2":
-            clear(); print(f"{P}--- {pilot_id} MISSION LOGS ---{R}")
-            for h in data['history'][-15:]: print(f" [{h['ts']}] ID:{h['id']} | {h['goal'][:15]} | RANK:{h.get('rank','?')}")
-            input("\n[ENTER]")
+            clear()
+            print(f"{P}═══ SESSION DEBRIEFING HISTORY ═══{R}")
+            for h in data['history'][-5:]:
+                print(f"\n{W}ID: {h['id']} | {h['ts']}{R}")
+                print(f" > RANK: {G}{h.get('rank','?')}{R} | XP: +100")
+                print(f" > GOAL: {Y}{h['goal']}{R}")
+            input("\n[RETURN]")
+            
         elif cmd == "3":
-            clear(); print(f"{Y}--- GALAXY LEADERBOARD ---{R}")
+            clear()
+            print(f"{Y}═══ GALACTIC LEADERBOARD (LIVE) ═══{R}")
             for r, p in enumerate(get_leaderboard()[:10], 1):
-                color = G if p['id'] == pilot_id else W
-                print(f" {r}. {color}{p['id']:<12}{R} | LVL: {p['lvl']} | XP: {p['xp']}")
-            input("\n[ENTER]")
+                marker = f"{G}>>{R}" if p['id'] == pilot_id else "  "
+                print(f" {marker} {r}. {p['id']:<12} | LVL: {p['lvl']} | XP: {p['xp']}")
+            input("\n[RETURN]")
+
         elif cmd == "4":
             clear(); print(f"\n{C}Uncle Iroh: \"{random.choice(IROH)}\"{R}"); input("\n[BACK]")
-        elif cmd == "5": show_manual()
-        elif cmd == "6": save_data(pilot_id, data); break
+        elif cmd == "5": save_data(pilot_id, data); break
 
 if __name__ == "__main__": main()
